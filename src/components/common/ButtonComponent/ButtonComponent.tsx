@@ -15,7 +15,8 @@ export const Button: React.FC<{
 
     const [isShaking, setIsShaking] = useState(false);
 
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         if (type === 'disabled') {
             setIsShaking(true);
             setTimeout(() => setIsShaking(false), 300);
