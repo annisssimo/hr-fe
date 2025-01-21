@@ -1,7 +1,14 @@
 import { ReactNode } from 'react';
 import * as styles from './Input.css';
 
-const Input = ({ labelText, type = 'text', value, onChange, error, endAdornment }: InputProps) => {
+export const Input = ({
+    labelText,
+    type = 'text',
+    value,
+    onChange,
+    error,
+    endAdornment,
+}: InputProps) => {
     return (
         <div className={styles.container}>
             {!!value && (
@@ -24,8 +31,6 @@ const Input = ({ labelText, type = 'text', value, onChange, error, endAdornment 
         </div>
     );
 };
-
-export default Input;
 
 type InputType = 'text' | 'password' | 'email' | 'number' | 'tel' | 'date';
 
