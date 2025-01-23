@@ -24,7 +24,7 @@ export const Input = ({
                     onChange={(e) => onChange(e.target.value)}
                     className={`${styles.input} ${error ? styles.errorInput : ''}`}
                 />
-                {endAdornment && <div>{endAdornment}</div>}
+                {endAdornment && <div className={styles.toggleVisibility}>{endAdornment}</div>}
             </div>
 
             {error && <span className={styles.errorMessage}>{error}</span>}

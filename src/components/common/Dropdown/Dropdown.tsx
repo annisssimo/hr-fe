@@ -27,11 +27,14 @@ export const Dropdown = ({ label, options, selected, onChange }: DropdownProps) 
         setIsOpen(false);
     };
 
+    const selectedLabel =
+        options.find((o) => o.value === internalSelected)?.label ?? 'Select an option';
+
     return (
         <div ref={ref} className={styles.container}>
             {label && <label className={styles.label}>{label}</label>}
             <div className={styles.select} onClick={() => setIsOpen((prev) => !prev)} role="button">
-                {internalSelected ?? 'Select an option'}
+                {selectedLabel}
                 {!isOpen ? (
                     <GoTriangleDown className={styles.triangle} />
                 ) : (
