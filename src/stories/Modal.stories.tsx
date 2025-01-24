@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { Button } from '../components/common/ButtonComponent/ButtonComponent';
 import { Modal } from '../components/common/Modal/Modal';
+import { Typography } from '../components/common/Typography/Typography';
 import '../App.css';
 
 export default {
@@ -35,7 +36,7 @@ export const Default = () => {
                 confirmText="Confirm"
                 cancelText="Cancel"
             >
-                <p>This is the modal content!</p>
+                <Typography variant="paragraph">This is the modal content!</Typography>
             </Modal>
         </>
     );
@@ -61,7 +62,9 @@ export const OnlyConfirm = () => {
                 confirmText="OK"
                 onClose={handleClose}
             >
-                <p>This is a modal with only a confirm button!</p>
+                <Typography variant="paragraph">
+                    This is a modal with only a confirm button!
+                </Typography>
             </Modal>
         </>
     );

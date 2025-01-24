@@ -3,6 +3,7 @@ import { GoTriangleDown, GoTriangleUp } from 'react-icons/go';
 
 import * as styles from './Dropdown.css';
 import { useClickOutside } from '../../../hooks/useClickOutside';
+import { Typography } from '../Typography/Typography';
 
 export const Dropdown = ({ label, options, selected, onChange }: DropdownProps) => {
     const [internalSelected, setInternalSelected] = useState(
@@ -34,7 +35,7 @@ export const Dropdown = ({ label, options, selected, onChange }: DropdownProps) 
         <div ref={ref} className={styles.container}>
             {label && <label className={styles.label}>{label}</label>}
             <div className={styles.select} onClick={() => setIsOpen((prev) => !prev)} role="button">
-                {selectedLabel}
+                <Typography variant="text">{selectedLabel}</Typography>
                 {!isOpen ? (
                     <GoTriangleDown className={styles.triangle} />
                 ) : (
@@ -49,7 +50,7 @@ export const Dropdown = ({ label, options, selected, onChange }: DropdownProps) 
                             className={styles.dropdownItem}
                             onClick={() => handleSelect(option.value)}
                         >
-                            {option.label}
+                            <Typography variant="text">{option.label}</Typography>
                         </li>
                     ))}
                 </ul>

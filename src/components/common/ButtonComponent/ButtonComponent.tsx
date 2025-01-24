@@ -1,3 +1,4 @@
+import { Typography } from '../Typography/Typography.tsx';
 import * as styles from './ButtonComponentStyle.css.ts';
 import React, { useState } from 'react';
 
@@ -32,7 +33,9 @@ export const Button: React.FC<{
             className={`${button} ${styles.baseButton} ${isShaking ? styles.disabledAnim : ''}`}
             onClick={handleClick}
         >
-            <p className={`${text} ${styles.baseButtonText}`}>{buttonText}</p>
+            <Typography variant="text" className={`${text} ${styles.baseButtonText}`}>
+                {buttonText}
+            </Typography>
         </button>
     );
 };

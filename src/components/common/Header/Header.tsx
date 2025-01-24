@@ -4,6 +4,7 @@ import * as styles from './Header.css';
 import { Logo } from '../Logo/Logo';
 import defaultUserImgPath from '../../../assets/default-avatar.jpg';
 import { ROUTES } from '../../../constants/routes';
+import { Typography } from '../Typography/Typography';
 
 export const Header = ({ user }: HeaderProps) => {
     return (
@@ -35,7 +36,7 @@ export const Header = ({ user }: HeaderProps) => {
                 </ul>
             </nav>
             <div className={styles.userProfile}>
-                <p>{user.username}</p>
+                <Typography variant="text">{user.username}</Typography>
                 <img src={defaultUserImgPath} alt="User Photo" className={styles.userAvatar} />
             </div>
         </header>

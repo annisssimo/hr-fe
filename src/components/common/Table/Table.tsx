@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import * as styles from './TableStyle.css.ts';
 import { Loader } from '../Loader/Loader.tsx';
 import { Button } from '../ButtonComponent/ButtonComponent.tsx';
+import { Typography } from '../Typography/Typography.tsx';
 
 interface TableProps<T> {
     columns: Column<T>[];
@@ -37,7 +38,9 @@ export const Table = <T,>({
                     onClick={previousPageClick}
                     buttonText="<"
                 />
-                <p className={styles.paginationCounter}>{currentPage}</p>
+                <Typography variant="text" className={styles.paginationCounter}>
+                    {currentPage}
+                </Typography>
                 <Button
                     type={
                         (currentPage >= Math.ceil(count / rowsPerPage) ||
@@ -80,7 +83,7 @@ export const Table = <T,>({
                                 style={{ width: col.width || 'auto' }}
                                 className={styles.tableCellHeader}
                             >
-                                {col.title}
+                                <Typography variant="text">{col.title}</Typography>
                             </th>
                         ))}
                     </tr>
@@ -91,9 +94,13 @@ export const Table = <T,>({
                             <tr key={rowIndex} className={styles.tableRow}>
                                 {columns.map((col, colIndex) => (
                                     <td key={colIndex} className={styles.tableCell}>
-                                        {col.render
-                                            ? col.render(row[col.dataIndex], row, rowIndex)
-                                            : (row[col.dataIndex] as ReactNode)}
+                                        {col.render ? (
+                                            col.render(row[col.dataIndex], row, rowIndex)
+                                        ) : (
+                                            <Typography variant="text">
+                                                {row[col.dataIndex] as ReactNode}
+                                            </Typography>
+                                        )}
                                     </td>
                                 ))}
                             </tr>
@@ -106,7 +113,11 @@ export const Table = <T,>({
                 </tbody>
             </table>
             <div className={styles.tableFooter}>
-                {!isLoading && rows.length < 1 ? <p>{getNoDataMessage()}</p> : paginationRender()}
+                {!isLoading && rows.length < 1 ? (
+                    <Typography variant="text">{getNoDataMessage()}</Typography>
+                ) : (
+                    paginationRender()
+                )}
             </div>
             {isLoading && (
                 <div className={styles.loaderContainer}>

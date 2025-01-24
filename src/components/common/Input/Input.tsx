@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import * as styles from './Input.css';
+import { Typography } from '../Typography/Typography';
 
 export const Input = ({
     labelText,
@@ -27,7 +28,11 @@ export const Input = ({
                 {endAdornment && <div className={styles.toggleVisibility}>{endAdornment}</div>}
             </div>
 
-            {error && <span className={styles.errorMessage}>{error}</span>}
+            {error && (
+                <Typography variant="text" className={styles.errorMessage}>
+                    {error}
+                </Typography>
+            )}
         </div>
     );
 };
