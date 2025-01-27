@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Control, FieldError, FieldValues, Path } from 'react-hook-form';
+import { MdVisibilityOff, MdVisibility } from 'react-icons/md';
 
 import { ControlledInput } from '../ControlledInput/ControlledInput';
-import { PasswordEyeAdornment } from '../PasswordEyeAdornment/PasswordEyeAdornment';
+import * as styles from './PasswordInput.css';
 
 export const PasswordInput = <TFormValues extends Record<string, unknown>>({
     name,
@@ -10,10 +11,12 @@ export const PasswordInput = <TFormValues extends Record<string, unknown>>({
     error,
     labelText = 'Password *',
     showPasswordToggle = true,
+    onChange,
 }: PasswordInputProps<TFormValues>) => {
     const [visible, setVisible] = useState(false);
 
-    const toggleVisibility = () => {
+    const toggleVisibility = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         setVisible((prev) => !prev);
     };
 
@@ -24,9 +27,16 @@ export const PasswordInput = <TFormValues extends Record<string, unknown>>({
             labelText={labelText}
             type={visible ? 'text' : 'password'}
             error={error}
+            onChange={onChange}
             endAdornment={
                 showPasswordToggle && (
-                    <PasswordEyeAdornment onClick={toggleVisibility} isPasswordVisible={visible} />
+                    <button
+                        type="button"
+                        onClick={toggleVisibility}
+                        className={styles.toggleVisibility}
+                    >
+                        {visible ? <MdVisibility /> : <MdVisibilityOff />}
+                    </button>
                 )
             }
         />
@@ -39,4 +49,5 @@ interface PasswordInputProps<TFormValues extends FieldValues> {
     error?: FieldError;
     labelText?: string;
     showPasswordToggle?: boolean;
+    onChange?: () => void;
 }

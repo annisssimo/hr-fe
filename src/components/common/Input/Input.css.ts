@@ -5,9 +5,13 @@ export const container = style({
     display: 'flex',
     flexDirection: 'column',
     gap: '4px',
+    position: 'relative',
 });
 
 export const label = style({
+    position: 'absolute',
+    top: '-18px',
+    zIndex: 10,
     fontWeight: 400,
     fontSize: '12px',
     color: '#737373',
