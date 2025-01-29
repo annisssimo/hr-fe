@@ -3,7 +3,7 @@ export const ROUTES = {
     REQUESTS: '/requests',
     DATABASE: '/database',
     TASKS: '/tasks',
-    LOGIN: 'auth/login',
-    REGISTER: 'auth/register',
+    LOGIN: '/auth/login',
+    REGISTER: '/auth/register',
     RESET_PASSWORD: '/auth/reset-password',
 };
