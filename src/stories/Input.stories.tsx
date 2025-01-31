@@ -28,7 +28,6 @@ export const Default = Template.bind({});
 Default.args = {
     labelText: 'Enter text',
     value: '',
-    error: '',
 };
 
 export const WithError = Template.bind({});
@@ -43,6 +42,13 @@ PasswordInput.args = {
     labelText: 'Password',
     value: '',
     type: 'password',
-    error: '',
     endAdornment: <MdVisibilityOff />,
+};
+
+export const OutlinedInput = Template.bind({});
+OutlinedInput.args = {
+    labelText: 'Outlined Input',
+    value: '',
+    type: 'text',
+    variant: 'labelLeftOutlined',
 };

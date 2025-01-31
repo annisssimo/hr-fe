@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
-import * as styles from './Input.css';
+import classNames from 'classnames';
+
 import { Typography } from '../Typography/Typography';
+import * as styles from './Input.css';
 
 export const Input = ({
     labelText,
@@ -9,21 +11,46 @@ export const Input = ({
     onChange,
     error,
     endAdornment,
+    variant = InputVariant.LabelTop,
+    disabled = false,
 }: InputProps) => {
+    const isOutlined = variant === InputVariant.LabelLeftOutlined;
+
     return (
-        <div className={styles.container}>
-            {!!value && (
-                <label className={`${styles.label} ${error ? styles.errorLabel : ''}`}>
+        <div
+            className={classNames({
+                [styles.containerWithLeftLabelInside]: isOutlined,
+                [styles.container]: !isOutlined,
+            })}
+        >
+            {isOutlined ? (
+                <label className={classNames(styles.leftLabel, { [styles.errorLabel]: error })}>
                     {labelText}
                 </label>
+            ) : (
+                !!value && (
+                    <label className={classNames(styles.label, { [styles.errorLabel]: error })}>
+                        {labelText}
+                    </label>
+                )
             )}
-            <div className={styles.inputContainer}>
+            <div
+                className={classNames({
+                    [styles.inputContainerForOutlined]: isOutlined,
+                    [styles.inputContainer]: !isOutlined,
+                })}
+            >
                 <input
                     type={type}
-                    placeholder={labelText}
+                    placeholder={isOutlined ? undefined : labelText}
                     value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    className={`${styles.input} ${error ? styles.errorInput : ''}`}
+                    onChange={(e) => onChange?.(e.target.value)}
+                    disabled={disabled}
+                    className={classNames(styles.input, {
+                        [styles.outlinedInput]: isOutlined,
+                        [styles.errorInput]: error,
+                        [styles.disabledInput]: disabled,
+                    })}
                 />
                 {endAdornment && <div className={styles.toggleVisibility}>{endAdornment}</div>}
             </div>
@@ -37,6 +64,11 @@ export const Input = ({
     );
 };
 
+enum InputVariant {
+    LabelTop = 'labelTop',
+    LabelLeftOutlined = 'labelLeftOutlined',
+}
+
 type InputType = 'text' | 'password' | 'email' | 'number' | 'tel' | 'date';
 
 interface InputProps {
@@ -46,4 +78,6 @@ interface InputProps {
     onChange: (value: string) => void;
     error?: string;
     endAdornment?: ReactNode;
+    variant?: InputVariant;
+    disabled?: boolean;
 }
