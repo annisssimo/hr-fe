@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
-
+import { InputVariant } from '../../../constants/inputVariant.ts';
 import { Typography } from '../Typography/Typography';
 import * as styles from './Input.css';
 
@@ -63,11 +63,6 @@ export const Input = ({
         </div>
     );
 };
-
-enum InputVariant {
-    LabelTop = 'labelTop',
-    LabelLeftOutlined = 'labelLeftOutlined',
-}
 
 type InputType = 'text' | 'password' | 'email' | 'number' | 'tel' | 'date';
 

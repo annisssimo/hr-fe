@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,6 +6,7 @@ import { Button } from '../../../common/ButtonComponent/ButtonComponent';
 import { Typography } from '../../../common/Typography/Typography';
 import { Dropdown } from '../../../common/Dropdown/Dropdown';
 import { ControlledInput } from '../../../common/ControlledInput/ControlledInput';
+import { InputVariant } from '../../../../constants/inputVariant.ts';
 import { PhoneInputWithMask } from '../../../common/PhoneInputWithMask/PhoneInputWithMask';
 import defaultAvatar from '../../../../assets/default-avatar.jpg';
 import { ROUTES } from '../../../../constants/routes';
@@ -16,8 +16,7 @@ import * as styles from './PersonalProfileForm.css';
 export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
     const navigate = useNavigate();
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [canEditEndDate, setCanEditEndDate] = useState(false); // send a request to the API to find out if the user has rights
+    const canEditEndDate = false; // send a request to the API to find out if the user has rights
 
     const {
         control,
@@ -85,7 +84,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                     defaultValue={user.name}
                     labelText="Name"
                     type="text"
-                    variant="labelLeftOutlined"
+                    variant={InputVariant.LabelLeftOutlined}
                     disabled
                 />
 
@@ -95,7 +94,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                     defaultValue={user.surname}
                     labelText="Surname"
                     type="text"
-                    variant="labelLeftOutlined"
+                    variant={InputVariant.LabelLeftOutlined}
                     disabled
                 />
 
@@ -105,7 +104,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                     defaultValue={user.email}
                     labelText="Email"
                     type="email"
-                    variant="labelLeftOutlined"
+                    variant={InputVariant.LabelLeftOutlined}
                     disabled
                 />
 
@@ -128,7 +127,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                     control={control}
                     labelText="Starting Day in the company"
                     type="date"
-                    variant="labelLeftOutlined"
+                    variant={InputVariant.LabelLeftOutlined}
                 />
 
                 <ControlledInput
@@ -136,7 +135,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                     control={control}
                     labelText="End Date"
                     type="date"
-                    variant="labelLeftOutlined"
+                    variant={InputVariant.LabelLeftOutlined}
                     disabled={!canEditEndDate}
                 />
 
@@ -145,7 +144,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                     control={control}
                     labelText="Date of Birth"
                     type="date"
-                    variant="labelLeftOutlined"
+                    variant={InputVariant.LabelLeftOutlined}
                 />
 
                 <PhoneInputWithMask
@@ -160,7 +159,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                     control={control}
                     labelText="Skype or Telegram Username"
                     type="text"
-                    variant="labelLeftOutlined"
+                    variant={InputVariant.LabelLeftOutlined}
                 />
 
                 <div className={styles.buttonsContainer}>

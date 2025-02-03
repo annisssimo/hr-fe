@@ -1,5 +1,7 @@
 import { Controller, FieldValues, FieldError, Path, PathValue, Control } from 'react-hook-form';
 import { Input } from '../Input/Input.tsx';
+import { InputVariant } from '../../../constants/inputVariant.ts';
+import React from 'react';
 
 export const ControlledInput = <T extends FieldValues>({
     name,
@@ -10,7 +12,7 @@ export const ControlledInput = <T extends FieldValues>({
     error,
     endAdornment,
     onChange,
-    variant = 'labelTop',
+    variant = InputVariant.LabelTop,
     disabled = false,
 }: ControlledInputProps<T>) => {
     return (
@@ -45,7 +47,7 @@ interface ControlledInputProps<T extends FieldValues> {
     type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'date';
     error?: FieldError;
     endAdornment?: React.ReactNode;
-    variant?: 'labelTop' | 'labelLeftOutlined';
+    variant?: InputVariant;
     disabled?: boolean;
     onChange?: () => void;
 }
