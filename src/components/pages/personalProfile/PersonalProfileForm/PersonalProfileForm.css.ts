@@ -34,3 +34,11 @@ export const buttonsContainer = style({
     gap: '16px',
     paddingLeft: '170px',
 });
+
+export const buttonWrapper = style({
+    display: 'flex',
+    flexDirection: 'row',
+    width: '30%',
+    margin: '0px 0px 10px',
+    gap: '10px',
+});

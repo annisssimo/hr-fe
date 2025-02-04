@@ -1,6 +1,7 @@
 import { forwardRef, useImperativeHandle, useState, useRef } from 'react';
 import ReactCrop, { Crop, PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
+import * as styles from './CropPhoto.css.ts';
 
 interface CropStepProps {
     image: string | null;
@@ -65,7 +66,7 @@ export const CropPhoto = forwardRef(({ image }: CropStepProps, ref) => {
     };
 
     return (
-        <div>
+        <div className={styles.cropContainer}>
             {image && (
                 <ReactCrop crop={crop} onChange={setCrop} aspect={1}>
                     <img src={image} alt="Selected" ref={imageRef} />

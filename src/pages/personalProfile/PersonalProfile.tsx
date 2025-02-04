@@ -6,7 +6,7 @@ import {
 } from '../../components/pages/personalProfile/PersonalProfileForm/PersonalProfileForm';
 
 export const PersonalProfilePage = () => {
-    const user: User = {
+    const mockUser: User = {
         role: 'admin',
         name: 'John',
         surname: 'Doe',
@@ -18,11 +18,10 @@ export const PersonalProfilePage = () => {
         phoneNumber: '+375336816477',
         skypeTelegram: 'johndoe',
     };
-
     return (
         <>
             <Header />
-            <PersonalProfileForm user={user} />
+            <PersonalProfileForm user={mockUser} />
             <Footer />
         </>
     );

@@ -3,12 +3,14 @@ import { FileInput } from '../FileInput/FileInput.tsx';
 import { Modal } from '../../../common/Modal/Modal.tsx';
 import { Typography } from '../../../common/Typography/Typography.tsx';
 import { CropPhoto } from '../CropPhoto/CropPhoto.tsx';
+import { TakePhoto } from '../TakePhoto/TakePhoto.tsx';
 import * as styles from './Photo.css.ts';
 
 export const Photo = () => {
     const [isChooseModalOpen, setIsChooseModalOpen] = useState(true);
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
     const [isCropModalOpen, setIsCropModalOpen] = useState(false);
+    const [isTakePhotoModalOpen, setIsTakePhotoModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const cropPhotoRef = useRef<{ getCroppedImage: () => string | null }>(null);
     const [error, setError] = useState('');
@@ -16,12 +18,18 @@ export const Photo = () => {
     const handleCloseChooseModal = () => setIsChooseModalOpen(false);
     const handleCloseUploadModal = () => setIsUploadModalOpen(false);
     const handleCloseCropModal = () => setIsCropModalOpen(false);
+    const handleCloseTakePhotoModal = () => setIsTakePhotoModalOpen(false);
 
     const handleOpenCrop = () => setIsCropModalOpen(true);
 
     const handleChooseUpload = () => {
         setIsChooseModalOpen(false);
         setIsUploadModalOpen(true);
+    };
+
+    const handleChooseTakePhoto = () => {
+        setIsChooseModalOpen(false);
+        setIsTakePhotoModalOpen(true);
     };
 
     const handleUploadDone = (image: string | null) => {
@@ -51,6 +59,25 @@ export const Photo = () => {
         setIsUploadModalOpen(true);
     };
 
+    const handlePhotoTaken = (photo: string) => {
+        setSelectedImage(photo);
+    };
+
+    const confirmPhotoTaken = (photo: string | null) => {
+        if (photo) {
+            setIsTakePhotoModalOpen(false);
+            setIsCropModalOpen(true);
+        } else {
+            setError('Please take photo before continuing');
+            setErrorCallback(() => handleChooseTakePhoto);
+        }
+    };
+
+    const cancelPhotoTaken = () => {
+        setIsTakePhotoModalOpen(false);
+        setIsChooseModalOpen(true);
+    };
+
     const closeErrorModal = () => {
         setError('');
     };
@@ -75,7 +102,7 @@ export const Photo = () => {
                 isOpen={isChooseModalOpen}
                 onClose={handleCloseChooseModal}
                 onConfirm={handleChooseUpload}
-                onCancel={() => console.log('*click*')}
+                onCancel={handleChooseTakePhoto}
                 confirmText="UPLOAD PHOTO"
                 cancelText="TAKE PHOTO"
             >
@@ -94,6 +121,21 @@ export const Photo = () => {
                 cancelText="BACK"
             >
                 <FileInput onImageSelect={setSelectedImage} />
+            </Modal>
+
+            <Modal
+                isOpen={isTakePhotoModalOpen}
+                onClose={handleCloseTakePhotoModal}
+                onConfirm={() => {
+                    confirmPhotoTaken(selectedImage);
+                }}
+                onCancel={() => {
+                    cancelPhotoTaken();
+                }}
+                confirmText="DONE"
+                cancelText="BACK"
+            >
+                <TakePhoto onPhotoTaken={handlePhotoTaken} />
             </Modal>
 
             <Modal

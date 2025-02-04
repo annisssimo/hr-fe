@@ -7,6 +7,7 @@ import { PasswordResetPage } from './pages/passwordReset/passwordReset';
 import { ConfirmationPage } from './pages/confirmationPage/ConfirmationPage';
 import { ProtectedRoutes } from './utils/protectedRoutes';
 import { UserRole } from './constants/roles.ts';
+import { PersonalProfilePage } from './pages/personalProfile/PersonalProfile.tsx';
 
 export const App = () => {
     return (
@@ -21,6 +22,7 @@ export const App = () => {
                     />
                 }
             >
+                <Route path={ROUTES.PERSONAL_PROFILE} element={<PersonalProfilePage />} />
                 <Route element={<ProtectedRoutes allowedRoles={[UserRole.ADMIN]} />}>
                     <Route path={ROUTES.REQUESTS} element={<ConfirmationPage />} />
                 </Route>

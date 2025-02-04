@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
 
 import { Button } from '../../../common/ButtonComponent/ButtonComponent';
 import { Typography } from '../../../common/Typography/Typography';
@@ -12,10 +13,11 @@ import defaultAvatar from '../../../../assets/default-avatar.jpg';
 import { ROUTES } from '../../../../constants/routes';
 import { personalProfileFormSchema } from './personalProfileForm.schema';
 import * as styles from './PersonalProfileForm.css';
+import { Photo } from '../Photo/Photo.tsx';
 
 export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
     const navigate = useNavigate();
-
+    const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
     const canEditEndDate = false; // send a request to the API to find out if the user has rights
 
     const {
@@ -65,6 +67,14 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
         { label: 'Sales Manager', value: 'sales' },
     ];
 
+    const handleDeletePhoto = () => {
+        //some api related logic
+    };
+
+    const showChangePhoto = () => {
+        setIsPhotoModalOpen(true);
+    };
+
     return (
         <div className={styles.profileMain}>
             <Typography variant="h1">Personal Profile</Typography>
@@ -76,6 +86,11 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                     className={styles.avatarImage}
                 />
             </div>
+            <div className={styles.buttonWrapper}>
+                <Button type={'preferred'} buttonText={'Change photo'} onClick={showChangePhoto} />
+                <Button type={'critical'} buttonText={'Delete photo'} onClick={handleDeletePhoto} />
+            </div>
+            {isPhotoModalOpen && <Photo />}
 
             <form className={styles.personalProfilePageForm} onSubmit={handleSubmit(onSubmit)}>
                 <ControlledInput
