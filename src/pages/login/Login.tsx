@@ -9,7 +9,7 @@ import * as styles from './Login.css.ts';
 
 export const LoginPage = () => {
     return (
-        <>
+        <div className={styles.pageWrapper}>
             <Header />
             <div className={styles.loginPage}>
                 <Typography variant={'h1'} className={styles.loginHeading}>
@@ -29,6 +29,6 @@ export const LoginPage = () => {
                 </div>
             </div>
             <Footer />
-        </>
+        </div>
     );
 };

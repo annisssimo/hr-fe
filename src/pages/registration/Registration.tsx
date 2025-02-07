@@ -11,10 +11,12 @@ export const RegistrationPage: React.FC = () => {
             <div className={styles.headerWrapper}>
                 <Header />
             </div>
-            <Typography variant={'h1'} className={styles.registrationHeader}>
-                REGISTRATION
-            </Typography>
-            <RegistrationForm />
+            <div className={styles.formWrapper}>
+                <Typography variant={'h1'} className={styles.registrationHeader}>
+                    REGISTRATION
+                </Typography>
+                <RegistrationForm />
+            </div>
             <div className={styles.footerWrapper}>
                 <Footer />
             </div>

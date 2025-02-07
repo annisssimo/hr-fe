@@ -1,15 +1,17 @@
 import { style } from '@vanilla-extract/css';
 
+export const pageWrapper = style({
+    minHeight: '100vh',
+});
+
 export const loginPage = style({
     width: '100%',
-    height: '100vh',
-    overflowY: 'hidden',
-    overflowX: 'hidden',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    margin: '0',
-    padding: '0',
+    flexGrow: 1,
+    textAlign: 'center',
+    marginBottom: '3rem',
 });
 
 export const loginHeading = style({
@@ -27,9 +29,14 @@ export const loginHeading = style({
 
 export const tips = style({
     width: '600px',
-    marginTop: '2rem',
+    margin: '2rem 0',
     display: 'flex',
     justifyContent: 'space-between',
+    '@media': {
+        'screen and (max-width: 768px)': {
+            width: '90%',
+        },
+    },
 });
 
 export const grayText = style({

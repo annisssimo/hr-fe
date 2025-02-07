@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router';
@@ -26,7 +26,10 @@ export const RegistrationForm: React.FC = () => {
     const navigate = useNavigate();
 
     const formValues = watch();
-    const isFormFilled = Object.values(formValues).every((value) => value.trim() !== '');
+    const [isFormFilled, setIsFormFilled] = useState(false);
+    useEffect(() => {
+        setIsFormFilled(Object.values(formValues).every((value) => value.trim() !== ''));
+    }, [formValues]);
 
     const onBackClick = () => {
         navigate(-1);
