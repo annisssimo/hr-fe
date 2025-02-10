@@ -8,12 +8,16 @@ import * as styles from './RegistrationForm.css.ts';
 import { FullScreenLoader } from '../../../common/FullScreenLoader/FullScreenLoader.tsx';
 import { ControlledInput } from '../../../common/ControlledInput/ControlledInput.tsx';
 import { PasswordInput } from '../../../common/PasswordInput/PasswordInput.tsx';
+import axios, { AxiosResponse } from 'axios';
+import { showErrorMessage, showSuccessMessage } from '../../../../utils/UI/toastMessages.ts';
+import { useRegisterMutation } from '../../../../services/auth.api.ts';
 
 export const RegistrationForm: React.FC = () => {
     const {
         control,
         handleSubmit,
         formState: { errors },
+        setError,
         trigger,
         clearErrors,
         watch,
@@ -21,8 +25,7 @@ export const RegistrationForm: React.FC = () => {
         resolver: zodResolver(registrationSchema),
         mode: 'onSubmit',
     });
-
-    const [isLoading, setIsLoading] = useState(false);
+    const [register, { isLoading }] = useRegisterMutation();
     const navigate = useNavigate();
 
     const formValues = watch();
@@ -36,9 +39,40 @@ export const RegistrationForm: React.FC = () => {
     };
 
     const onSubmit = async (data: FormData) => {
-        setIsLoading(true);
-        // Work imitation until we connect axios and do proper try-catch-finally or something along those lines
-        console.log(data);
+        try {
+            const response: AxiosResponse = await register(data).unwrap();
+            showSuccessMessage('Successfully registered');
+            localStorage.setItem('accessToken', response.data);
+            navigate('/main-page');
+            return response;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (!error.response) {
+                    showErrorMessage(
+                        'Network error or server is unreachable. Please try again later.',
+                    );
+                } else {
+                    switch (error.status) {
+                        case 500:
+                            showErrorMessage('Server Error, try again later');
+                            break;
+                        case 400:
+                            showErrorMessage('Something went wrong, please check your input data');
+                            break;
+                        case 409:
+                            setError('email', { type: 'manual', message: 'Email Already In Use' });
+                            break;
+                        default:
+                            showErrorMessage('Credentials are wrong, please try again');
+                            break;
+                    }
+                }
+            } else {
+                console.log('Unexpected error: ', error);
+                showErrorMessage('Unaxpected error happend');
+            }
+            throw error;
+        }
     };
 
     const handleFormSubmit = async () => {

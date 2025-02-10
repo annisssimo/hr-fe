@@ -8,4 +8,5 @@ export const ROUTES = {
     RESET_PASSWORD: '/auth/reset-password',
     CHANGE_PASSWORD: '/profile/change-password',
     PERSONAL_PROFILE: '/profile',
+    MAIN_PAGE: '/main-page',
 };
