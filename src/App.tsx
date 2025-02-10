@@ -9,6 +9,7 @@ import { ProtectedRoutes } from './utils/protectedRoutes';
 import { UserRole } from './constants/roles.ts';
 import { PasswordChange } from './pages/passwordChange/PasswordChange.tsx';
 import { PersonalProfilePage } from './pages/personalProfile/PersonalProfile.tsx';
+import { UserDataList } from './pages/databaseOfUsers/UserDataList.tsx';
 
 export const App = () => {
     return (
@@ -23,6 +24,7 @@ export const App = () => {
                     />
                 }
             >
+                <Route path={ROUTES.DATABASE} element={<UserDataList />} />
                 <Route path={ROUTES.CHANGE_PASSWORD} element={<PasswordChange />} />
                 <Route path={ROUTES.PERSONAL_PROFILE} element={<PersonalProfilePage />} />
                 <Route element={<ProtectedRoutes allowedRoles={[UserRole.ADMIN]} />}>

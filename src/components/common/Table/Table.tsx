@@ -8,6 +8,7 @@ interface TableProps<T> {
     columns: Column<T>[];
     rows: T[];
     count?: number;
+    additionalPaginationElement?: ReactNode;
     onPageChange?: (page: number) => void;
     currentPage?: number;
     rowsPerPage?: number;
@@ -29,29 +30,35 @@ export const Table = <T,>({
     currentPage,
     rowsPerPage = 100,
     isLoading,
+    additionalPaginationElement,
 }: TableProps<T>) => {
     const paginationRender = () => {
         return count && onPageChange && currentPage ? (
             <div className={styles.paginationBar}>
-                <Button
-                    type={currentPage === 1 ? 'disabled' : 'secondary'}
-                    onClick={previousPageClick}
-                    buttonText="<"
-                />
+                {additionalPaginationElement}
+                <div className={styles.buttonWrapper}>
+                    <Button
+                        type={currentPage === 1 ? 'disabled' : 'secondary'}
+                        onClick={previousPageClick}
+                        buttonText="<"
+                    />
+                </div>
                 <Typography variant="text" className={styles.paginationCounter}>
                     {currentPage}
                 </Typography>
-                <Button
-                    type={
-                        (currentPage >= Math.ceil(count / rowsPerPage) ||
-                            rows.length < rowsPerPage) &&
-                        !isLoading
-                            ? 'disabled'
-                            : 'preferred'
-                    }
-                    onClick={nextPageClick}
-                    buttonText=">"
-                />
+                <div className={styles.buttonWrapper}>
+                    <Button
+                        type={
+                            (currentPage >= Math.ceil(count / rowsPerPage) ||
+                                rows.length < rowsPerPage) &&
+                            !isLoading
+                                ? 'disabled'
+                                : 'preferred'
+                        }
+                        onClick={nextPageClick}
+                        buttonText=">"
+                    />
+                </div>
             </div>
         ) : (
             <></>
@@ -116,7 +123,7 @@ export const Table = <T,>({
                 {!isLoading && rows.length < 1 ? (
                     <Typography variant="text">{getNoDataMessage()}</Typography>
                 ) : (
-                    paginationRender()
+                    <>{paginationRender()}</>
                 )}
             </div>
             {isLoading && (

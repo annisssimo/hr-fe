@@ -1,4 +1,5 @@
-import { style } from '@vanilla-extract/css';
+import { style, globalStyle } from '@vanilla-extract/css';
+import { baseButton } from '../ButtonComponent/ButtonComponentStyle.css.ts';
 
 export const tableContainer = style({
     width: '100%',
@@ -74,13 +75,28 @@ export const loaderContainer = style({
 
 export const paginationBar = style({
     width: '100%',
-    height: '75px',
+    height: '30px',
     display: 'flex',
     alignItems: 'center',
-    gap: '42%',
+    justifyContent: 'right',
+    gap: '10px',
+    '@media': {
+        'screen and (max-width: 768px)': {
+            gap: '5px',
+        },
+    },
+});
+
+export const buttonWrapper = style({
+    width: '30px',
+    height: '30px',
 });
 
 export const paginationCounter = style({
     color: '#004DD7',
-    fontSize: '1.5rem',
+    fontSize: '1rem',
+});
+
+globalStyle(`${buttonWrapper} ${baseButton}`, {
+    padding: '4px 8px',
 });
