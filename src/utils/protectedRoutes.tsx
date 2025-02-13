@@ -10,8 +10,19 @@ interface ProtectedRoutesProps {
     fallbackUrl?: string;
 }
 
+const Mock = {
+    id: 'string',
+    firstName: 'string',
+    lastName: 'string',
+    email: 'string',
+    managerId: null,
+    avatar: null,
+    role: UserRole.ADMIN,
+};
+
 export const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({ allowedRoles, fallbackUrl }) => {
-    const user = useSelector(getUserSelector);
+    //const user = useSelector(getUserSelector);
+    const user = Mock;
     if (!user) {
         return <Navigate to={ROUTES.LOGIN} replace />;
     }

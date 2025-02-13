@@ -15,8 +15,6 @@ export const headerWrapper = style({
 });
 
 export const confirmationPageFooter = style({
-    position: 'absolute',
-    bottom: 0,
     width: '100%',
 });
 
@@ -28,6 +26,11 @@ export const pageTitle = style({
 export const confirmationPageContent = style({
     width: '95%',
     margin: '50px 0',
+    overflow: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: '1',
+    minHeight: '65vh',
 });
 
 export const tableMenu = style({

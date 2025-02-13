@@ -4,16 +4,19 @@ import { Typography } from '../../components/common/Typography/Typography.tsx';
 import { Table } from '../../components/common/Table/Table.tsx';
 import { Column } from '../../components/common/Table/Table.tsx';
 import { Button } from '../../components/common/ButtonComponent/ButtonComponent.tsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '../../components/common/Header/Header.tsx';
 import { Dropdown } from '../../components/common/Dropdown/Dropdown.tsx';
+import { useGetUsersListMutation, useUpdateUserMutation } from '../../services/users.api.ts';
+import axios from 'axios';
+import { showErrorMessage } from '../../utils/UI/toastMessages.ts';
 
 interface User {
     username: string;
     role: 'admin' | 'manager' | 'employee';
 }
 
-interface newUsers {
+interface NewUser {
     id: string;
     firstName: string;
     lastName: string;
@@ -22,55 +25,209 @@ interface newUsers {
     actions: null;
 }
 
-interface allUsers {
+interface AllUser {
     firstName: string;
     lastName: string;
     email: string;
     role: string;
     status: string;
-    date: string;
+    statusAssignmentDate: Date;
 }
 
 export const ConfirmationPage = () => {
-    const [isLoading, setIsLoading] = useState(true);
     const [allDisplayed, setAllDisplayed] = useState(true);
     const [newRequestsCount, setNewRequestsCount] = useState(0);
-    const [users, setUsers] = useState<newUsers[]>([]);
+    const [newUsers, setNewUsers] = useState<NewUser[]>([]);
+    const [allUsers, setAllUsers] = useState<AllUser[]>([]);
     const headerProp: User = { username: 'placeholder', role: 'admin' };
+    const [updateUser] = useUpdateUserMutation();
+    const [getUserList, { isLoading }] = useGetUsersListMutation();
 
-    const selectNewRequests = () => {
-        setAllDisplayed(false);
-        fetchNewRequests();
+    const fetchAllRequests = async () => {
+        try {
+            const response = await getUserList({
+                limit: 10,
+                offset: 0,
+            }).unwrap();
+            setAllUsers(response.data ?? []);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (!error.response) {
+                    showErrorMessage(
+                        'Network error or server is unreachable. Please try again later.',
+                    );
+                } else {
+                    switch (error.status) {
+                        case 500:
+                            showErrorMessage('Server Error, try again later');
+                            break;
+                        default:
+                            showErrorMessage('Something went wrong. Please try again later');
+                            break;
+                    }
+                }
+            } else {
+                console.error('Unexpected error: ', error);
+                showErrorMessage('Unexpected error happened');
+            }
+        }
     };
 
-    const selectAllRequests = () => {
+    const fetchNewRequestsCount = async () => {
+        try {
+            const response = await getUserList({
+                limit: 1,
+                offset: 0,
+                includeCount: true,
+                filters: { status: ['pending'] },
+            }).unwrap();
+            setNewRequestsCount(response.metadata.count || 0);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (!error.response) {
+                    showErrorMessage(
+                        'Network error or server is unreachable. Please try again later.',
+                    );
+                } else {
+                    switch (error.status) {
+                        case 500:
+                            showErrorMessage('Server Error, try again later');
+                            break;
+                        default:
+                            showErrorMessage('Something went wrong. Please try again later');
+                            break;
+                    }
+                }
+            } else {
+                console.error('Unexpected error: ', error);
+                showErrorMessage('Unexpected error happened');
+            }
+        }
+    };
+
+    const fetchNewRequestsTable = async () => {
+        try {
+            const response = await getUserList({
+                limit: 10,
+                offset: 0,
+                filters: { status: ['pending'] },
+            }).unwrap();
+            setNewUsers(response.data ?? []);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (!error.response) {
+                    showErrorMessage(
+                        'Network error or server is unreachable. Please try again later.',
+                    );
+                } else {
+                    switch (error.status) {
+                        case 500:
+                            showErrorMessage('Server Error, try again later');
+                            break;
+                        default:
+                            showErrorMessage('Something went wrong. Please try again later');
+                            break;
+                    }
+                }
+            } else {
+                console.error('Unexpected error: ', error);
+                showErrorMessage('Unexpected error happened');
+            }
+        }
+    };
+
+    const confirmUsers = async (id: string) => {
+        const user = newUsers.find((u) => u.id === id);
+        const selectedRole = (user?.role || 'employee') as 'admin' | 'manager' | 'employee';
+        try {
+            await updateUser({
+                userId: id,
+                body: {
+                    status: 'active',
+                    role: selectedRole,
+                    statusAssignmentDate: new Date(),
+                },
+            }).unwrap();
+            fetchNewRequestsCount();
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (!error.response) {
+                    showErrorMessage(
+                        'Network error or server is unreachable. Please try again later.',
+                    );
+                } else {
+                    switch (error.status) {
+                        case 500:
+                            showErrorMessage('Server Error, try again later');
+                            break;
+                        default:
+                            showErrorMessage('Something went wrong. Please try again later');
+                            break;
+                    }
+                }
+            } else {
+                console.error('Unexpected error: ', error);
+                showErrorMessage('Unexpected error happened');
+            }
+        }
+    };
+
+    const rejectUsers = async (id: string) => {
+        try {
+            await updateUser({
+                userId: id,
+                body: {
+                    status: 'archived',
+                    statusAssignmentDate: new Date(),
+                },
+            }).unwrap();
+            fetchNewRequestsCount();
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (!error.response) {
+                    showErrorMessage(
+                        'Network error or server is unreachable. Please try again later.',
+                    );
+                } else {
+                    switch (error.status) {
+                        case 500:
+                            showErrorMessage('Server Error, try again later');
+                            break;
+                        default:
+                            showErrorMessage('Something went wrong. Please try again later');
+                            break;
+                    }
+                }
+            } else {
+                console.error('Unexpected error: ', error);
+                showErrorMessage('Unexpected error happened');
+            }
+        }
+    };
+
+    useEffect(() => {
+        fetchAllRequests();
+        fetchNewRequestsCount();
+        fetchNewRequestsCount();
+    }, []);
+
+    const selectNewRequests = async () => {
+        setAllDisplayed(false);
+        fetchNewRequestsTable();
+    };
+
+    const selectAllRequests = async () => {
         setAllDisplayed(true);
         fetchAllRequests();
     };
 
-    const fetchNewRequests = () => {
-        setNewRequestsCount(0); // Placeholders so eslint wouldn't yell at me
-        setIsLoading(true);
-    };
-
-    const fetchAllRequests = () => {
-        // Implement fetching all requests here
-    };
-
     const handleRoleChange = (id: string, newRole: string) => {
-        setUsers((prevUsers) =>
+        setNewUsers((prevUsers) =>
             prevUsers.map((user) => (user.id === id ? { ...user, role: newRole } : user)),
         );
     };
 
-    //again placeholders cause eslint
-    const confirmUsers = (id: string) => {
-        console.log(id);
-    };
-    const rejectUsers = (id: string) => {
-        console.log(id);
-    };
-    const newColumns: Column<newUsers>[] = [
+    const newColumns: Column<NewUser>[] = [
         {
             title: 'First Name',
             dataIndex: 'firstName',
@@ -86,7 +243,7 @@ export const ConfirmationPage = () => {
         {
             title: 'Role',
             dataIndex: 'role',
-            render: (role: string | null, record: newUsers) => (
+            render: (role: string | null, record: NewUser) => (
                 <Dropdown
                     label={'Role'}
                     options={[
@@ -102,7 +259,7 @@ export const ConfirmationPage = () => {
         {
             title: '',
             dataIndex: 'actions',
-            render: (_: string | number | null, record: newUsers) => (
+            render: (_: string | number | null, record: NewUser) => (
                 <div className={styles.buttonsCell}>
                     <Button
                         type="preferred"
@@ -119,7 +276,7 @@ export const ConfirmationPage = () => {
         },
     ];
 
-    const allColumns: Column<allUsers>[] = [
+    const allColumns: Column<AllUser>[] = [
         {
             title: 'First Name',
             dataIndex: 'firstName',
@@ -142,7 +299,7 @@ export const ConfirmationPage = () => {
         },
         {
             title: 'Date',
-            dataIndex: 'date',
+            dataIndex: 'statusAssignmentDate',
         },
     ];
 
@@ -157,7 +314,7 @@ export const ConfirmationPage = () => {
                 </Typography>
                 <div className={styles.tableAndMenuContainer}>
                     <div className={styles.tableMenu}>
-                        <div onClick={() => selectAllRequests()}>
+                        <div onClick={selectAllRequests}>
                             <Typography
                                 variant={'h3'}
                                 className={
@@ -169,7 +326,7 @@ export const ConfirmationPage = () => {
                                 ALL REQUESTS
                             </Typography>
                         </div>
-                        <div onClick={() => selectNewRequests()}>
+                        <div onClick={selectNewRequests}>
                             <Typography
                                 variant={'h3'}
                                 className={
@@ -184,9 +341,9 @@ export const ConfirmationPage = () => {
                     </div>
                     <div className={styles.tableWrapper}>
                         {allDisplayed ? (
-                            <Table columns={allColumns} rows={[]} isLoading={isLoading} />
+                            <Table columns={allColumns} rows={allUsers} isLoading={isLoading} />
                         ) : (
-                            <Table columns={newColumns} rows={users} isLoading={isLoading} />
+                            <Table columns={newColumns} rows={newUsers} isLoading={isLoading} />
                         )}
                     </div>
                 </div>
