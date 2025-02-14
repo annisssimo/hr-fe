@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
-import * as styles from './passwordChangeForm.css.ts';
+import * as styles from './PasswordChangeForm.css.ts';
 import { useForm } from 'react-hook-form';
-import { FormData, changePasswordSchema } from './passwordChangeForm.schema.ts';
+import { ChangePasswordFormData, changePasswordSchema } from './passwordChangeForm.schema.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosError } from 'axios';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+
 import { PasswordInput } from '../../../common/PasswordInput/PasswordInput.tsx';
 import { Button } from '../../../common/ButtonComponent/ButtonComponent.tsx';
-import { useNavigate } from 'react-router';
 import { FullScreenLoader } from '../../../common/FullScreenLoader/FullScreenLoader.tsx';
 import { Typography } from '../../../common/Typography/Typography.tsx';
+import { useChangePasswordMutation } from '../../../../services/auth.api.ts';
+import { showErrorMessage, showSuccessMessage } from '../../../../utils/UI/toastMessages.ts';
+import { ROUTES } from '../../../../constants/routes.ts';
+import { getUserSelector } from '../../../../redux/userSlice/userSlice.ts';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../../../constants/index.ts';
 
-export const PasswordChangeForm: React.FC = () => {
+export const PasswordChangeForm = () => {
     const {
         control,
         handleSubmit,
@@ -17,27 +24,44 @@ export const PasswordChangeForm: React.FC = () => {
         trigger,
         clearErrors,
         watch,
-    } = useForm<FormData>({
+    } = useForm<ChangePasswordFormData>({
         resolver: zodResolver(changePasswordSchema),
         mode: 'onSubmit',
     });
-    const [isLoading, setIsLoading] = useState(false);
+
+    const user = useSelector(getUserSelector);
+    const userId = user?.id;
+    const [changePassword, { isLoading }] = useChangePasswordMutation();
     const navigate = useNavigate();
     const formValues = watch();
     const isFormFilled = Object.values(formValues).every((value) => value.trim() !== '');
 
-    const hasErrorInRow = (field1: keyof FormData, field2: keyof FormData) => {
+    const hasErrorInRow = (
+        field1: keyof ChangePasswordFormData,
+        field2: keyof ChangePasswordFormData,
+    ) => {
         return !!errors[field1] || !!errors[field2];
     };
 
-    const handleInputChange = (field: keyof FormData) => {
+    const handleInputChange = (field: keyof ChangePasswordFormData) => {
         clearErrors(field);
     };
 
-    const onSubmit = async (data: FormData) => {
-        setIsLoading(true);
-        // Work imitation
-        console.log(data);
+    const onSubmit = async (data: ChangePasswordFormData) => {
+        if (!userId) return;
+
+        try {
+            await changePassword({ ...data, userId }).unwrap();
+            showSuccessMessage(SUCCESS_MESSAGES.PASSWORD_CHANGED);
+            navigate(ROUTES.PERSONAL_PROFILE);
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                const errorMessage = error.response?.data?.message || ERROR_MESSAGES.SERVER_ERROR;
+                showErrorMessage(errorMessage);
+            } else {
+                showErrorMessage(ERROR_MESSAGES.SERVER_ERROR);
+            }
+        }
     };
 
     const handleFormSubmit = async () => {

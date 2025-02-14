@@ -11,6 +11,7 @@ import { PasswordInput } from '../../../common/PasswordInput/PasswordInput.tsx';
 import axios, { AxiosResponse } from 'axios';
 import { showErrorMessage, showSuccessMessage } from '../../../../utils/UI/toastMessages.ts';
 import { useRegisterMutation } from '../../../../services/auth.api.ts';
+import { ROUTES } from '../../../../constants/routes.ts';
 
 export const RegistrationForm: React.FC = () => {
     const {
@@ -43,7 +44,7 @@ export const RegistrationForm: React.FC = () => {
             const response: AxiosResponse = await register(data).unwrap();
             showSuccessMessage('Successfully registered');
             localStorage.setItem('accessToken', response.data);
-            navigate('/main-page');
+            navigate(ROUTES.MAIN_PAGE);
             return response;
         } catch (error) {
             if (axios.isAxiosError(error)) {

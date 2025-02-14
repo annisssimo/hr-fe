@@ -9,7 +9,12 @@ const store = configureStore({
         [usersApi.reducerPath]: usersApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(authApi.middleware, usersApi.middleware),
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: ['auth/executeMutation/rejected'],
+                ignoredPaths: ['auth.mutations'],
+            },
+        }).concat(authApi.middleware, usersApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
