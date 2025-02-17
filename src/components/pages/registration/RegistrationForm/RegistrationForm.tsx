@@ -69,8 +69,7 @@ export const RegistrationForm: React.FC = () => {
                     }
                 }
             } else {
-                console.log('Unexpected error: ', error);
-                showErrorMessage('Unaxpected error happend');
+                showErrorMessage('Unexpected error happend');
             }
             throw error;
         }

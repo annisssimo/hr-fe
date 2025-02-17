@@ -1,9 +1,8 @@
-import React from 'react';
-import { PasswordChangeForm } from '../../components/pages/passwordChange/PasswordChangeForm/PasswordChangeForm.tsx';
 import { Header } from '../../components/common/Header/Header.tsx';
 import { Footer } from '../../components/common/Footer/Footer.tsx';
+import { PasswordChangeForm } from '../../components/pages/passwordChange/passwordChangeForm/PasswordChangeForm.tsx';
 
-export const PasswordChange: React.FC = () => {
+export const PasswordChange = () => {
     return (
         <>
             <Header />

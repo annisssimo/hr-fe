@@ -1,11 +1,10 @@
-import * as styles from './PasswordChangeForm.css.ts';
-import { useForm } from 'react-hook-form';
-import { ChangePasswordFormData, changePasswordSchema } from './passwordChangeForm.schema.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { useForm } from 'react-hook-form';
 
+import { ChangePasswordFormData, changePasswordSchema } from './passwordChangeForm.schema.ts';
 import { PasswordInput } from '../../../common/PasswordInput/PasswordInput.tsx';
 import { Button } from '../../../common/ButtonComponent/ButtonComponent.tsx';
 import { FullScreenLoader } from '../../../common/FullScreenLoader/FullScreenLoader.tsx';
@@ -15,6 +14,7 @@ import { showErrorMessage, showSuccessMessage } from '../../../../utils/UI/toast
 import { ROUTES } from '../../../../constants/routes.ts';
 import { getUserSelector } from '../../../../redux/userSlice/userSlice.ts';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../../../constants/index.ts';
+import * as styles from './PasswordChangeForm.css.ts';
 
 export const PasswordChangeForm = () => {
     const {

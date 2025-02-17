@@ -3,13 +3,14 @@ import { Navigate, Route, Routes } from 'react-router';
 import { ROUTES } from './constants/routes';
 import { LoginPage } from './pages/login/Login';
 import { RegistrationPage } from './pages/registration/Registration';
-import { PasswordResetPage } from './pages/passwordReset/passwordReset';
 import { ConfirmationPage } from './pages/confirmationPage/ConfirmationPage';
 import { ProtectedRoutes } from './utils/protectedRoutes';
 import { UserRole } from './constants/roles.ts';
 import { PasswordChange } from './pages/passwordChange/PasswordChange.tsx';
 import { PersonalProfilePage } from './pages/personalProfile/PersonalProfile.tsx';
 import { UserDataList } from './pages/databaseOfUsers/UserDataList.tsx';
+import { EnterNewPassword } from './pages/enterNewPassword/EnterNewPassword.tsx';
+import { PasswordResetPage } from './pages/passwordReset/passwordReset.tsx';
 
 export const App = () => {
     return (
@@ -17,6 +18,7 @@ export const App = () => {
             <Route path={ROUTES.LOGIN} element={<LoginPage />} />
             <Route path={ROUTES.REGISTER} element={<RegistrationPage />} />
             <Route path={ROUTES.RESET_PASSWORD} element={<PasswordResetPage />} />
+            <Route path={ROUTES.NEW_PASSWORD} element={<EnterNewPassword />} />
             <Route
                 element={
                     <ProtectedRoutes

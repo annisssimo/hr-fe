@@ -17,7 +17,6 @@ export const formContainer = style({
 
 export const inputWrapper = style({
     marginBottom: '2rem',
-    height: '60px',
     width: '99%',
 });
 
@@ -26,4 +25,13 @@ export const buttonRow = style({
     display: 'flex',
     flexDirection: 'column',
     gap: '24px',
+    marginTop: '20px',
+});
+
+export const formContainerReducedPadding = style({
+    paddingTop: '40px',
+});
+
+export const button = style({
+    width: '200px',
 });

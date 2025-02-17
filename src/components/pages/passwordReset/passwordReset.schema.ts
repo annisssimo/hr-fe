@@ -7,3 +7,5 @@ export const passwordResetSchema = z.object({
         })
         .email('Invalid email format'),
 });
+
+export type PasswordResetParams = z.infer<typeof passwordResetSchema>;

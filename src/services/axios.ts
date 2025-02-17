@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import { ErrorResponse } from './types';
 
 export const axiosBaseQuery =
     (baseUrl: string) =>
@@ -15,6 +16,11 @@ export const axiosBaseQuery =
             return { data: result.data };
         } catch (error) {
             const err = error as AxiosError;
-            return { status: err.response?.status, data: err.response?.data, message: err.message };
+            return {
+                error: {
+                    status: err.response?.status,
+                    data: (err.response?.data as ErrorResponse).message || err.message,
+                },
+            };
         }
     };
