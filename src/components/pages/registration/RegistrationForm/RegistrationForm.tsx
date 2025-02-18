@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
+
 import { registrationSchema, FormData } from './registrationForm.schema.ts';
 import { Button } from '../../../common/ButtonComponent/ButtonComponent.tsx';
 import * as styles from './RegistrationForm.css.ts';
 import { FullScreenLoader } from '../../../common/FullScreenLoader/FullScreenLoader.tsx';
 import { ControlledInput } from '../../../common/ControlledInput/ControlledInput.tsx';
 import { PasswordInput } from '../../../common/PasswordInput/PasswordInput.tsx';
-import axios, { AxiosResponse } from 'axios';
 import { showErrorMessage, showSuccessMessage } from '../../../../utils/UI/toastMessages.ts';
 import { useRegisterMutation } from '../../../../services/auth.api.ts';
 import { ROUTES } from '../../../../constants/routes.ts';
+import { ApiResponse } from '../../../../services/types.ts';
 
 export const RegistrationForm: React.FC = () => {
     const {
@@ -41,9 +43,8 @@ export const RegistrationForm: React.FC = () => {
 
     const onSubmit = async (data: FormData) => {
         try {
-            const response: AxiosResponse = await register(data).unwrap();
+            const response: ApiResponse = await register(data).unwrap();
             showSuccessMessage('Successfully registered');
-            localStorage.setItem('accessToken', response.data);
             navigate(ROUTES.MAIN_PAGE);
             return response;
         } catch (error) {

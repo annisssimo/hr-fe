@@ -1,14 +1,15 @@
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+
 import * as styles from './ConfirmationPage.css.ts';
 import { Footer } from '../../components/common/Footer/Footer.tsx';
 import { Typography } from '../../components/common/Typography/Typography.tsx';
 import { Table } from '../../components/common/Table/Table.tsx';
 import { Column } from '../../components/common/Table/Table.tsx';
 import { Button } from '../../components/common/ButtonComponent/ButtonComponent.tsx';
-import { useState, useEffect } from 'react';
 import { Header } from '../../components/common/Header/Header.tsx';
 import { Dropdown } from '../../components/common/Dropdown/Dropdown.tsx';
 import { useGetUsersListMutation, useUpdateUserMutation } from '../../services/users.api.ts';
-import axios from 'axios';
 import { showErrorMessage } from '../../utils/UI/toastMessages.ts';
 import { USER_ROLE, USER_STATUS } from '../../constants/index.ts';
 
@@ -23,7 +24,7 @@ interface NewUser {
     lastName: string;
     email: string;
     role: string;
-    actions: null;
+    actions?: null;
 }
 
 interface AllUser {
@@ -32,7 +33,7 @@ interface AllUser {
     email: string;
     role: string;
     status: string;
-    statusAssignmentDate: Date;
+    statusAssignmentDate?: Date;
 }
 
 export const ConfirmationPage = () => {
@@ -40,7 +41,7 @@ export const ConfirmationPage = () => {
     const [newRequestsCount, setNewRequestsCount] = useState(0);
     const [newUsers, setNewUsers] = useState<NewUser[]>([]);
     const [allUsers, setAllUsers] = useState<AllUser[]>([]);
-    const headerProp: User = { username: 'placeholder', role: 'admin' };
+    const headerProp: User = { username: 'placeholder', role: USER_ROLE.ADMIN };
     const [updateUser] = useUpdateUserMutation();
     const [getUserList, { isLoading }] = useGetUsersListMutation();
 
@@ -80,7 +81,7 @@ export const ConfirmationPage = () => {
                 limit: 1,
                 offset: 0,
                 includeCount: true,
-                filters: { status: ['pending'] },
+                filters: { status: [USER_STATUS.PENDING] },
             }).unwrap();
             setNewRequestsCount(response.metadata.count || 0);
         } catch (error) {
@@ -111,7 +112,7 @@ export const ConfirmationPage = () => {
             const response = await getUserList({
                 limit: 10,
                 offset: 0,
-                filters: { status: ['pending'] },
+                filters: { status: [USER_STATUS.PENDING] },
             }).unwrap();
             setNewUsers(response.data ?? []);
         } catch (error) {
@@ -139,7 +140,7 @@ export const ConfirmationPage = () => {
 
     const confirmUsers = async (id: string) => {
         const user = newUsers.find((u) => u.id === id);
-        const selectedRole = (user?.role || 'employee') as 'admin' | 'manager' | 'employee';
+        const selectedRole = (user?.role || USER_ROLE.EMPLOYEE) as USER_ROLE;
         try {
             await updateUser({
                 userId: id,
@@ -244,23 +245,23 @@ export const ConfirmationPage = () => {
         {
             title: 'Role',
             dataIndex: 'role',
-            render: (role: string | null, record: NewUser) => (
+            render: (value, record) => (
                 <Dropdown
                     label={'Role'}
                     options={[
-                        { label: 'Employee', value: 'employee' },
-                        { label: 'Manager', value: 'manager' },
-                        { label: 'Admin', value: 'admin' },
+                        { label: 'Employee', value: USER_ROLE.EMPLOYEE },
+                        { label: 'Manager', value: USER_ROLE.MANAGER },
+                        { label: 'Admin', value: USER_ROLE.ADMIN },
                     ]}
-                    onChange={(value) => handleRoleChange(record.id, value)}
-                    selected={role || 'employee'}
+                    onChange={(newValue) => handleRoleChange(record.id, newValue)}
+                    selected={value as USER_ROLE}
                 />
             ),
         },
         {
             title: '',
             dataIndex: 'actions',
-            render: (_: string | number | null, record: NewUser) => (
+            render: (_, record) => (
                 <div className={styles.buttonsCell}>
                     <Button
                         type="preferred"
