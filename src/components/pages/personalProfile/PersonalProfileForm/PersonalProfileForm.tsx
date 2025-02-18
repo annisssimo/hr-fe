@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { Button } from '../../../common/ButtonComponent/ButtonComponent';
 import { Typography } from '../../../common/Typography/Typography';
@@ -14,36 +15,78 @@ import { ROUTES } from '../../../../constants/routes';
 import { personalProfileFormSchema } from './personalProfileForm.schema';
 import * as styles from './PersonalProfileForm.css';
 import { Photo } from '../Photo/Photo.tsx';
+import { showErrorMessage, showSuccessMessage } from '../../../../utils/UI/toastMessages.ts';
+import { Loader } from '../../../common/Loader/Loader.tsx';
+import { getUserSelector } from '../../../../redux/userSlice/userSlice.ts';
+import { useUpdateUserProfileMutation } from '../../../../services/users.api.ts';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES, USER_ROLE } from '../../../../constants/index.ts';
+import { CustomError, User } from '../../../../types/index.ts';
 
 export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
     const navigate = useNavigate();
     const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
-    const canEditEndDate = false; // send a request to the API to find out if the user has rights
 
     const {
         control,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm<User>({
         resolver: zodResolver(personalProfileFormSchema),
-        defaultValues: {
-            position: user.position || '',
-            startDay: user.startDay || '',
-            endDate: user.endDate || '',
-            dateOfBirth: user.dateOfBirth || '',
-            phoneNumber: user.phoneNumber || '',
-            skypeTelegram: user.skypeTelegram || '',
-        },
     });
 
-    const onSubmit = (data: Omit<User, 'role' | 'name' | 'surname' | 'email'>) => {
+    const [updateUserProfile, { isLoading }] = useUpdateUserProfileMutation();
+
+    useEffect(() => {
+        if (user) {
+            reset({
+                firstName: user.firstName || '',
+                lastName: user.lastName || '',
+                email: user.email || '',
+                position: user.position || '',
+                startDay: user.startDay || undefined,
+                endDate: user.endDate || undefined,
+                dateOfBirth: user.dateOfBirth || undefined,
+                phoneNumber: user.phoneNumber || '',
+                contactUsername: user.contactUsername || '',
+            });
+        }
+    }, [user, reset]);
+
+    const currentUser = useSelector(getUserSelector);
+
+    const canEditEndDate = (() => {
+        if (!currentUser || !user) return false;
+
+        if (currentUser.role === USER_ROLE.ADMIN) {
+            return true;
+        }
+
+        if (currentUser.role === USER_ROLE.MANAGER) {
+            return user.id !== currentUser.id;
+        }
+
+        return user.managerId === currentUser.id;
+    })();
+
+    const onSubmit = async (data: User) => {
         const cleanedData = {
             ...data,
+            id: user?.id,
             phoneNumber: `+${data.phoneNumber?.replace(/\D/g, '')}`,
+            startDay: data.startDay ? new Date(data.startDay) : undefined,
+            endDate: data.endDate ? new Date(data.endDate) : undefined,
+            dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : undefined,
         };
 
-        console.log(cleanedData);
-        navigate(ROUTES.HOME);
+        try {
+            await updateUserProfile(cleanedData).unwrap();
+            showSuccessMessage(SUCCESS_MESSAGES.PROFILE_UPDATED);
+            navigate(ROUTES.HOME);
+        } catch (error) {
+            const errorMessage = (error as CustomError).data || ERROR_MESSAGES.SERVER_ERROR;
+            showErrorMessage(errorMessage);
+        }
     };
 
     const handleChangePassword = () => {
@@ -81,8 +124,8 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
 
             <div className={styles.avatarContainer}>
                 <img
-                    src={user.avatar || defaultAvatar}
-                    alt={`${user.name}'s avatar`}
+                    src={user?.avatar || defaultAvatar}
+                    alt={`${user?.firstName}'s avatar`}
                     className={styles.avatarImage}
                 />
             </div>
@@ -94,9 +137,9 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
 
             <form className={styles.personalProfilePageForm} onSubmit={handleSubmit(onSubmit)}>
                 <ControlledInput
-                    name="name"
+                    name="firstName"
                     control={control}
-                    defaultValue={user.name}
+                    defaultValue={user?.firstName}
                     labelText="Name"
                     type="text"
                     variant={InputVariant.LabelLeftOutlined}
@@ -104,9 +147,9 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                 />
 
                 <ControlledInput
-                    name="surname"
+                    name="lastName"
                     control={control}
-                    defaultValue={user.surname}
+                    defaultValue={user?.lastName}
                     labelText="Surname"
                     type="text"
                     variant={InputVariant.LabelLeftOutlined}
@@ -116,7 +159,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                 <ControlledInput
                     name="email"
                     control={control}
-                    defaultValue={user.email}
+                    defaultValue={user?.email}
                     labelText="Email"
                     type="email"
                     variant={InputVariant.LabelLeftOutlined}
@@ -170,7 +213,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                 />
 
                 <ControlledInput
-                    name="skypeTelegram"
+                    name="contactUsername"
                     control={control}
                     labelText="Skype or Telegram Username"
                     type="text"
@@ -187,24 +230,11 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                     <Button type="preferred" buttonText={'Save'} onClick={handleSubmit(onSubmit)} />
                 </div>
             </form>
+            {isLoading && <Loader />}
         </div>
     );
 };
 
-export interface User {
-    role: 'admin' | 'manager' | 'employee';
-    avatar?: string | null;
-    name: string;
-    surname: string;
-    email: string;
-    position?: string;
-    startDay?: string;
-    endDate?: string;
-    dateOfBirth?: string;
-    phoneNumber?: string;
-    skypeTelegram?: string;
-}
-
 interface PersonalProfileFormProps {
-    user: User;
+    user: User | null | undefined;
 }

@@ -14,5 +14,5 @@ export const personalProfileFormSchema = z.object({
     endDate: z.string().optional(),
     dateOfBirth: z.string().optional(),
     phoneNumber: phoneSchema.optional(),
-    skypeTelegram: z.string().optional(),
+    contactUsername: z.string().optional(),
 });

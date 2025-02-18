@@ -13,6 +13,7 @@ import { showErrorMessage, showSuccessMessage } from '../../../../utils/UI/toast
 import { ROUTES } from '../../../../constants/routes.ts';
 import { usePasswordResetMutation } from '../../../../services/auth.api.ts';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../../../constants/index.ts';
+import { CustomError } from '../../../../types/index.ts';
 
 export const EnterNewPasswordForm = ({ token }: EnterNewPasswordFormProps) => {
     const {
@@ -83,9 +84,4 @@ export const EnterNewPasswordForm = ({ token }: EnterNewPasswordFormProps) => {
 
 interface EnterNewPasswordFormProps {
     token: string;
-}
-
-interface CustomError {
-    status: number;
-    data: string;
 }

@@ -3,10 +3,10 @@ import { ROUTES } from '../constants/routes';
 import { useSelector } from 'react-redux';
 import React from 'react';
 import { getUserSelector } from '../redux/userSlice/userSlice.ts';
-import { UserRole } from '../constants/roles.ts';
+import { USER_ROLE } from '../constants/index.ts';
 
 interface ProtectedRoutesProps {
-    allowedRoles?: UserRole[];
+    allowedRoles?: USER_ROLE[];
     fallbackUrl?: string;
 }
 

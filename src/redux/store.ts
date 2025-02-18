@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { userReducer } from './userSlice/userSlice.ts';
 import { authApi } from '../services/auth.api.ts';
 import { usersApi } from '../services/users.api.ts';
+
 const store = configureStore({
     reducer: {
         user: userReducer,

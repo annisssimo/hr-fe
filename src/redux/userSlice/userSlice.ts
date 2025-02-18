@@ -1,18 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { UserRole } from '../../constants/roles.ts';
-
-interface AuthenticatedUser {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    managerId: string | null;
-    avatar: string | null;
-    role: UserRole;
-}
+import { User } from '../../types';
 
 interface UserState {
-    user: AuthenticatedUser | null;
+    user: User | null;
 }
 
 const initialState: UserState = {

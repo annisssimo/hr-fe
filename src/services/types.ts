@@ -1,3 +1,6 @@
+import { USER_STATUS } from '../constants';
+import { User } from '../types';
+
 export interface ApiResponse<T = void> {
     success: boolean;
     data?: T;
@@ -27,3 +30,35 @@ export type ChangePasswordApiResponse = ValidationError | ErrorResponse | Succes
 export type PasswordResetApiRequestResponse = ValidationError | ErrorResponse | null;
 
 export type PasswordApiResetResponse = ValidationError | ErrorResponse | null;
+
+export interface UsersListParams {
+    limit?: number;
+    offset?: number;
+    includeCount?: boolean;
+    filters?: {
+        id?: string[];
+        status?: Array<USER_STATUS>;
+        managerId?: string[];
+    };
+    filtersOr?: {
+        isAdmin?: boolean;
+        isManager?: boolean;
+        isEmployee?: boolean;
+    };
+    search?: string;
+    sort?: Array<{
+        field: 'firstName' | 'lastName' | 'email';
+        order: 'asc' | 'desc';
+    }>;
+}
+
+interface UsersListResponse<T> {
+    data: T[];
+    metadata: {
+        count: number;
+        limit: number;
+        offset: number;
+    };
+}
+
+export type GetUsersListResponse = UsersListResponse<User>;

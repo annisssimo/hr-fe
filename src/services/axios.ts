@@ -5,7 +5,7 @@ export const axiosBaseQuery =
     (baseUrl: string) =>
     async ({ url, method, data, params, headers }: AxiosRequestConfig) => {
         try {
-            const token = localStorage.getItem('token') || '';
+            const token = localStorage.getItem('accessToken') || '';
             const result = await axios({
                 url: baseUrl + url,
                 method: method,

@@ -10,10 +10,11 @@ import { Dropdown } from '../../components/common/Dropdown/Dropdown.tsx';
 import { useGetUsersListMutation, useUpdateUserMutation } from '../../services/users.api.ts';
 import axios from 'axios';
 import { showErrorMessage } from '../../utils/UI/toastMessages.ts';
+import { USER_ROLE, USER_STATUS } from '../../constants/index.ts';
 
 interface User {
     username: string;
-    role: 'admin' | 'manager' | 'employee';
+    role: USER_ROLE;
 }
 
 interface NewUser {
@@ -143,7 +144,7 @@ export const ConfirmationPage = () => {
             await updateUser({
                 userId: id,
                 body: {
-                    status: 'active',
+                    status: USER_STATUS.ACTIVE,
                     role: selectedRole,
                     statusAssignmentDate: new Date(),
                 },
@@ -177,7 +178,7 @@ export const ConfirmationPage = () => {
             await updateUser({
                 userId: id,
                 body: {
-                    status: 'archived',
+                    status: USER_STATUS.ARCHIVED,
                     statusAssignmentDate: new Date(),
                 },
             }).unwrap();

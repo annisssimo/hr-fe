@@ -38,7 +38,7 @@ export const buttonsContainer = style({
 export const buttonWrapper = style({
     display: 'flex',
     flexDirection: 'row',
-    width: '30%',
-    margin: '0px 0px 10px',
+    width: '27.2%',
+    margin: '0px 0px 32px 6px',
     gap: '10px',
 });

@@ -13,8 +13,8 @@ import {
 } from './types';
 
 export const authApi = createApi({
-    reducerPath: 'user',
-    baseQuery: axiosBaseQuery(settings.localApiBaseUrl),
+    reducerPath: 'auth',
+    baseQuery: axiosBaseQuery(settings.API_URL),
     endpoints: (builder) => ({
         register: builder.mutation<ApiResponse, FormData>({
             query: (newUser) => ({ url: '/v1/auth/register', method: 'POST', data: newUser }),

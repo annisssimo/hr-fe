@@ -5,12 +5,12 @@ import { LoginPage } from './pages/login/Login';
 import { RegistrationPage } from './pages/registration/Registration';
 import { ConfirmationPage } from './pages/confirmationPage/ConfirmationPage';
 import { ProtectedRoutes } from './utils/protectedRoutes';
-import { UserRole } from './constants/roles.ts';
 import { PasswordChange } from './pages/passwordChange/PasswordChange.tsx';
 import { PersonalProfilePage } from './pages/personalProfile/PersonalProfile.tsx';
 import { UserDataList } from './pages/databaseOfUsers/UserDataList.tsx';
 import { EnterNewPassword } from './pages/enterNewPassword/EnterNewPassword.tsx';
 import { PasswordResetPage } from './pages/passwordReset/passwordReset.tsx';
+import { USER_ROLE } from './constants/index.ts';
 
 export const App = () => {
     return (
@@ -22,14 +22,14 @@ export const App = () => {
             <Route
                 element={
                     <ProtectedRoutes
-                        allowedRoles={[UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.MANAGER]}
+                        allowedRoles={[USER_ROLE.ADMIN, USER_ROLE.EMPLOYEE, USER_ROLE.MANAGER]}
                     />
                 }
             >
                 <Route path={ROUTES.DATABASE} element={<UserDataList />} />
                 <Route path={ROUTES.CHANGE_PASSWORD} element={<PasswordChange />} />
                 <Route path={ROUTES.PERSONAL_PROFILE} element={<PersonalProfilePage />} />
-                <Route element={<ProtectedRoutes allowedRoles={[UserRole.ADMIN]} />}>
+                <Route element={<ProtectedRoutes allowedRoles={[USER_ROLE.ADMIN]} />}>
                     <Route path={ROUTES.REQUESTS} element={<ConfirmationPage />} />
                 </Route>
                 <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />

@@ -1,28 +1,25 @@
+import { useSelector } from 'react-redux';
+
 import { Header } from '../../components/common/Header/Header';
 import { Footer } from '../../components/common/Footer/Footer';
-import {
-    User,
-    PersonalProfileForm,
-} from '../../components/pages/personalProfile/PersonalProfileForm/PersonalProfileForm';
+import { PersonalProfileForm } from '../../components/pages/personalProfile/PersonalProfileForm/PersonalProfileForm';
+import { getUserSelector } from '../../redux/userSlice/userSlice';
+import { useGetOneQuery } from '../../services/users.api';
+import { FullScreenLoader } from '../../components/common/FullScreenLoader/FullScreenLoader';
 
 export const PersonalProfilePage = () => {
-    const mockUser: User = {
-        role: 'admin',
-        name: 'John',
-        surname: 'Doe',
-        email: 'john.doe@example.com',
-        position: 'frontendDev',
-        startDay: '2021-01-01',
-        endDate: '',
-        dateOfBirth: '1990-01-01',
-        phoneNumber: '+375336816477',
-        skypeTelegram: 'johndoe',
-    };
+    const userId = useSelector(getUserSelector)?.id;
+
+    const { data: userData, isLoading } = useGetOneQuery(userId ?? '');
+
+    const user = userData?.data[0];
+
     return (
         <>
             <Header />
-            <PersonalProfileForm user={mockUser} />
+            <PersonalProfileForm user={user} />
             <Footer />
+            {isLoading && <FullScreenLoader />}
         </>
     );
 };

@@ -4,6 +4,7 @@ import { Logo } from '../Logo/Logo';
 import defaultUserImgPath from '../../../assets/default-avatar.jpg';
 import { ROUTES } from '../../../constants/routes';
 import { Typography } from '../Typography/Typography';
+import { USER_ROLE } from '../../../constants';
 
 export const Header = ({ user }: HeaderProps) => {
     return (
@@ -52,7 +53,7 @@ export const Header = ({ user }: HeaderProps) => {
 
 interface User {
     username: string;
-    role: 'admin' | 'manager' | 'employee';
+    role: USER_ROLE;
 }
 
 interface HeaderProps {
