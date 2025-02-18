@@ -2,7 +2,7 @@ import { Typography } from '../../components/common/Typography/Typography.tsx';
 import { Header } from '../../components/common/Header/Header.tsx';
 import { Footer } from '../../components/common/Footer/Footer.tsx';
 import { PasswordResetForm } from '../../components/pages/passwordReset/PasswordResetForm.tsx';
-import * as styles from './PasswordReset.css.ts';
+import * as styles from './passwordReset.css.ts';
 
 export const PasswordResetPage = () => {
     return (

@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { settings } from './../../config/settings';
 import { axiosBaseQuery } from './axios';
 import { FormData } from '../components/pages/registration/RegistrationForm/registrationForm.schema';
-import { ChangePasswordFormData } from '../components/pages/passwordChange/PasswordChangeForm/passwordChangeForm.schema';
+import { ChangePasswordFormData } from '../components/pages/passwordChange/passwordChangeForm/passwordChangeForm.schema';
 import { PasswordResetParams } from '../components/pages/passwordReset/passwordReset.schema';
 import { NewPasswordParams } from '../components/pages/enterNewPassword/EnterNewPasswordForm/newPasswordSchema';
 import {

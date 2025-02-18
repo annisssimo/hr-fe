@@ -4,10 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 
-import {
-    ChangePasswordFormData,
-    changePasswordSchema,
-} from '../PasswordChangeForm/passwordChangeForm.schema.ts';
+import { ChangePasswordFormData, changePasswordSchema } from './passwordChangeForm.schema.ts';
 import { PasswordInput } from '../../../common/PasswordInput/PasswordInput.tsx';
 import { Button } from '../../../common/ButtonComponent/ButtonComponent.tsx';
 import { FullScreenLoader } from '../../../common/FullScreenLoader/FullScreenLoader.tsx';
@@ -17,7 +14,7 @@ import { showErrorMessage, showSuccessMessage } from '../../../../utils/UI/toast
 import { ROUTES } from '../../../../constants/routes.ts';
 import { getUserSelector } from '../../../../redux/userSlice/userSlice.ts';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../../../constants/index.ts';
-import * as styles from '../PasswordChangeForm/PasswordChangeForm.css.ts';
+import * as styles from './passwordChangeForm.css.ts';
 
 export const PasswordChangeForm = () => {
     const {
@@ -37,7 +34,9 @@ export const PasswordChangeForm = () => {
     const [changePassword, { isLoading }] = useChangePasswordMutation();
     const navigate = useNavigate();
     const formValues = watch();
-    const isFormFilled = Object.values(formValues).every((value) => value.trim() !== '');
+    const isFormFilled = Object.values(formValues).every((value) => {
+        return typeof value === 'string' ? value.trim() !== '' : true;
+    });
 
     const hasErrorInRow = (
         field1: keyof ChangePasswordFormData,
