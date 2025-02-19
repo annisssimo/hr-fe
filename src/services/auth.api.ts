@@ -1,7 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { settings } from './../../config/settings';
 import { axiosBaseQuery } from './axios';
-import { FormData } from '../components/pages/registration/RegistrationForm/registrationForm.schema';
+import { FormData as RegisterSchema } from '../components/pages/registration/RegistrationForm/registrationForm.schema';
+import { FormData as LoginSchema } from '../components/pages/login/LoginForm/loginForm.schema';
+import { AxiosResponse } from 'axios';
 import { ChangePasswordFormData } from '../components/pages/passwordChange/passwordChangeForm/passwordChangeForm.schema';
 import { PasswordResetParams } from '../components/pages/passwordReset/passwordReset.schema';
 import { NewPasswordParams } from '../components/pages/enterNewPassword/EnterNewPasswordForm/newPasswordSchema';
@@ -12,12 +14,19 @@ import {
     PasswordApiResetResponse,
 } from './types';
 
+type LoginResponse = {
+    accessToken: string
+}
+
 export const authApi = createApi({
     reducerPath: 'auth',
     baseQuery: axiosBaseQuery(settings.API_URL),
     endpoints: (builder) => ({
-        register: builder.mutation<ApiResponse, FormData>({
+        register: builder.mutation<AxiosResponse, RegisterSchema>({
             query: (newUser) => ({ url: '/v1/auth/register', method: 'POST', data: newUser }),
+        }),
+        login: builder.mutation<LoginResponse, LoginSchema>({
+            query: (userCredentials) => ({ url: '/v1/auth/login', method: 'POST', data: userCredentials })
         }),
         changePassword: builder.mutation<
             ApiResponse<ChangePasswordApiResponse>,
@@ -50,6 +59,7 @@ export const authApi = createApi({
 
 export const {
     useRegisterMutation,
+    useLoginMutation,
     useChangePasswordMutation,
     usePasswordResetRequestMutation,
     usePasswordResetMutation,

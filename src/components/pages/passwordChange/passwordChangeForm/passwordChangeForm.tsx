@@ -83,9 +83,8 @@ export const PasswordChangeForm = () => {
             <form className={styles.formContainer}>
                 <div className={styles.twoPerRow}>
                     <div
-                        className={`${styles.inputWrapper} ${
-                            hasErrorInRow('oldPassword', 'newPassword') ? styles.noMarginTop : ''
-                        }`}
+                        className={`${styles.inputWrapper} ${hasErrorInRow('oldPassword', 'newPassword') ? styles.noMarginTop : ''
+                            }`}
                     >
                         <PasswordInput
                             name="oldPassword"
@@ -96,9 +95,8 @@ export const PasswordChangeForm = () => {
                         />
                     </div>
                     <div
-                        className={`${styles.inputWrapper} ${
-                            hasErrorInRow('oldPassword', 'newPassword') ? styles.noMarginTop : ''
-                        }`}
+                        className={`${styles.inputWrapper} ${hasErrorInRow('oldPassword', 'newPassword') ? styles.noMarginTop : ''
+                            }`}
                     >
                         <PasswordInput
                             name="newPassword"

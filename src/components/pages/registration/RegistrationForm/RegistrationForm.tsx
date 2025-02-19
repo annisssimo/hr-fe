@@ -30,7 +30,6 @@ export const RegistrationForm: React.FC = () => {
     });
     const [register, { isLoading }] = useRegisterMutation();
     const navigate = useNavigate();
-
     const formValues = watch();
     const [isFormFilled, setIsFormFilled] = useState(false);
     useEffect(() => {
@@ -96,9 +95,8 @@ export const RegistrationForm: React.FC = () => {
             <form className={styles.formContainer} onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.twoPerRow}>
                     <div
-                        className={`${styles.inputWrapper} ${
-                            hasErrorInRow('firstName', 'lastName') ? styles.noMarginTop : ''
-                        }`}
+                        className={`${styles.inputWrapper} ${hasErrorInRow('firstName', 'lastName') ? styles.noMarginTop : ''
+                            }`}
                     >
                         <ControlledInput
                             name="firstName"
@@ -109,9 +107,8 @@ export const RegistrationForm: React.FC = () => {
                         />
                     </div>
                     <div
-                        className={`${styles.inputWrapper} ${
-                            hasErrorInRow('firstName', 'lastName') ? styles.noMarginTop : ''
-                        }`}
+                        className={`${styles.inputWrapper} ${hasErrorInRow('firstName', 'lastName') ? styles.noMarginTop : ''
+                            }`}
                     >
                         <ControlledInput
                             name="lastName"
@@ -136,9 +133,8 @@ export const RegistrationForm: React.FC = () => {
                 </div>
                 <div className={styles.twoPerRow}>
                     <div
-                        className={`${styles.inputWrapper} ${
-                            hasErrorInRow('password', 'confirmPassword') ? styles.noMarginTop : ''
-                        }`}
+                        className={`${styles.inputWrapper} ${hasErrorInRow('password', 'confirmPassword') ? styles.noMarginTop : ''
+                            }`}
                     >
                         <PasswordInput
                             name="password"
@@ -149,9 +145,8 @@ export const RegistrationForm: React.FC = () => {
                         />
                     </div>
                     <div
-                        className={`${styles.inputWrapper} ${
-                            hasErrorInRow('password', 'confirmPassword') ? styles.noMarginTop : ''
-                        }`}
+                        className={`${styles.inputWrapper} ${hasErrorInRow('password', 'confirmPassword') ? styles.noMarginTop : ''
+                            }`}
                     >
                         <PasswordInput
                             name="confirmPassword"
