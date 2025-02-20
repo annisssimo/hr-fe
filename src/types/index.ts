@@ -16,4 +16,5 @@ export interface User {
     dateOfBirth?: Date | null;
     phoneNumber?: string;
     contactUsername?: string;
+    manager?: User;
 }

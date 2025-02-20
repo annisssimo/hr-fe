@@ -10,7 +10,7 @@ import { ConfirmationPage } from './pages/confirmationPage/ConfirmationPage';
 import { ProtectedRoutes } from './utils/protectedRoutes';
 import { PasswordChange } from './pages/passwordChange/PasswordChange.tsx';
 import { PersonalProfilePage } from './pages/personalProfile/PersonalProfile.tsx';
-import { UserDataList } from './pages/databaseOfUsers/UserDataList.tsx';
+import { UserDataList } from './pages/userDataList/UserDataList.tsx';
 import { EnterNewPassword } from './pages/enterNewPassword/EnterNewPassword.tsx';
 import { PasswordResetPage } from './pages/passwordReset/passwordReset.tsx';
 import { USER_ROLE } from './constants/index.ts';

@@ -35,6 +35,7 @@ export interface UsersListParams {
     limit?: number;
     offset?: number;
     includeCount?: boolean;
+    include?: string;
     filters?: {
         id?: string[];
         status?: Array<USER_STATUS>;

@@ -2,20 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Header } from '../../components/common/Header/Header';
 import { Footer } from '../../components/common/Footer/Footer';
 import * as styles from './UserDataList.css';
-import {
-    UserDataTable,
-    EmployeeData,
-} from '../../components/pages/databaseOfUsers/employeeDataTable';
+import { UserDataTable, EmployeeData } from '../../components/pages/userDataList/employeeDataTable';
 import { Column } from '../../components/common/Table/Table';
 import { useGetUsersListMutation } from '../../services/users.api';
-import { FILTER_STATES } from '../../constants/filterVariants.ts';
+import { INCLUDE_OPTIONS } from '../../constants';
+
+export const enum FILTER_VARIANTS {
+    ALL = 'all',
+    EMPLOYEE = 'employee',
+    MANAGER = 'manager',
+}
 
 export const UserDataList: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(15);
     const [employeeData, setEmployeeData] = useState<EmployeeData[]>([]);
     const [totalCount, setTotalCount] = useState(0);
-    const [filterValue, setFilterValue] = useState(FILTER_STATES.ALL);
+    const [filterValue, setFilterValue] = useState(FILTER_VARIANTS.ALL);
     const [getUsersList, { isLoading }] = useGetUsersListMutation();
 
     const employeeColumns: Column<EmployeeData>[] = [
@@ -41,17 +44,22 @@ export const UserDataList: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const filters: { isEmployee?: boolean; isManager?: boolean } = {};
+                if (filterValue === FILTER_VARIANTS.ALL) {
+                    filters.isEmployee = true;
+                    filters.isManager = true;
+                } else if (filterValue === FILTER_VARIANTS.EMPLOYEE) {
+                    filters.isEmployee = true;
+                } else {
+                    filters.isManager = true;
+                }
+
                 const response = await getUsersList({
                     limit: rowsPerPage,
                     offset: (currentPage - 1) * rowsPerPage,
                     includeCount: true,
-                    filtersOr:
-                        filterValue === FILTER_STATES.ALL
-                            ? { isEmployee: true, isManager: true }
-                            : filterValue === FILTER_STATES.EMPLOYEE
-                              ? { isEmployee: true }
-                              : { isManager: true },
-                    include: 'manager',
+                    filtersOr: filters,
+                    include: INCLUDE_OPTIONS.MANAGER,
                 }).unwrap();
 
                 const employees: EmployeeData[] = response.data.map((emp, index) => ({
@@ -83,9 +91,8 @@ export const UserDataList: React.FC = () => {
         setCurrentPage(1);
     };
 
-    const handleFilterChange = (value: FILTER_STATES) => {
+    const handleFilterChange = (value: FILTER_VARIANTS) => {
         setFilterValue(value);
-        console.log(filterValue);
     };
 
     return (

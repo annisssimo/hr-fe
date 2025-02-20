@@ -7,7 +7,8 @@ import { Dropdown } from '../../common/Dropdown/Dropdown';
 import { ReactComponent as SearchIcon } from '../../../assets/search.svg';
 import * as styles from './employessDataTable.css.ts';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { FILTER_STATES } from '../../../constants/filterVariants.ts';
+import { FILTER_VARIANTS } from '../../../pages/userDataList/UserDataList.tsx';
+import { ROWS_PER_PAGE_OPTIONS } from '../../../constants/tableConstants';
 
 export interface EmployeeData {
     rowNumber: number;
@@ -27,7 +28,7 @@ interface UserDataTableProps {
     isLoading: boolean;
     onPageChange: (page: number) => void;
     onRowsPerPageChange: (value: string) => void;
-    onFilterClick: (value: FILTER_STATES) => void;
+    onFilterClick: (value: FILTER_VARIANTS) => void;
 }
 
 export const UserDataTable: React.FC<UserDataTableProps> = ({
@@ -55,12 +56,6 @@ export const UserDataTable: React.FC<UserDataTableProps> = ({
         setIsSearchDisplayed(!isSearchDisplayed);
     };
 
-    const rowsPerPageOptions = [
-        { label: '15', value: '15' },
-        { label: '20', value: '20' },
-        { label: '25', value: '25' },
-    ];
-
     return (
         <>
             <div className={styles.tableHeader}>
@@ -72,17 +67,17 @@ export const UserDataTable: React.FC<UserDataTableProps> = ({
                         <Button
                             type="secondary"
                             buttonText="All"
-                            onClick={() => onFilterClick(FILTER_STATES.ALL)}
+                            onClick={() => onFilterClick(FILTER_VARIANTS.ALL)}
                         />
                         <Button
                             type="secondary"
                             buttonText="Manager"
-                            onClick={() => onFilterClick(FILTER_STATES.MANAGER)}
+                            onClick={() => onFilterClick(FILTER_VARIANTS.MANAGER)}
                         />
                         <Button
                             type="secondary"
                             buttonText="Employee"
-                            onClick={() => onFilterClick(FILTER_STATES.EMPLOYEE)}
+                            onClick={() => onFilterClick(FILTER_VARIANTS.EMPLOYEE)}
                         />
                     </div>
                 </div>
@@ -112,7 +107,7 @@ export const UserDataTable: React.FC<UserDataTableProps> = ({
                     <div className={styles.dropdownAndText}>
                         <Typography variant="text">Rows per page</Typography>
                         <Dropdown
-                            options={rowsPerPageOptions}
+                            options={ROWS_PER_PAGE_OPTIONS}
                             selected={String(rowsPerPage)}
                             onChange={onRowsPerPageChange}
                             variant="small"
