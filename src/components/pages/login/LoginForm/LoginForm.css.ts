@@ -19,6 +19,7 @@ export const inputWrapper = style({
     marginBottom: '2rem',
     height: '60px',
     width: '99%',
+    textAlign: 'left',
 });
 
 export const buttonRow = style({

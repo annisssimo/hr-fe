@@ -4,21 +4,28 @@ export const registrationSchema = z
     .object({
         firstName: z
             .string()
-            .min(1, 'First Name is required')
-            .max(11, 'First Name must be at most 11 characters')
-            .regex(/^[A-Za-zА-Яа-яЁёЎўІі]+$/, 'First Name must contain only letters'),
+            .min(1)
+            .max(11)
+            .regex(
+                new RegExp("^[a-zA-Z']+$"),
+                'First name must contain only letters or apostrophes and have length between 1 and 11',
+            ),
         lastName: z
             .string()
-            .min(1, 'Last Name is required')
-            .max(15, 'Last Name must be at most 15 characters')
-            .regex(/^[A-Za-zА-Яа-яЁёЎўІі]+$/, 'Last Name must contain only letters'),
+            .min(2)
+            .max(15)
+            .regex(
+                new RegExp("^[a-zA-Z']+$"),
+                'Last name must contain only letters or apostrophes and have length between 2 and 15',
+            ),
         email: z.string().min(1, 'Email is required').email('Invalid email format'),
         password: z
             .string()
             .min(8, 'Password must be at least 8 characters')
+            .max(20)
             .regex(
-                /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                'Password must contain at least one letter and one digit',
+                new RegExp('^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,20}$'),
+                'Password must be between 8 and 20 characters long and contain one letter and one digit',
             ),
         confirmPassword: z.string().min(1, 'Confirm Password is required'),
     })

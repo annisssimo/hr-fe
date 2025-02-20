@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
 export const formContainer = style({
-    width: '600px',
+    width: '700px',
     display: 'flex',
     flexDirection: 'column',
     boxShadow: '0px 5px 5px rgba(0, 0, 0, 0.3)',
@@ -42,6 +42,7 @@ export const buttonRow = style({
 
 export const inputWrapper = style({
     marginTop: 'auto',
+    textAlign: 'left',
 });
 
 export const noMarginTop = style({
