@@ -17,6 +17,7 @@ import { jwtDecode } from 'jwt-decode';
 import { showErrorMessage } from '../../../../utils/UI/toastMessages';
 import { AxiosError } from 'axios';
 import { handleAxiosError } from '../../../../utils/handleAxiosError.ts';
+import { FullScreenLoader } from '../../../common/FullScreenLoader/FullScreenLoader.tsx';
 
 export const LoginForm = () => {
     const {
@@ -30,7 +31,7 @@ export const LoginForm = () => {
     });
     const dispatch = useDispatch();
     const [getUser] = useGetUsersListMutation();
-    const [login] = useLoginMutation();
+    const [login, { isLoading }] = useLoginMutation();
     const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (data: FormData) => {
@@ -71,27 +72,30 @@ export const LoginForm = () => {
     };
 
     return (
-        <form className={styles.formContainer}>
-            <div className={styles.inputWrapper}>
-                <ControlledInput
-                    name="email"
-                    control={control}
-                    labelText="Email *"
-                    type="email"
-                    onChange={() => clearErrors('email')}
-                    error={errors.email}
-                />
-            </div>
-            <div className={styles.inputWrapper}>
-                <PasswordInput name="password" control={control} error={errors.password} />
-            </div>
-            <div className={styles.buttonRow}>
-                <Button
-                    type={!isValid ? 'disabled' : 'preferred'}
-                    buttonText="SUBMIT"
-                    onClick={handleSubmit(onSubmit)}
-                />
-            </div>
-        </form>
+        <>
+            <form className={styles.formContainer}>
+                <div className={styles.inputWrapper}>
+                    <ControlledInput
+                        name="email"
+                        control={control}
+                        labelText="Email *"
+                        type="email"
+                        onChange={() => clearErrors('email')}
+                        error={errors.email}
+                    />
+                </div>
+                <div className={styles.inputWrapper}>
+                    <PasswordInput name="password" control={control} error={errors.password} />
+                </div>
+                <div className={styles.buttonRow}>
+                    <Button
+                        type={!isValid ? 'disabled' : 'preferred'}
+                        buttonText="SUBMIT"
+                        onClick={handleSubmit(onSubmit)}
+                    />
+                </div>
+            </form>
+            {isLoading && <FullScreenLoader />}
+        </>
     );
 };
