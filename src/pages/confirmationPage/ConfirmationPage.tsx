@@ -150,7 +150,8 @@ export const ConfirmationPage = () => {
                     statusAssignmentDate: new Date(),
                 },
             }).unwrap();
-            fetchNewRequestsCount();
+            await fetchNewRequestsCount();
+            await fetchNewRequestsTable();
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (!error.response) {
@@ -183,7 +184,8 @@ export const ConfirmationPage = () => {
                     statusAssignmentDate: new Date(),
                 },
             }).unwrap();
-            fetchNewRequestsCount();
+            await fetchNewRequestsCount();
+            await fetchNewRequestsTable();
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (!error.response) {
