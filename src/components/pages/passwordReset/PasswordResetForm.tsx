@@ -14,6 +14,8 @@ import { FullScreenLoader } from '../../common/FullScreenLoader/FullScreenLoader
 import { showErrorMessage } from '../../../utils/UI/toastMessages';
 import * as styles from './PasswordResetForm.css';
 import { usePasswordResetRequestMutation } from '../../../services/auth.api';
+import { CustomError } from '../../../types';
+import { ERROR_MESSAGES } from '../../../constants';
 
 export const PasswordResetForm = () => {
     const {
@@ -37,10 +39,8 @@ export const PasswordResetForm = () => {
             setIsPasswordReset(true);
             return response;
         } catch (error) {
-            if (error instanceof Error) {
-                setIsPasswordReset(false);
-                showErrorMessage(error.message);
-            }
+            const errorMessage = (error as CustomError).data || ERROR_MESSAGES.SERVER_ERROR;
+            showErrorMessage(errorMessage);
         }
     };
 
