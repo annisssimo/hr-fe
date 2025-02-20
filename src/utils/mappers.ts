@@ -1,5 +1,5 @@
-import { AuthenticatedUser } from "../redux/userSlice/userSlice";
-import { User } from "../services/users.api";
+import { AuthenticatedUser } from '../redux/userSlice/userSlice';
+import { User } from '../types';
 
 export const mapUserToAuthenticatedUser = (user: User): AuthenticatedUser => ({
     id: user.id,
@@ -8,5 +8,5 @@ export const mapUserToAuthenticatedUser = (user: User): AuthenticatedUser => ({
     email: user.email,
     managerId: null,
     avatar: null,
-    role: user.role
-})
+    role: user.role,
+});

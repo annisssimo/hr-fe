@@ -17,14 +17,18 @@ import * as styles from './PersonalProfileForm.css';
 import { Photo } from '../Photo/Photo.tsx';
 import { showErrorMessage, showSuccessMessage } from '../../../../utils/UI/toastMessages.ts';
 import { Loader } from '../../../common/Loader/Loader.tsx';
-import { getUserSelector } from '../../../../redux/userSlice/userSlice.ts';
 import { useUpdateUserProfileMutation } from '../../../../services/users.api.ts';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES, USER_ROLE } from '../../../../constants/index.ts';
 import { CustomError, User } from '../../../../types/index.ts';
+import { handleAxiosError } from '../../../../utils/handleAxiosError.ts';
+import { useUpdateUserMutation } from '../../../../services/users.api.ts';
+import { getUserSelector } from '../../../../redux/userSlice/userSlice.ts';
 
 export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
     const navigate = useNavigate();
+    const [updateUser] = useUpdateUserMutation();
     const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+    const reduxUser = useSelector(getUserSelector);
 
     const {
         control,
@@ -110,8 +114,19 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
         { label: 'Sales Manager', value: 'sales' },
     ];
 
-    const handleDeletePhoto = () => {
-        //some api related logic
+    const handleDeletePhoto = async () => {
+        try {
+            await updateUser({
+                userId: reduxUser?.id || '',
+                body: {
+                    avatar: null,
+                },
+            }).unwrap();
+            showSuccessMessage(SUCCESS_MESSAGES.PROFILE_UPDATED);
+            navigate(ROUTES.HOME);
+        } catch (error) {
+            handleAxiosError(error);
+        }
     };
 
     const showChangePhoto = () => {
@@ -133,7 +148,9 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                 <Button type={'preferred'} buttonText={'Change photo'} onClick={showChangePhoto} />
                 <Button type={'critical'} buttonText={'Delete photo'} onClick={handleDeletePhoto} />
             </div>
-            {isPhotoModalOpen && <Photo />}
+            {isPhotoModalOpen && (
+                <Photo isOpen={isPhotoModalOpen} onClose={() => setIsPhotoModalOpen(false)} />
+            )}
 
             <form className={styles.personalProfilePageForm} onSubmit={handleSubmit(onSubmit)}>
                 <ControlledInput

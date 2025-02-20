@@ -13,9 +13,10 @@ import { useGetUsersListMutation } from '../../../../services/users.api';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../../../redux/userSlice/userSlice';
 import { mapUserToAuthenticatedUser } from '../../../../utils/mappers';
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 import { showErrorMessage } from '../../../../utils/UI/toastMessages';
 import { AxiosError } from 'axios';
+import { handleAxiosError } from '../../../../utils/handleAxiosError.ts';
 
 export const LoginForm = () => {
     const {
@@ -35,15 +36,15 @@ export const LoginForm = () => {
     const onSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (data: FormData) => {
         try {
             const response = await login(data).unwrap();
-            console.log("Response: ", response);
+            console.log('Response: ', response);
 
             const userId = jwtDecode<{ id: string }>(response.accessToken).id;
 
             const user = await getUser({
                 limit: 1,
                 offset: 0,
-                filters: { id: [userId] }
-            }).unwrap()
+                filters: { id: [userId] },
+            }).unwrap();
 
             dispatch(setUser(mapUserToAuthenticatedUser(user.data[0])));
             localStorage.setItem('token', response.accessToken);
@@ -53,17 +54,20 @@ export const LoginForm = () => {
             const err = error as AxiosError;
             switch (err.status) {
                 case 401:
-                    showErrorMessage('Incorrect email or password. Please check your credentials and try again.')
+                    showErrorMessage(
+                        'Incorrect email or password. Please check your credentials and try again.',
+                    );
                     break;
                 case 403:
-                    showErrorMessage('This email is under consideration at the present time. Please, wait for email with confirmation status.')
+                    showErrorMessage(
+                        'This email is under consideration at the present time. Please, wait for email with confirmation status.',
+                    );
                     break;
                 default:
-                    console.error('Something went wrong', err)
+                    handleAxiosError(error);
                     break;
             }
         }
-
     };
 
     return (

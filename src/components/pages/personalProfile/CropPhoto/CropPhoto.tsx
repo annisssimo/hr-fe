@@ -15,6 +15,8 @@ export const CropPhoto = forwardRef(({ image }: CropStepProps, ref) => {
         height: 100,
         unit: 'px',
     });
+    const [zoom, setZoom] = useState(1);
+
     const imageRef = useRef<HTMLImageElement | null>(null);
 
     const getCroppedImage = () => {
@@ -37,18 +39,32 @@ export const CropPhoto = forwardRef(({ image }: CropStepProps, ref) => {
 
     const getCroppedImg = (image: HTMLImageElement, crop: PixelCrop) => {
         const canvas = document.createElement('canvas');
-        const scaleX = image.naturalWidth / image.width;
-        const scaleY = image.naturalHeight / image.height;
 
-        const size = Math.min(crop.width, crop.height);
+        const displayedWidth = image.offsetWidth;
+        const displayedHeight = image.offsetHeight;
+        const scaleX = image.naturalWidth / displayedWidth;
+        const scaleY = image.naturalHeight / displayedHeight;
+
+        const offsetX = (displayedWidth * (zoom - 1)) / 2;
+        const offsetY = (displayedHeight * (zoom - 1)) / 2;
+
+        const effectiveCrop = {
+            x: (crop.x + offsetX) / zoom,
+            y: (crop.y + offsetY) / zoom,
+            width: crop.width / zoom,
+            height: crop.height / zoom,
+            unit: crop.unit,
+        };
+
+        const size = Math.min(effectiveCrop.width, effectiveCrop.height);
         canvas.width = size;
         canvas.height = size;
 
         const ctx = canvas.getContext('2d');
         if (!ctx) throw new Error('Could not get canvas context');
 
-        const centerX = crop.x + crop.width / 2;
-        const centerY = crop.y + crop.height / 2;
+        const centerX = effectiveCrop.x + effectiveCrop.width / 2;
+        const centerY = effectiveCrop.y + effectiveCrop.height / 2;
 
         ctx.drawImage(
             image,
@@ -68,9 +84,31 @@ export const CropPhoto = forwardRef(({ image }: CropStepProps, ref) => {
     return (
         <div className={styles.cropContainer}>
             {image && (
-                <ReactCrop crop={crop} onChange={setCrop} aspect={1}>
-                    <img src={image} alt="Selected" ref={imageRef} />
-                </ReactCrop>
+                <>
+                    <ReactCrop crop={crop} onChange={setCrop} aspect={1}>
+                        <img
+                            src={image}
+                            alt="Selected"
+                            ref={imageRef}
+                            style={{
+                                transform: `scale(${zoom})`,
+                                transformOrigin: 'center center',
+                            }}
+                        />
+                    </ReactCrop>
+                    <div className={styles.zoomContainer}>
+                        <label htmlFor="zoomRange">Zoom: </label>
+                        <input
+                            id="zoomRange"
+                            type="range"
+                            min={1}
+                            max={3}
+                            step={0.1}
+                            value={zoom}
+                            onChange={(e) => setZoom(Number(e.target.value))}
+                        />
+                    </div>
+                </>
             )}
         </div>
     );

@@ -1,4 +1,4 @@
-import { USER_ROLE, USER_STATUS } from '../../constants';
+import { USER_ROLE } from '../../constants';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface AuthenticatedUser {
@@ -24,15 +24,15 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUser(state, action: PayloadAction<AuthenticatedUser>) {
-            state.user = action.payload
+            state.user = action.payload;
         },
         removeUser(state) {
             state.user = null;
-        }
+        },
     },
 });
 
-export const { setUser, removeUser } = userSlice.actions
+export const { setUser, removeUser } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
 

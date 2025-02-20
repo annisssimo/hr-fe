@@ -9,9 +9,7 @@ import { FullScreenLoader } from '../../components/common/FullScreenLoader/FullS
 
 export const PersonalProfilePage = () => {
     const userId = useSelector(getUserSelector)?.id;
-
     const { data: userData, isLoading } = useGetOneQuery(userId ?? '');
-
     const user = userData?.data[0];
 
     return (

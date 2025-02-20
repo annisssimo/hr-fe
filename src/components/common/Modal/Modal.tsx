@@ -13,21 +13,25 @@ export const Modal = ({
     onlyConfirm = false,
     confirmText = 'Confirm',
     cancelText = 'Cancel',
+    isClosingOnButtonClick = true,
 }: ModalProps) => {
     const modalRef = useModal(isOpen);
-
     const handleCloseModal = () => {
         onClose?.();
     };
 
     const handleCancelClick = () => {
         onCancel?.();
-        handleCloseModal();
+        if (isClosingOnButtonClick) {
+            handleCloseModal();
+        }
     };
 
     const handleConfirmClick = () => {
         onConfirm?.();
-        handleCloseModal();
+        if (isClosingOnButtonClick) {
+            handleCloseModal();
+        }
     };
 
     const handleKeyDown = (event: KeyboardEvent<HTMLDialogElement>) => {
@@ -45,7 +49,7 @@ export const Modal = ({
             onClick={handleBackdropClick}
             className={styles.modal}
         >
-            <form method="dialog" className={styles.formInsideDialog}>
+            <form className={styles.formInsideDialog} method="dialog">
                 {children}
 
                 <div className={styles.controlButtonsContainer}>
@@ -76,4 +80,5 @@ interface ModalProps {
     onCancel?: () => void;
     confirmText?: string;
     cancelText?: string;
+    isClosingOnButtonClick?: boolean;
 }

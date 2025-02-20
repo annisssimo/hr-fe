@@ -1,85 +1,110 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, ReactNode } from 'react';
 import { FileInput } from '../FileInput/FileInput.tsx';
 import { Modal } from '../../../common/Modal/Modal.tsx';
 import { Typography } from '../../../common/Typography/Typography.tsx';
 import { CropPhoto } from '../CropPhoto/CropPhoto.tsx';
 import { TakePhoto } from '../TakePhoto/TakePhoto.tsx';
 import * as styles from './Photo.css.ts';
+import { handleAxiosError } from '../../../../utils/handleAxiosError.ts';
+import { showSuccessMessage } from '../../../../utils/UI/toastMessages.ts';
+import { useSelector } from 'react-redux';
+import { getUserSelector } from '../../../../redux/userSlice/userSlice.ts';
+import { useUpdateUserMutation } from '../../../../services/users.api.ts';
+import { SUCCESS_MESSAGES } from '../../../../constants';
+import { ROUTES } from '../../../../constants/routes.ts';
+import { useNavigate } from 'react-router';
 
-export const Photo = () => {
-    const [isChooseModalOpen, setIsChooseModalOpen] = useState(true);
-    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-    const [isCropModalOpen, setIsCropModalOpen] = useState(false);
-    const [isTakePhotoModalOpen, setIsTakePhotoModalOpen] = useState(false);
+interface PhotoProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+type ModalStep = 'choose' | 'upload' | 'take' | 'crop';
+
+export const Photo = ({ isOpen, onClose }: PhotoProps) => {
+    const [updateUser] = useUpdateUserMutation();
+    const [modalStep, setModalStep] = useState<ModalStep>('choose');
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const cropPhotoRef = useRef<{ getCroppedImage: () => string | null }>(null);
     const [error, setError] = useState('');
-    const [errorCallback, setErrorCallback] = useState<() => void>(() => console.log(error));
-    const handleCloseChooseModal = () => setIsChooseModalOpen(false);
-    const handleCloseUploadModal = () => setIsUploadModalOpen(false);
-    const handleCloseCropModal = () => setIsCropModalOpen(false);
-    const handleCloseTakePhotoModal = () => setIsTakePhotoModalOpen(false);
+    const [errorCallback, setErrorCallback] = useState<() => void>(() => {});
+    const user = useSelector(getUserSelector);
+    const navigate = useNavigate();
 
-    const handleOpenCrop = () => setIsCropModalOpen(true);
+    useEffect(() => {
+        if (isOpen) {
+            setModalStep('choose');
+            setSelectedImage(null);
+            setError('');
+            setErrorCallback(() => {});
+        }
+    }, [isOpen]);
 
     const handleChooseUpload = () => {
-        setIsChooseModalOpen(false);
-        setIsUploadModalOpen(true);
+        setModalStep('upload');
     };
 
     const handleChooseTakePhoto = () => {
-        setIsChooseModalOpen(false);
-        setIsTakePhotoModalOpen(true);
+        setModalStep('take');
     };
 
-    const handleUploadDone = (image: string | null) => {
-        if (image) {
-            setSelectedImage(image);
-            setIsUploadModalOpen(false);
-            setIsCropModalOpen(true);
+    const handleUploadDone = () => {
+        if (selectedImage) {
+            setModalStep('crop');
         } else {
             setError('Select image to upload before continuing');
-            setErrorCallback(() => handleChooseUpload);
+            setErrorCallback(() => () => setModalStep('upload'));
         }
     };
 
-    const handleCropComplete = () => {
+    const handleCropComplete = async () => {
         const croppedImage = cropPhotoRef.current?.getCroppedImage();
         if (croppedImage) {
             setSelectedImage(croppedImage);
-            setIsCropModalOpen(false);
+            try {
+                onClose();
+                await updateUser({
+                    userId: user?.id || '',
+                    body: {
+                        avatar: croppedImage,
+                    },
+                }).unwrap();
+                showSuccessMessage(SUCCESS_MESSAGES.PROFILE_UPDATED);
+                navigate(ROUTES.HOME);
+            } catch (error) {
+                handleAxiosError(error);
+                onClose();
+            }
         } else {
             setError('Cropping error, please try cropping it again');
-            setErrorCallback(() => handleOpenCrop);
+            setErrorCallback(() => () => setModalStep('crop'));
         }
     };
 
     const handleCropBack = () => {
-        setIsCropModalOpen(false);
-        setIsUploadModalOpen(true);
+        setModalStep('upload');
     };
 
     const handlePhotoTaken = (photo: string) => {
         setSelectedImage(photo);
     };
 
-    const confirmPhotoTaken = (photo: string | null) => {
-        if (photo) {
-            setIsTakePhotoModalOpen(false);
-            setIsCropModalOpen(true);
+    const confirmPhotoTaken = () => {
+        if (selectedImage) {
+            setModalStep('crop');
         } else {
             setError('Please take photo before continuing');
-            setErrorCallback(() => handleChooseTakePhoto);
+            setErrorCallback(() => () => setModalStep('take'));
         }
     };
 
     const cancelPhotoTaken = () => {
-        setIsTakePhotoModalOpen(false);
-        setIsChooseModalOpen(true);
+        setModalStep('choose');
     };
 
     const closeErrorModal = () => {
         setError('');
+        onClose();
     };
 
     const modalErrorConfirm = () => {
@@ -87,66 +112,70 @@ export const Photo = () => {
         errorCallback();
     };
 
+    let modalContent: ReactNode = null;
+    let onConfirm: (() => void) | undefined;
+    let onCancel: (() => void) | undefined;
+    let confirmText = '';
+    let cancelText = '';
+    const onlyConfirm = false;
+
+    switch (modalStep) {
+        case 'choose':
+            modalContent = <Typography variant="paragraph">Choose an option</Typography>;
+            onConfirm = handleChooseUpload;
+            onCancel = handleChooseTakePhoto;
+            confirmText = 'UPLOAD PHOTO';
+            cancelText = 'TAKE PHOTO';
+            break;
+        case 'upload':
+            modalContent = <FileInput onImageSelect={setSelectedImage} />;
+            onConfirm = handleUploadDone;
+            onCancel = () => setModalStep('choose');
+            confirmText = 'DONE';
+            cancelText = 'BACK';
+            break;
+        case 'take':
+            modalContent = <TakePhoto onPhotoTaken={handlePhotoTaken} />;
+            onConfirm = confirmPhotoTaken;
+            onCancel = cancelPhotoTaken;
+            confirmText = 'DONE';
+            cancelText = 'BACK';
+            break;
+        case 'crop':
+            modalContent = selectedImage && <CropPhoto ref={cropPhotoRef} image={selectedImage} />;
+            onConfirm = handleCropComplete;
+            onCancel = handleCropBack;
+            confirmText = 'CROP';
+            cancelText = 'BACK';
+            break;
+    }
+
     return (
         <div className={styles.container}>
-            <Modal
-                isOpen={error != ''}
-                onlyConfirm={true}
-                onCancel={closeErrorModal}
-                confirmText={'OK'}
-                onConfirm={() => modalErrorConfirm()}
-            >
-                <Typography variant={'h4'}>{error}</Typography>
-            </Modal>
-            <Modal
-                isOpen={isChooseModalOpen}
-                onClose={handleCloseChooseModal}
-                onConfirm={handleChooseUpload}
-                onCancel={handleChooseTakePhoto}
-                confirmText="UPLOAD PHOTO"
-                cancelText="TAKE PHOTO"
-            >
-                <Typography variant="paragraph">Choose an option</Typography>
-            </Modal>
+            {error !== '' && (
+                <Modal
+                    isOpen={true}
+                    onlyConfirm={true}
+                    onConfirm={modalErrorConfirm}
+                    onCancel={closeErrorModal}
+                    confirmText="OK"
+                    isClosingOnButtonClick={true}
+                >
+                    <Typography variant="h4">{error}</Typography>
+                </Modal>
+            )}
 
             <Modal
-                isOpen={isUploadModalOpen}
-                onClose={handleCloseUploadModal}
-                onConfirm={() => handleUploadDone(selectedImage)}
-                onCancel={() => {
-                    setIsUploadModalOpen(false);
-                    setIsChooseModalOpen(true);
-                }}
-                confirmText="DONE"
-                cancelText="BACK"
+                isOpen={isOpen && error === ''}
+                onClose={onClose}
+                onConfirm={onConfirm}
+                onCancel={onCancel}
+                confirmText={confirmText}
+                cancelText={cancelText}
+                isClosingOnButtonClick={false}
+                onlyConfirm={onlyConfirm}
             >
-                <FileInput onImageSelect={setSelectedImage} />
-            </Modal>
-
-            <Modal
-                isOpen={isTakePhotoModalOpen}
-                onClose={handleCloseTakePhotoModal}
-                onConfirm={() => {
-                    confirmPhotoTaken(selectedImage);
-                }}
-                onCancel={() => {
-                    cancelPhotoTaken();
-                }}
-                confirmText="DONE"
-                cancelText="BACK"
-            >
-                <TakePhoto onPhotoTaken={handlePhotoTaken} />
-            </Modal>
-
-            <Modal
-                isOpen={isCropModalOpen}
-                onClose={handleCloseCropModal}
-                onConfirm={handleCropComplete}
-                onCancel={handleCropBack}
-                confirmText="CROP"
-                cancelText="BACK"
-            >
-                {selectedImage && <CropPhoto ref={cropPhotoRef} image={selectedImage} />}
+                {modalContent}
             </Modal>
         </div>
     );

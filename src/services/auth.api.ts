@@ -1,5 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
 import { settings } from './../../config/settings';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { axiosBaseQuery } from './axios';
 import { FormData as RegisterSchema } from '../components/pages/registration/RegistrationForm/registrationForm.schema';
 import { FormData as LoginSchema } from '../components/pages/login/LoginForm/loginForm.schema';

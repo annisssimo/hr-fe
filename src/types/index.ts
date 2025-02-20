@@ -6,7 +6,7 @@ export interface User {
     lastName: string;
     email: string;
     managerId?: string;
-    avatar?: string;
+    avatar?: string | null;
     status: USER_STATUS;
     role: USER_ROLE;
     statusAssignmentDate?: Date;

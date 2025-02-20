@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router';
-import axios from 'axios';
+import { AxiosError } from 'axios';
 
 import { registrationSchema, FormData } from './registrationForm.schema.ts';
 import { Button } from '../../../common/ButtonComponent/ButtonComponent.tsx';
@@ -10,10 +10,11 @@ import * as styles from './RegistrationForm.css.ts';
 import { FullScreenLoader } from '../../../common/FullScreenLoader/FullScreenLoader.tsx';
 import { ControlledInput } from '../../../common/ControlledInput/ControlledInput.tsx';
 import { PasswordInput } from '../../../common/PasswordInput/PasswordInput.tsx';
-import { showErrorMessage, showSuccessMessage } from '../../../../utils/UI/toastMessages.ts';
+import { showSuccessMessage } from '../../../../utils/UI/toastMessages.ts';
 import { useRegisterMutation } from '../../../../services/auth.api.ts';
 import { ROUTES } from '../../../../constants/routes.ts';
 import { ApiResponse } from '../../../../services/types.ts';
+import { handleAxiosError } from '../../../../utils/handleAxiosError.ts';
 
 export const RegistrationForm: React.FC = () => {
     const {
@@ -42,36 +43,21 @@ export const RegistrationForm: React.FC = () => {
 
     const onSubmit = async (data: FormData) => {
         try {
-            const response: ApiResponse = await register(data).unwrap();
+            const rawResult = await register(data).unwrap();
+            const response: ApiResponse = { success: true, ...rawResult };
             showSuccessMessage('Successfully registered');
             navigate(ROUTES.MAIN_PAGE);
             return response;
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                if (!error.response) {
-                    showErrorMessage(
-                        'Network error or server is unreachable. Please try again later.',
-                    );
-                } else {
-                    switch (error.status) {
-                        case 500:
-                            showErrorMessage('Server Error, try again later');
-                            break;
-                        case 400:
-                            showErrorMessage('Something went wrong, please check your input data');
-                            break;
-                        case 409:
-                            setError('email', { type: 'manual', message: 'Email Already In Use' });
-                            break;
-                        default:
-                            showErrorMessage('Credentials are wrong, please try again');
-                            break;
-                    }
-                }
-            } else {
-                showErrorMessage('Unexpected error happend');
+            const err = error as AxiosError;
+            switch (err.status) {
+                case 409:
+                    setError('email', { type: 'manual', message: 'Email Already In Use' });
+                    break;
+                default:
+                    handleAxiosError(error);
+                    break;
             }
-            throw error;
         }
     };
 
@@ -95,8 +81,9 @@ export const RegistrationForm: React.FC = () => {
             <form className={styles.formContainer} onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.twoPerRow}>
                     <div
-                        className={`${styles.inputWrapper} ${hasErrorInRow('firstName', 'lastName') ? styles.noMarginTop : ''
-                            }`}
+                        className={`${styles.inputWrapper} ${
+                            hasErrorInRow('firstName', 'lastName') ? styles.noMarginTop : ''
+                        }`}
                     >
                         <ControlledInput
                             name="firstName"
@@ -107,8 +94,9 @@ export const RegistrationForm: React.FC = () => {
                         />
                     </div>
                     <div
-                        className={`${styles.inputWrapper} ${hasErrorInRow('firstName', 'lastName') ? styles.noMarginTop : ''
-                            }`}
+                        className={`${styles.inputWrapper} ${
+                            hasErrorInRow('firstName', 'lastName') ? styles.noMarginTop : ''
+                        }`}
                     >
                         <ControlledInput
                             name="lastName"
@@ -133,8 +121,9 @@ export const RegistrationForm: React.FC = () => {
                 </div>
                 <div className={styles.twoPerRow}>
                     <div
-                        className={`${styles.inputWrapper} ${hasErrorInRow('password', 'confirmPassword') ? styles.noMarginTop : ''
-                            }`}
+                        className={`${styles.inputWrapper} ${
+                            hasErrorInRow('password', 'confirmPassword') ? styles.noMarginTop : ''
+                        }`}
                     >
                         <PasswordInput
                             name="password"
@@ -145,8 +134,9 @@ export const RegistrationForm: React.FC = () => {
                         />
                     </div>
                     <div
-                        className={`${styles.inputWrapper} ${hasErrorInRow('password', 'confirmPassword') ? styles.noMarginTop : ''
-                            }`}
+                        className={`${styles.inputWrapper} ${
+                            hasErrorInRow('password', 'confirmPassword') ? styles.noMarginTop : ''
+                        }`}
                     >
                         <PasswordInput
                             name="confirmPassword"

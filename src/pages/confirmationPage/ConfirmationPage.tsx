@@ -12,6 +12,7 @@ import { Dropdown } from '../../components/common/Dropdown/Dropdown.tsx';
 import { useGetUsersListMutation, useUpdateUserMutation } from '../../services/users.api.ts';
 import { showErrorMessage } from '../../utils/UI/toastMessages.ts';
 import { USER_ROLE, USER_STATUS } from '../../constants/index.ts';
+import { handleAxiosError } from '../../utils/handleAxiosError.ts';
 
 interface User {
     username: string;
@@ -53,25 +54,7 @@ export const ConfirmationPage = () => {
             }).unwrap();
             setAllUsers(response.data ?? []);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                if (!error.response) {
-                    showErrorMessage(
-                        'Network error or server is unreachable. Please try again later.',
-                    );
-                } else {
-                    switch (error.status) {
-                        case 500:
-                            showErrorMessage('Server Error, try again later');
-                            break;
-                        default:
-                            showErrorMessage('Something went wrong. Please try again later');
-                            break;
-                    }
-                }
-            } else {
-                console.error('Unexpected error: ', error);
-                showErrorMessage('Unexpected error happened');
-            }
+            handleAxiosError(error);
         }
     };
 
