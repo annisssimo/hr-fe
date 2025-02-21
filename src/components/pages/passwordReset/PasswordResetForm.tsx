@@ -15,6 +15,7 @@ import * as styles from './PasswordResetForm.css';
 import { usePasswordResetRequestMutation } from '../../../services/auth.api';
 import { AxiosError } from 'axios';
 import { handleAxiosError } from '../../../utils/handleAxiosError';
+import { showErrorMessage } from '../../../utils/UI/toastMessages.ts';
 
 export const PasswordResetForm = () => {
     const {
@@ -39,7 +40,11 @@ export const PasswordResetForm = () => {
             return response;
         } catch (error) {
             if (error instanceof AxiosError) {
-                handleAxiosError(error);
+                if (error.status === 404) {
+                    showErrorMessage('Account with this email not found');
+                } else {
+                    handleAxiosError(error);
+                }
             }
         }
     };

@@ -10,4 +10,5 @@ export const ROUTES = {
     CHANGE_PASSWORD: '/profile/change-password',
     PERSONAL_PROFILE: '/profile',
     MAIN_PAGE: '/main-page',
+    CONTACT: '/contact',
 };

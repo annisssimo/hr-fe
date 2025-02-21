@@ -8,9 +8,16 @@ import { ContactUsButton } from '../ContactUsButton/ContactUsButton.tsx';
 import { Slogan } from '../Slogan/Slogan.tsx';
 import { Logo } from '../Logo/Logo.tsx';
 import { ROUTES } from '../../../constants/routes.ts';
+import { useSelector } from 'react-redux';
+import { getUserSelector } from '../../../redux/userSlice/userSlice.ts';
+import { USER_ROLE } from '../../../constants';
+import { Typography } from '../Typography/Typography.tsx';
 
 export const Footer = () => {
-    const contactsVisible = false;
+    const user = useSelector(getUserSelector);
+    const contactsVisible = Boolean(
+        user?.role === USER_ROLE.MANAGER || user?.role === USER_ROLE.EMPLOYEE,
+    );
     return (
         <footer className={styles.footer}>
             <div className={styles.logoAndDescription}>
@@ -18,18 +25,24 @@ export const Footer = () => {
                     <Link to={ROUTES.HOME}>
                         <Logo width={'140'} height={'60'} />
                     </Link>
-                    <p className={styles.copyrightText}>
+                    <Typography variant="paragraph" className={styles.copyrightText}>
                         Copyright © <span className={styles.underlinedText}>Sunmait</span> 2025
-                    </p>
+                    </Typography>
                 </div>
                 <Slogan />
             </div>
             <div className={styles.socialMediaRow}>
-                <p className={contactsVisible ? styles.footerText : styles.contactsStyle}>
-                    {/*It is required that depending on page or role Contact button and text are not displayed, this is a stub created to mimic such instances*/}
-                    Contacts
-                </p>
-                <p className={styles.footerText}>Social media</p>
+                <Link to={ROUTES.HOME}>
+                    <Typography
+                        variant="paragraph"
+                        className={contactsVisible ? styles.footerText : styles.contactsStyle}
+                    >
+                        Contacts
+                    </Typography>
+                </Link>
+                <Typography variant="paragraph" className={styles.footerText}>
+                    Social media
+                </Typography>
                 <SocialMediaIcon
                     svg={<LinkedInIcon />}
                     link={'https://www.linkedin.com/company/sunmait/'}

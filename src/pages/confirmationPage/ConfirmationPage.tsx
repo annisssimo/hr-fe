@@ -14,11 +14,6 @@ import { showErrorMessage } from '../../utils/UI/toastMessages.ts';
 import { USER_ROLE, USER_STATUS } from '../../constants/index.ts';
 import { handleAxiosError } from '../../utils/handleAxiosError.ts';
 
-interface User {
-    username: string;
-    role: USER_ROLE;
-}
-
 interface NewUser {
     id: string;
     firstName: string;
@@ -42,7 +37,6 @@ export const ConfirmationPage = () => {
     const [newRequestsCount, setNewRequestsCount] = useState(0);
     const [newUsers, setNewUsers] = useState<NewUser[]>([]);
     const [allUsers, setAllUsers] = useState<AllUser[]>([]);
-    const headerProp: User = { username: 'placeholder', role: USER_ROLE.ADMIN };
     const [updateUser] = useUpdateUserMutation();
     const [getUserList, { isLoading }] = useGetUsersListMutation();
 
@@ -293,7 +287,7 @@ export const ConfirmationPage = () => {
     return (
         <div className={styles.confirmationPageWrapper}>
             <div className={styles.headerWrapper}>
-                <Header user={headerProp} />
+                <Header />
             </div>
             <div className={styles.confirmationPageContent}>
                 <Typography variant={'h1'} className={styles.pageTitle}>

@@ -88,3 +88,8 @@ export const userAvatar = style({
     height: '40px',
     boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
 });
+
+export const noStyle = style({
+    textDecoration: 'none',
+    color: 'inherit',
+});

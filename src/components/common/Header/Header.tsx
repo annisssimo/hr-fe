@@ -1,12 +1,15 @@
 import { Link } from 'react-router';
 import * as styles from './Header.css';
 import { Logo } from '../Logo/Logo';
-import defaultUserImgPath from '../../../assets/default-avatar.jpg';
+import defaultAvatar from '../../../assets/default-avatar.jpg';
 import { ROUTES } from '../../../constants/routes';
 import { Typography } from '../Typography/Typography';
-import { USER_ROLE } from '../../../constants';
+import { useSelector } from 'react-redux';
+import { getUserSelector } from '../../../redux/userSlice/userSlice.ts';
 
-export const Header = ({ user }: HeaderProps) => {
+export const Header = () => {
+    const user = useSelector(getUserSelector);
+    const userExists = user.id != '';
     return (
         <header className={styles.header}>
             <div className={styles.logo}>
@@ -14,7 +17,7 @@ export const Header = ({ user }: HeaderProps) => {
                     <Logo width="120" height="60" />
                 </Link>
             </div>
-            {user && (
+            {userExists && (
                 <>
                     <nav className={styles.nav}>
                         <ul className={styles.navList}>
@@ -37,25 +40,20 @@ export const Header = ({ user }: HeaderProps) => {
                             </li>
                         </ul>
                     </nav>
-                    <div className={styles.userProfile}>
-                        <Typography variant="text">{user.username}</Typography>
-                        <img
-                            src={defaultUserImgPath}
-                            alt={user.username}
-                            className={styles.userAvatar}
-                        />
-                    </div>
+                    <Link to={ROUTES.PERSONAL_PROFILE} className={styles.noStyle}>
+                        <div className={styles.userProfile}>
+                            <Typography variant="text">
+                                {user.firstName + ' ' + user.lastName}
+                            </Typography>
+                            <img
+                                src={user?.avatar || defaultAvatar}
+                                alt={user.firstName + ' ' + user.lastName}
+                                className={styles.userAvatar}
+                            />
+                        </div>
+                    </Link>
                 </>
             )}
         </header>
     );
 };
-
-interface User {
-    username: string;
-    role: USER_ROLE;
-}
-
-interface HeaderProps {
-    user?: User;
-}
