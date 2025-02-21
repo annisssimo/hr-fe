@@ -15,6 +15,7 @@ import { ROUTES } from '../../../../constants/routes.ts';
 import { getUserSelector } from '../../../../redux/userSlice/userSlice.ts';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../../../constants/index.ts';
 import * as styles from './passwordChangeForm.css.ts';
+import { handleAxiosError } from '../../../../utils/handleAxiosError.ts';
 
 export const PasswordChangeForm = () => {
     const {
@@ -58,10 +59,14 @@ export const PasswordChangeForm = () => {
             navigate(ROUTES.PERSONAL_PROFILE);
         } catch (error) {
             if (error instanceof AxiosError) {
-                const errorMessage = error.response?.data?.message || ERROR_MESSAGES.SERVER_ERROR;
-                showErrorMessage(errorMessage);
-            } else {
-                showErrorMessage(ERROR_MESSAGES.SERVER_ERROR);
+                switch (error.status) {
+                    case 400:
+                        showErrorMessage(ERROR_MESSAGES.INVALID_PASSWORD);
+                        break;
+                    default:
+                        handleAxiosError(error);
+                        break;
+                }
             }
         }
     };
@@ -83,8 +88,9 @@ export const PasswordChangeForm = () => {
             <form className={styles.formContainer}>
                 <div className={styles.twoPerRow}>
                     <div
-                        className={`${styles.inputWrapper} ${hasErrorInRow('oldPassword', 'newPassword') ? styles.noMarginTop : ''
-                            }`}
+                        className={`${styles.inputWrapper} ${
+                            hasErrorInRow('oldPassword', 'newPassword') ? styles.noMarginTop : ''
+                        }`}
                     >
                         <PasswordInput
                             name="oldPassword"
@@ -95,8 +101,9 @@ export const PasswordChangeForm = () => {
                         />
                     </div>
                     <div
-                        className={`${styles.inputWrapper} ${hasErrorInRow('oldPassword', 'newPassword') ? styles.noMarginTop : ''
-                            }`}
+                        className={`${styles.inputWrapper} ${
+                            hasErrorInRow('oldPassword', 'newPassword') ? styles.noMarginTop : ''
+                        }`}
                     >
                         <PasswordInput
                             name="newPassword"

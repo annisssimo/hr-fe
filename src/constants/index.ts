@@ -1,5 +1,7 @@
 export const ERROR_MESSAGES = {
     SERVER_ERROR: 'Something went wrong. Please try again later.',
+    TOKEN_INVALID: 'Your link is expired. Please sent a new request to password reset.',
+    INVALID_PASSWORD: 'Invalid old password',
 };
 
 export const SUCCESS_MESSAGES = {

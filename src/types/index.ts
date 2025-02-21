@@ -17,8 +17,3 @@ export interface User {
     phoneNumber?: string;
     contactUsername?: string;
 }
-
-export interface CustomError {
-    status: number;
-    data: string;
-}

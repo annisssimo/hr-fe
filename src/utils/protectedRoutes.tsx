@@ -12,11 +12,14 @@ interface ProtectedRoutesProps {
 
 export const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({ allowedRoles, fallbackUrl }) => {
     const user = useSelector(getUserSelector);
-    if (!user) {
+
+    if (!user.id) {
         return <Navigate to={ROUTES.LOGIN} replace />;
     }
+
     if (allowedRoles && !allowedRoles.includes(user.role)) {
         return <Navigate to={fallbackUrl || ROUTES.HOME} replace />;
     }
+
     return <Outlet />;
 };

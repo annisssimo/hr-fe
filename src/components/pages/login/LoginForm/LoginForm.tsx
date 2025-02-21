@@ -1,23 +1,22 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router';
+import { AxiosError } from 'axios';
+import { useDispatch } from 'react-redux';
+import { jwtDecode } from 'jwt-decode';
+
 import { useLoginMutation } from '../../../../services/auth.api';
 import { Button } from '../../../common/ButtonComponent/ButtonComponent';
 import { ControlledInput } from '../../../common/ControlledInput/ControlledInput';
 import { PasswordInput } from '../../../common/PasswordInput/PasswordInput';
 import { FormData, loginSchema } from './loginForm.schema';
 import * as styles from './LoginForm.css';
-import { useNavigate } from 'react-router';
 import { ROUTES } from '../../../../constants/routes';
-import { useGetUsersListMutation } from '../../../../services/users.api';
-import { useDispatch } from 'react-redux';
-import { setUser } from '../../../../redux/userSlice/userSlice';
-import { mapUserToAuthenticatedUser } from '../../../../utils/mappers';
-import { jwtDecode } from 'jwt-decode';
 import { showErrorMessage } from '../../../../utils/UI/toastMessages';
-import { AxiosError } from 'axios';
 import { handleAxiosError } from '../../../../utils/handleAxiosError.ts';
-import { FullScreenLoader } from '../../../common/FullScreenLoader/FullScreenLoader.tsx';
+import { useGetUsersListMutation } from '../../../../services/users.api.ts';
+import { setUser } from '../../../../redux/userSlice/userSlice.ts';
 
 export const LoginForm = () => {
     const {
@@ -29,17 +28,23 @@ export const LoginForm = () => {
         resolver: zodResolver(loginSchema),
         mode: 'onChange',
     });
+
     const dispatch = useDispatch();
-    const [getUser] = useGetUsersListMutation();
-    const [login, { isLoading }] = useLoginMutation();
     const navigate = useNavigate();
+
+    const [getUser, { isLoading: isGettingUser }] = useGetUsersListMutation();
+    const [login, { isLoading: isLoggingIn }] = useLoginMutation();
+
+    const isLoading = isLoggingIn || isGettingUser;
 
     const onSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (data: FormData) => {
         try {
             const response = await login(data).unwrap();
-            console.log('Response: ', response);
+            const accessToken = response.accessToken;
 
-            const userId = jwtDecode<{ id: string }>(response.accessToken).id;
+            localStorage.setItem('token', accessToken);
+
+            const userId = jwtDecode<{ id: string }>(accessToken).id;
 
             const user = await getUser({
                 limit: 1,
@@ -47,12 +52,11 @@ export const LoginForm = () => {
                 filters: { id: [userId] },
             }).unwrap();
 
-            dispatch(setUser(mapUserToAuthenticatedUser(user.data[0])));
-            localStorage.setItem('token', response.accessToken);
-
+            dispatch(setUser(user.data[0]));
             navigate(ROUTES.PERSONAL_PROFILE);
         } catch (error) {
             const err = error as AxiosError;
+
             switch (err.status) {
                 case 401:
                     showErrorMessage(
@@ -61,7 +65,7 @@ export const LoginForm = () => {
                     break;
                 case 403:
                     showErrorMessage(
-                        'This email is under consideration at the present time. Please, wait for email with confirmation status.',
+                        'This email is under consideration at the present time. Please, wait for an email with confirmation status.',
                     );
                     break;
                 default:
@@ -72,30 +76,27 @@ export const LoginForm = () => {
     };
 
     return (
-        <>
-            <form className={styles.formContainer}>
-                <div className={styles.inputWrapper}>
-                    <ControlledInput
-                        name="email"
-                        control={control}
-                        labelText="Email *"
-                        type="email"
-                        onChange={() => clearErrors('email')}
-                        error={errors.email}
-                    />
-                </div>
-                <div className={styles.inputWrapper}>
-                    <PasswordInput name="password" control={control} error={errors.password} />
-                </div>
-                <div className={styles.buttonRow}>
-                    <Button
-                        type={!isValid ? 'disabled' : 'preferred'}
-                        buttonText="SUBMIT"
-                        onClick={handleSubmit(onSubmit)}
-                    />
-                </div>
-            </form>
-            {isLoading && <FullScreenLoader />}
-        </>
+        <form className={styles.formContainer}>
+            <div className={styles.inputWrapper}>
+                <ControlledInput
+                    name="email"
+                    control={control}
+                    labelText="Email *"
+                    type="email"
+                    onChange={() => clearErrors('email')}
+                    error={errors.email}
+                />
+            </div>
+            <div className={styles.inputWrapper}>
+                <PasswordInput name="password" control={control} error={errors.password} />
+            </div>
+            <div className={styles.buttonRow}>
+                <Button
+                    type={!isValid || isLoading ? 'disabled' : 'preferred'}
+                    buttonText={isLoading ? 'LOADING...' : 'SUBMIT'}
+                    onClick={handleSubmit(onSubmit)}
+                />
+            </div>
+        </form>
     );
 };

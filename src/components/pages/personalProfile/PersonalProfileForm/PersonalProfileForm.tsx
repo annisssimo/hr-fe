@@ -15,14 +15,15 @@ import { ROUTES } from '../../../../constants/routes';
 import { personalProfileFormSchema } from './personalProfileForm.schema';
 import * as styles from './PersonalProfileForm.css';
 import { Photo } from '../Photo/Photo.tsx';
-import { showErrorMessage, showSuccessMessage } from '../../../../utils/UI/toastMessages.ts';
+import { showSuccessMessage } from '../../../../utils/UI/toastMessages.ts';
 import { Loader } from '../../../common/Loader/Loader.tsx';
 import { useUpdateUserProfileMutation } from '../../../../services/users.api.ts';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES, USER_ROLE } from '../../../../constants/index.ts';
-import { CustomError, User } from '../../../../types/index.ts';
+import { SUCCESS_MESSAGES, USER_ROLE } from '../../../../constants/index.ts';
+import { User } from '../../../../types/index.ts';
 import { handleAxiosError } from '../../../../utils/handleAxiosError.ts';
 import { useUpdateUserMutation } from '../../../../services/users.api.ts';
 import { getUserSelector } from '../../../../redux/userSlice/userSlice.ts';
+import { AxiosError } from 'axios';
 
 export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
     const navigate = useNavigate();
@@ -88,8 +89,9 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
             showSuccessMessage(SUCCESS_MESSAGES.PROFILE_UPDATED);
             navigate(ROUTES.HOME);
         } catch (error) {
-            const errorMessage = (error as CustomError).data || ERROR_MESSAGES.SERVER_ERROR;
-            showErrorMessage(errorMessage);
+            if (error instanceof AxiosError) {
+                handleAxiosError(error);
+            }
         }
     };
 

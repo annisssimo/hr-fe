@@ -12,7 +12,7 @@ export const handleAxiosError = (error: unknown): void => {
                     showErrorMessage('Bad data provided, please try again later.');
                     break;
                 case 401:
-                    showErrorMessage('Unauthorised');
+                    showErrorMessage('Unauthorized');
                     break;
                 case 500:
                     showErrorMessage('Server Error, try again later');

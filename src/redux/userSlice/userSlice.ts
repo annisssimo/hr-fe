@@ -1,39 +1,47 @@
-import { USER_ROLE } from '../../constants';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { User } from '../../types';
+import { USER_STATUS, USER_ROLE } from '../../constants';
+import { RootState } from '../store';
 
-export interface AuthenticatedUser {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    managerId: string | null;
-    avatar: string | null;
-    role: USER_ROLE;
-}
-
-interface UserState {
-    user: AuthenticatedUser | null;
-}
-
-const initialState: UserState = {
-    user: null,
+type UserSessionState = {
+    user: User;
 };
 
-export const userSlice = createSlice({
-    name: 'user',
+const initialState: UserSessionState = {
+    user: {
+        id: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        managerId: undefined,
+        avatar: undefined,
+        status: USER_STATUS.PENDING,
+        role: USER_ROLE.EMPLOYEE,
+        statusAssignmentDate: undefined,
+        position: undefined,
+        startDay: null,
+        endDate: null,
+        dateOfBirth: null,
+        phoneNumber: undefined,
+        contactUsername: undefined,
+    },
+};
+
+export const userSessionSlice = createSlice({
+    name: 'userSession',
     initialState,
     reducers: {
-        setUser(state, action: PayloadAction<AuthenticatedUser>) {
+        setUser(state, action: PayloadAction<User>) {
             state.user = action.payload;
         },
-        removeUser(state) {
-            state.user = null;
+        removeUser() {
+            localStorage.removeItem('token');
+            return { ...initialState };
         },
     },
 });
 
-export const { setUser, removeUser } = userSlice.actions;
+export const { setUser, removeUser } = userSessionSlice.actions;
+export const userSessionReducer = userSessionSlice.reducer;
 
-export const userReducer = userSlice.reducer;
-
-export const getUserSelector = (state: { user: UserState }) => state.user.user;
+export const getUserSelector = (state: RootState) => state.userSession.user;

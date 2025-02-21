@@ -13,7 +13,8 @@ import { showErrorMessage, showSuccessMessage } from '../../../../utils/UI/toast
 import { ROUTES } from '../../../../constants/routes.ts';
 import { usePasswordResetMutation } from '../../../../services/auth.api.ts';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../../../constants/index.ts';
-import { CustomError } from '../../../../types/index.ts';
+import { AxiosError } from 'axios';
+import { handleAxiosError } from '../../../../utils/handleAxiosError.ts';
 
 export const EnterNewPasswordForm = ({ token }: EnterNewPasswordFormProps) => {
     const {
@@ -46,8 +47,13 @@ export const EnterNewPasswordForm = ({ token }: EnterNewPasswordFormProps) => {
             navigate(ROUTES.LOGIN);
             return response;
         } catch (error) {
-            const errorMessage = (error as CustomError).data || ERROR_MESSAGES.SERVER_ERROR;
-            showErrorMessage(errorMessage);
+            if (error instanceof AxiosError) {
+                if (error.status === 400) {
+                    showErrorMessage(ERROR_MESSAGES.TOKEN_INVALID);
+                } else {
+                    handleAxiosError(error);
+                }
+            }
         }
     };
 

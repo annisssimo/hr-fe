@@ -11,11 +11,10 @@ import { ControlledInput } from '../../common/ControlledInput/ControlledInput';
 import { ROUTES } from '../../../constants/routes';
 import { Typography } from '../../common/Typography/Typography';
 import { FullScreenLoader } from '../../common/FullScreenLoader/FullScreenLoader';
-import { showErrorMessage } from '../../../utils/UI/toastMessages';
 import * as styles from './PasswordResetForm.css';
 import { usePasswordResetRequestMutation } from '../../../services/auth.api';
-import { CustomError } from '../../../types';
-import { ERROR_MESSAGES } from '../../../constants';
+import { AxiosError } from 'axios';
+import { handleAxiosError } from '../../../utils/handleAxiosError';
 
 export const PasswordResetForm = () => {
     const {
@@ -39,8 +38,9 @@ export const PasswordResetForm = () => {
             setIsPasswordReset(true);
             return response;
         } catch (error) {
-            const errorMessage = (error as CustomError).data || ERROR_MESSAGES.SERVER_ERROR;
-            showErrorMessage(errorMessage);
+            if (error instanceof AxiosError) {
+                handleAxiosError(error);
+            }
         }
     };
 

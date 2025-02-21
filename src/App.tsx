@@ -1,5 +1,8 @@
-import './App.css.ts';
 import { Navigate, Route, Routes } from 'react-router';
+import { jwtDecode } from 'jwt-decode';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import { ROUTES } from './constants/routes';
 import { LoginPage } from './pages/login/Login';
 import { RegistrationPage } from './pages/registration/Registration';
@@ -11,8 +14,58 @@ import { UserDataList } from './pages/databaseOfUsers/UserDataList.tsx';
 import { EnterNewPassword } from './pages/enterNewPassword/EnterNewPassword.tsx';
 import { PasswordResetPage } from './pages/passwordReset/passwordReset.tsx';
 import { USER_ROLE } from './constants/index.ts';
+import { removeUser, setUser } from './redux/userSlice/userSlice.ts';
+import { useGetUsersListMutation } from './services/users.api.ts';
+import { FullScreenLoader } from './components/common/FullScreenLoader/FullScreenLoader.tsx';
+import './App.css.ts';
 
 export const App = () => {
+    const dispatch = useDispatch();
+    const [getUser] = useGetUsersListMutation();
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const initializeUser = async () => {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                dispatch(removeUser());
+                setIsLoading(false);
+                return;
+            }
+
+            try {
+                const userId = jwtDecode<{ id: string }>(token).id;
+
+                if (!userId) {
+                    throw new Error('Invalid token');
+                }
+
+                const response = await getUser({
+                    filters: { id: [userId] },
+                }).unwrap();
+
+                const user = response.data[0];
+
+                if (user) {
+                    dispatch(setUser(user));
+                } else {
+                    throw new Error('User not found');
+                }
+            } catch {
+                dispatch(removeUser());
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        initializeUser();
+    }, [dispatch, getUser]);
+
+    if (isLoading) {
+        return <FullScreenLoader />;
+    }
+
     return (
         <Routes>
             <Route path={ROUTES.LOGIN} element={<LoginPage />} />
@@ -27,7 +80,7 @@ export const App = () => {
                 }
             >
                 <Route path={ROUTES.DATABASE} element={<UserDataList />} />
-                {/* <Route path={ROUTES.MAIN_PAGE} element={<MainPage />} />   */}
+                {/* <Route path={ROUTES.MAIN_PAGE} element={<MainPage />} /> */}
                 <Route path={ROUTES.CHANGE_PASSWORD} element={<PasswordChange />} />
                 <Route path={ROUTES.PERSONAL_PROFILE} element={<PersonalProfilePage />} />
                 <Route element={<ProtectedRoutes allowedRoles={[USER_ROLE.ADMIN]} />}>
