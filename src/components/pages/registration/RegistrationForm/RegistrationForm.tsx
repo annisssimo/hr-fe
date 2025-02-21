@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router';
 import { AxiosError } from 'axios';
-
 import { registrationSchema, FormData } from './registrationForm.schema.ts';
 import { Button } from '../../../common/ButtonComponent/ButtonComponent.tsx';
 import * as styles from './RegistrationForm.css.ts';

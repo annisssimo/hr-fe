@@ -17,6 +17,7 @@ import { USER_ROLE } from './constants/index.ts';
 import { removeUser, setUser } from './redux/userSlice/userSlice.ts';
 import { useGetUsersListMutation } from './services/users.api.ts';
 import { FullScreenLoader } from './components/common/FullScreenLoader/FullScreenLoader.tsx';
+import { MainPage } from './pages/mainPage/MainPage.tsx';
 import './App.css.ts';
 
 export const App = () => {
@@ -80,13 +81,13 @@ export const App = () => {
                 }
             >
                 <Route path={ROUTES.DATABASE} element={<UserDataList />} />
-                {/* <Route path={ROUTES.MAIN_PAGE} element={<MainPage />} /> */}
+                <Route path={ROUTES.HOME} element={<MainPage />} />
+                <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
                 <Route path={ROUTES.CHANGE_PASSWORD} element={<PasswordChange />} />
                 <Route path={ROUTES.PERSONAL_PROFILE} element={<PersonalProfilePage />} />
                 <Route element={<ProtectedRoutes allowedRoles={[USER_ROLE.ADMIN]} />}>
                     <Route path={ROUTES.REQUESTS} element={<ConfirmationPage />} />
                 </Route>
-                <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
             </Route>
             <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />
         </Routes>

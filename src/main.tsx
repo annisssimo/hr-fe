@@ -2,10 +2,9 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 import { Provider } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
-
 import store from './redux/store.ts';
 import { App } from './App.tsx';
+import { ToastContainer } from 'react-toastify';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

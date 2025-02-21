@@ -15,8 +15,8 @@ import {
 } from './types';
 
 type LoginResponse = {
-    accessToken: string
-}
+    accessToken: string;
+};
 
 export const authApi = createApi({
     reducerPath: 'auth',
@@ -26,7 +26,11 @@ export const authApi = createApi({
             query: (newUser) => ({ url: '/v1/auth/register', method: 'POST', data: newUser }),
         }),
         login: builder.mutation<LoginResponse, LoginSchema>({
-            query: (userCredentials) => ({ url: '/v1/auth/login', method: 'POST', data: userCredentials })
+            query: (userCredentials) => ({
+                url: '/v1/auth/login',
+                method: 'POST',
+                data: userCredentials,
+            }),
         }),
         changePassword: builder.mutation<
             ApiResponse<ChangePasswordApiResponse>,
