@@ -15,7 +15,6 @@ import { useClickOutside } from '../../../hooks/useClickOutside.tsx';
 export const Header = () => {
     const dispatch = useDispatch();
     const user = useSelector(getUserSelector);
-    const userExists = user.id !== '';
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
 
@@ -37,11 +36,11 @@ export const Header = () => {
                     <Logo width="120" height="60" />
                 </Link>
             </div>
-            {userExists && (
+            {user && (
                 <>
                     <nav className={styles.nav}>
                         <ul className={styles.navList}>
-                            {user.role === 'admin' && (
+                            {user?.role === 'admin' && (
                                 <li key="requests">
                                     <Link to={ROUTES.REQUESTS} className={styles.navItem}>
                                         Requests

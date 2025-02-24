@@ -1,30 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '../../types';
-import { USER_STATUS, USER_ROLE } from '../../constants';
 import { RootState } from '../store';
 
 type UserSessionState = {
-    user: User;
+    user: User | null;
 };
 
 const initialState: UserSessionState = {
-    user: {
-        id: '',
-        firstName: '',
-        lastName: '',
-        email: '',
-        managerId: undefined,
-        avatar: undefined,
-        status: USER_STATUS.PENDING,
-        role: USER_ROLE.EMPLOYEE,
-        statusAssignmentDate: undefined,
-        position: undefined,
-        startDay: null,
-        endDate: null,
-        dateOfBirth: null,
-        phoneNumber: undefined,
-        contactUsername: undefined,
-    },
+    user: null,
 };
 
 export const userSessionSlice = createSlice({

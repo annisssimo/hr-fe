@@ -69,10 +69,12 @@ export const App = () => {
 
     return (
         <Routes>
-            <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-            <Route path={ROUTES.REGISTER} element={<RegistrationPage />} />
-            <Route path={ROUTES.RESET_PASSWORD} element={<PasswordResetPage />} />
-            <Route path={ROUTES.NEW_PASSWORD} element={<EnterNewPassword />} />
+            <Route element={<ProtectedRoutes guestOnly={true} />}>
+                <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+                <Route path={ROUTES.REGISTER} element={<RegistrationPage />} />
+                <Route path={ROUTES.RESET_PASSWORD} element={<PasswordResetPage />} />
+                <Route path={ROUTES.NEW_PASSWORD} element={<EnterNewPassword />} />
+            </Route>
             <Route
                 element={
                     <ProtectedRoutes

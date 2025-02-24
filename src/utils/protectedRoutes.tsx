@@ -8,12 +8,24 @@ import { USER_ROLE } from '../constants/index.ts';
 interface ProtectedRoutesProps {
     allowedRoles?: USER_ROLE[];
     fallbackUrl?: string;
+    guestOnly?: boolean;
 }
 
-export const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({ allowedRoles, fallbackUrl }) => {
+export const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({
+    allowedRoles,
+    fallbackUrl,
+    guestOnly,
+}) => {
     const user = useSelector(getUserSelector);
 
-    if (!user.id) {
+    if (guestOnly) {
+        if (user) {
+            return <Navigate to={ROUTES.HOME} replace />;
+        }
+        return <Outlet />;
+    }
+
+    if (!user) {
         return <Navigate to={ROUTES.LOGIN} replace />;
     }
 
