@@ -89,7 +89,28 @@ export const userAvatar = style({
     boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
 });
 
-export const noStyle = style({
-    textDecoration: 'none',
-    color: 'inherit',
+export const dropdownMenu = style({
+    position: 'absolute',
+    top: '68px',
+    right: '48px',
+    backgroundColor: '#fff',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    borderRadius: '8px',
+    padding: '10px 0',
+    display: 'flex',
+    flexDirection: 'column',
+    zIndex: 10,
+});
+
+export const menuItem = style({
+    all: 'unset',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    padding: '10px 20px',
+    cursor: 'pointer',
+    color: '#333',
+    ':hover': {
+        backgroundColor: '#f2f2f2',
+    },
 });

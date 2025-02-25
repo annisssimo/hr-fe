@@ -1,15 +1,35 @@
+import { useRef, useState } from 'react';
 import { Link } from 'react-router';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { FaUser, FaSignOutAlt } from 'react-icons/fa';
+
 import * as styles from './Header.css';
 import { Logo } from '../Logo/Logo';
 import defaultAvatar from '../../../assets/default-avatar.jpg';
 import { ROUTES } from '../../../constants/routes';
 import { Typography } from '../Typography/Typography';
-import { useSelector } from 'react-redux';
-import { getUserSelector } from '../../../redux/userSlice/userSlice.ts';
+import { getUserSelector, removeUser } from '../../../redux/userSlice/userSlice.ts';
+import { useClickOutside } from '../../../hooks/useClickOutside.tsx';
 
 export const Header = () => {
+    const dispatch = useDispatch();
     const user = useSelector(getUserSelector);
-    const userExists = user.id != '';
+    const userExists = user.id !== '';
+    const [menuOpen, setMenuOpen] = useState(false);
+    const menuRef = useRef(null);
+
+    useClickOutside(menuRef, () => setMenuOpen(false));
+
+    const toggleMenu = () => {
+        setMenuOpen((prev) => !prev);
+    };
+
+    const handleLogout = () => {
+        setMenuOpen(false);
+        dispatch(removeUser());
+    };
+
     return (
         <header className={styles.header}>
             <div className={styles.logo}>
@@ -40,18 +60,26 @@ export const Header = () => {
                             </li>
                         </ul>
                     </nav>
-                    <Link to={ROUTES.PERSONAL_PROFILE} className={styles.noStyle}>
-                        <div className={styles.userProfile}>
-                            <Typography variant="text">
-                                {user.firstName + ' ' + user.lastName}
-                            </Typography>
-                            <img
-                                src={user?.avatar || defaultAvatar}
-                                alt={user.firstName + ' ' + user.lastName}
-                                className={styles.userAvatar}
-                            />
-                        </div>
-                    </Link>
+                    <div className={styles.userProfile} onClick={toggleMenu} ref={menuRef}>
+                        <Typography variant="text">
+                            {user.firstName + ' ' + user.lastName}
+                        </Typography>
+                        <img
+                            src={user?.avatar || defaultAvatar}
+                            alt={user.firstName + ' ' + user.lastName}
+                            className={styles.userAvatar}
+                        />
+                        {menuOpen && (
+                            <div className={styles.dropdownMenu}>
+                                <Link to={ROUTES.PERSONAL_PROFILE} className={styles.menuItem}>
+                                    <FaUser /> Personal Page
+                                </Link>
+                                <button onClick={handleLogout} className={styles.menuItem}>
+                                    <FaSignOutAlt /> Log out
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </>
             )}
         </header>
