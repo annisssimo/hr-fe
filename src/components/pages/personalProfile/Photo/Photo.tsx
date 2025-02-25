@@ -11,8 +11,6 @@ import { useSelector } from 'react-redux';
 import { getUserSelector } from '../../../../redux/userSlice/userSlice.ts';
 import { useUpdateUserMutation } from '../../../../services/users.api.ts';
 import { SUCCESS_MESSAGES } from '../../../../constants';
-import { ROUTES } from '../../../../constants/routes.ts';
-import { useNavigate } from 'react-router';
 
 interface PhotoProps {
     isOpen: boolean;
@@ -29,7 +27,6 @@ export const Photo = ({ isOpen, onClose }: PhotoProps) => {
     const [error, setError] = useState('');
     const [errorCallback, setErrorCallback] = useState<() => void>(() => {});
     const user = useSelector(getUserSelector);
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (isOpen) {
@@ -70,7 +67,6 @@ export const Photo = ({ isOpen, onClose }: PhotoProps) => {
                     },
                 }).unwrap();
                 showSuccessMessage(SUCCESS_MESSAGES.PROFILE_UPDATED);
-                navigate(ROUTES.HOME);
             } catch (error) {
                 handleAxiosError(error);
                 onClose();

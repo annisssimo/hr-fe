@@ -49,6 +49,10 @@ export const PasswordResetForm = () => {
         }
     };
 
+    const handleBackClick = () => {
+        navigate(ROUTES.LOGIN);
+    };
+
     return (
         <>
             <form
@@ -65,11 +69,7 @@ export const PasswordResetForm = () => {
                             your account is linked. Follow the link from the email
                         </Typography>
                         <div className={styles.button}>
-                            <Button
-                                type="preferred"
-                                buttonText="BACK"
-                                onClick={() => setIsPasswordReset(false)}
-                            />
+                            <Button type="preferred" buttonText="BACK" onClick={handleBackClick} />
                         </div>
                     </>
                 ) : (

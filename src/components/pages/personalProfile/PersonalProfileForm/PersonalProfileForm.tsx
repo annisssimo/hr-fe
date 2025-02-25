@@ -87,7 +87,6 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
         try {
             await updateUserProfile(cleanedData).unwrap();
             showSuccessMessage(SUCCESS_MESSAGES.PROFILE_UPDATED);
-            navigate(ROUTES.HOME);
         } catch (error) {
             if (error instanceof AxiosError) {
                 handleAxiosError(error);
@@ -125,7 +124,6 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                 },
             }).unwrap();
             showSuccessMessage(SUCCESS_MESSAGES.PROFILE_UPDATED);
-            navigate(ROUTES.HOME);
         } catch (error) {
             handleAxiosError(error);
         }

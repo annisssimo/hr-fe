@@ -17,6 +17,7 @@ import { showErrorMessage } from '../../../../utils/UI/toastMessages';
 import { handleAxiosError } from '../../../../utils/handleAxiosError.ts';
 import { useGetUsersListMutation } from '../../../../services/users.api.ts';
 import { setUser } from '../../../../redux/userSlice/userSlice.ts';
+import { USER_ROLE } from '../../../../constants/index.ts';
 
 export const LoginForm = () => {
     const {
@@ -53,7 +54,12 @@ export const LoginForm = () => {
             }).unwrap();
 
             dispatch(setUser(user.data[0]));
-            navigate(ROUTES.PERSONAL_PROFILE);
+
+            if (user.data[0].role === USER_ROLE.ADMIN) {
+                navigate(ROUTES.REQUESTS);
+            } else {
+                navigate(ROUTES.MAIN_PAGE);
+            }
         } catch (error) {
             const err = error as AxiosError;
 
