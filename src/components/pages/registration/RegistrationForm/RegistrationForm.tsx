@@ -14,6 +14,7 @@ import { useRegisterMutation } from '../../../../services/auth.api.ts';
 import { ROUTES } from '../../../../constants/routes.ts';
 import { ApiResponse } from '../../../../services/types.ts';
 import { handleAxiosError } from '../../../../utils/handleAxiosError.ts';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../../../constants/index.ts';
 
 export const RegistrationForm: React.FC = () => {
     const {
@@ -44,14 +45,14 @@ export const RegistrationForm: React.FC = () => {
         try {
             const rawResult = await register(data).unwrap();
             const response: ApiResponse = { success: true, ...rawResult };
-            showSuccessMessage('Successfully registered');
+            showSuccessMessage(SUCCESS_MESSAGES.REGISTERED);
             navigate(ROUTES.MAIN_PAGE);
             return response;
         } catch (error) {
             const err = error as AxiosError;
             switch (err.status) {
                 case 409:
-                    setError('email', { type: 'manual', message: 'Email Already In Use' });
+                    setError('email', { type: 'manual', message: ERROR_MESSAGES.EMAIL_TAKEN });
                     break;
                 default:
                     handleAxiosError(error);
