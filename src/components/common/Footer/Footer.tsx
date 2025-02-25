@@ -23,7 +23,7 @@ export const Footer = () => {
             <div className={styles.logoAndDescription}>
                 <div className={styles.columnWrapper}>
                     <Link to={ROUTES.HOME}>
-                        <Logo width={'140'} height={'60'} />
+                        <Logo width="140" height="60" color="white" />
                     </Link>
                     <Typography variant="paragraph" className={styles.copyrightText}>
                         Copyright © <span className={styles.underlinedText}>Sunmait</span> 2025

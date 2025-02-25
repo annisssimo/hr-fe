@@ -7,8 +7,8 @@ export interface User {
     email: string;
     managerId?: string;
     avatar?: string | null;
-    status: USER_STATUS;
-    role: USER_ROLE;
+    status: USER_STATUS | null;
+    role: USER_ROLE | null;
     statusAssignmentDate?: Date;
     position?: string;
     startDay?: Date | null;

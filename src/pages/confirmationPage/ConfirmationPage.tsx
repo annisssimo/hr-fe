@@ -19,7 +19,7 @@ interface NewUser {
     firstName: string;
     lastName: string;
     email: string;
-    role: string;
+    role: string | null;
     actions?: null;
 }
 
@@ -27,8 +27,8 @@ interface AllUser {
     firstName: string;
     lastName: string;
     email: string;
-    role: string;
-    status: string;
+    role: string | null;
+    status: string | null;
     statusAssignmentDate?: Date;
 }
 
