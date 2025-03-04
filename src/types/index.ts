@@ -18,3 +18,23 @@ export interface User {
     contactUsername?: string;
     manager?: User;
 }
+
+export interface Vacancy {
+    id: string;
+    title: string;
+    description: string;
+    skills: string;
+    location?: string;
+    salary?: number;
+    createdAt: string;
+    updatedAt?: string;
+    managerId: string;
+}
+
+export interface VacancyFormData {
+    title: string;
+    description: string;
+    skills: string;
+    location: string;
+    salary?: number;
+}
