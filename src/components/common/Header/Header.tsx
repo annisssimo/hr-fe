@@ -33,9 +33,14 @@ export const Header = () => {
                                     Base
                                 </Link>
                             </li>
-                            <li key="tasks">
-                                <Link to={ROUTES.TASKS} className={styles.navItem}>
-                                    Tasks
+                            <li key="compare">
+                                <Link to={ROUTES.COMPARE_RESUMES} className={styles.navItem}>
+                                    Compare
+                                </Link>
+                            </li>
+                            <li key="manager-vacancies">
+                                <Link to={ROUTES.MANAGER_VACANCIES} className={styles.navItem}>
+                                    Vacancies
                                 </Link>
                             </li>
                         </ul>
