@@ -105,6 +105,10 @@ export const App = () => {
                 >
                     <Route path={ROUTES.COMPARE_RESUMES} element={<ResumeComparisonPage />} />
                 </Route>
+                <Route element={<ProtectedRoutes allowedRoles={[USER_ROLE.MANAGER]} />}>
+                    <Route path={ROUTES.VACANCIES_LIST} element={<VacanciesListPage />} />
+                    <Route path={ROUTES.COMPARE_RESUMES} element={<ResumeComparisonPage />} />
+                </Route>
             </Route>
             <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />
         </Routes>

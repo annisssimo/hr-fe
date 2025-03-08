@@ -38,3 +38,23 @@ export interface VacancyFormData {
     location?: string;
     salary?: number;
 }
+
+export interface Vacancy {
+    id: string;
+    title: string;
+    description: string;
+    skills: string;
+    location?: string;
+    salary?: number;
+    createdAt: string;
+    updatedAt?: string;
+    managerId: string;
+}
+
+export interface VacancyFormData {
+    title: string;
+    description: string;
+    skills: string;
+    location: string;
+    salary?: number;
+}
