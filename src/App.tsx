@@ -20,8 +20,9 @@ import { FullScreenLoader } from './components/common/FullScreenLoader/FullScree
 import { MainPage } from './pages/mainPage/MainPage.tsx';
 import './App.css.ts';
 import { ResumeComparisonPage } from './pages/resumeComparisonPage/ResumeComparisonPage.tsx';
-import { VacanciesManagerViewPage } from './pages/VacanciesManagerViewPage/VacanciesManagerViewPage.tsx';
 import { VacancyPage } from './pages/VacancyPage/VacancyPage.tsx';
+import { VacanciesListPage } from './pages/VacanciesListPage/VacanciesListPage.tsx';
+import { ApplicationsListPage } from './pages/ApplicationsListPage/ApplicationsListPage.tsx';
 
 export const App = () => {
     const dispatch = useDispatch();
@@ -85,19 +86,23 @@ export const App = () => {
                     />
                 }
             >
-                <Route path={ROUTES.DATABASE} element={<UserDataList />} />
                 <Route path={ROUTES.HOME} element={<MainPage />} />
-
-                <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
                 <Route path={ROUTES.MAIN_PAGE} element={<MainPage />} />
                 <Route path={ROUTES.CHANGE_PASSWORD} element={<PasswordChange />} />
                 <Route path={ROUTES.PERSONAL_PROFILE} element={<PersonalProfilePage />} />
+                <Route path={ROUTES.VACANCIES_LIST} element={<VacanciesListPage />} />
+                <Route path={ROUTES.VACANCY_DESC} element={<VacancyPage />} />
+                <Route path={ROUTES.APPLICATIONS} element={<ApplicationsListPage />} />
+                <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
                 <Route element={<ProtectedRoutes allowedRoles={[USER_ROLE.ADMIN]} />}>
                     <Route path={ROUTES.REQUESTS} element={<ConfirmationPage />} />
+                    <Route path={ROUTES.DATABASE} element={<UserDataList />} />
                 </Route>
-                <Route element={<ProtectedRoutes allowedRoles={[USER_ROLE.MANAGER]} />}>
-                    <Route path={ROUTES.MANAGER_VACANCIES} element={<VacanciesManagerViewPage />} />
-                    <Route path={ROUTES.VACANCY_DESC} element={<VacancyPage />} />
+                <Route
+                    element={
+                        <ProtectedRoutes allowedRoles={[USER_ROLE.MANAGER, USER_ROLE.ADMIN]} />
+                    }
+                >
                     <Route path={ROUTES.COMPARE_RESUMES} element={<ResumeComparisonPage />} />
                 </Route>
             </Route>

@@ -10,6 +10,7 @@ export const SUCCESS_MESSAGES = {
     PROFILE_UPDATED: 'Your personal info has been updated',
     REGISTERED:
         'Your request is taken into consideration. Please, wait for information on your email address',
+    APPLIED: 'Ваша заявка успешно подана',
 };
 
 export enum USER_STATUS {

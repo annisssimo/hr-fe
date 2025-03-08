@@ -228,9 +228,9 @@ export const ConfirmationPage = () => {
                 <Dropdown
                     label={'Role'}
                     options={[
-                        { label: 'Employee', value: USER_ROLE.EMPLOYEE },
-                        { label: 'Manager', value: USER_ROLE.MANAGER },
-                        { label: 'Admin', value: USER_ROLE.ADMIN },
+                        { label: 'Кандидат', value: USER_ROLE.EMPLOYEE },
+                        { label: 'HR-менеджер', value: USER_ROLE.MANAGER },
+                        { label: 'Администратор', value: USER_ROLE.ADMIN },
                     ]}
                     onChange={(newValue) => handleRoleChange(record.id, newValue)}
                     selected={value as USER_ROLE}

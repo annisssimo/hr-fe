@@ -12,6 +12,7 @@ export const ROUTES = {
     MAIN_PAGE: '/main-page',
     CONTACT: '/contact',
     COMPARE_RESUMES: '/compare-resumes',
-    MANAGER_VACANCIES: '/manager-vacancies',
+    VACANCIES_LIST: '/vacancies',
     VACANCY_DESC: '/vacancies/:id',
+    APPLICATIONS: '/:userId/applications',
 };

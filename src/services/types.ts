@@ -63,3 +63,29 @@ interface UsersListResponse<T> {
 }
 
 export type GetUsersListResponse = UsersListResponse<User>;
+
+export interface Application {
+    id: string;
+    candidateId: string;
+    vacancyId: string;
+    status: string;
+    createdAt: string;
+}
+
+interface ApplicationDetails {
+    vacancyTitle: string;
+    skills: string;
+    location: string;
+    salary: number;
+}
+
+export type ExtendedApplication = Application & ApplicationDetails;
+
+export interface CreateApplicationDto {
+    candidateId: string;
+    vacancyId: string;
+}
+
+export interface UpdateApplicationStatusDto {
+    status: string;
+}

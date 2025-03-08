@@ -5,6 +5,7 @@ import { authApi } from '../services/auth.api.ts';
 import { usersApi } from '../services/users.api.ts';
 import { resumeApi } from '../services/resume.api.ts';
 import { vacanciesApi } from '../services/vacancies.api.ts';
+import { applicationsApi } from '../services/applications.api.ts';
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
         [usersApi.reducerPath]: usersApi.reducer,
         [resumeApi.reducerPath]: resumeApi.reducer,
         [vacanciesApi.reducerPath]: vacanciesApi.reducer,
+        [applicationsApi.reducerPath]: applicationsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
@@ -23,6 +25,7 @@ const store = configureStore({
             usersApi.middleware,
             resumeApi.middleware,
             vacanciesApi.middleware,
+            applicationsApi.middleware,
         ]),
 });
 

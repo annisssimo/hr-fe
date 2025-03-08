@@ -23,10 +23,10 @@ export const UserDataList: React.FC = () => {
 
     const employeeColumns: Column<EmployeeData>[] = [
         { title: '#', dataIndex: 'rowNumber' },
-        { title: 'First Name', dataIndex: 'firstName' },
-        { title: 'Last Name', dataIndex: 'lastName' },
+        { title: 'Имя', dataIndex: 'firstName' },
+        { title: 'Фамилия', dataIndex: 'lastName' },
         {
-            title: 'Email Address',
+            title: 'Email',
             dataIndex: 'email',
             render: (email) =>
                 email ? (
@@ -37,8 +37,8 @@ export const UserDataList: React.FC = () => {
                     <span>N/A</span>
                 ),
         },
-        { title: 'Role', dataIndex: 'role' },
-        { title: 'Manager', dataIndex: 'managerFirstName' },
+        { title: 'Роль', dataIndex: 'role' },
+        { title: 'HR-менеджер', dataIndex: 'managerFirstName' },
     ];
 
     useEffect(() => {
