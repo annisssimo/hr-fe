@@ -1,10 +1,11 @@
+import React, { ReactNode, useState } from 'react';
+
 import { Typography } from '../Typography/Typography.tsx';
 import * as styles from './ButtonComponentStyle.css.ts';
-import React, { useState } from 'react';
 
 export const Button: React.FC<{
     type: 'preferred' | 'secondary' | 'disabled' | 'critical';
-    buttonText: string;
+    buttonText: string | ReactNode;
     onClick: (() => void) | (() => Promise<void>);
 }> = ({ type, buttonText, onClick }) => {
     const buttonStyles = {

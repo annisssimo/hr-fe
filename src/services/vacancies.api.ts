@@ -12,6 +12,10 @@ export const vacanciesApi = createApi({
             query: () => ({ url: '/v1/vacancies', method: 'GET' }),
             providesTags: ['Vacancies'],
         }),
+        getVacancy: builder.query<Vacancy, string>({
+            query: (id) => ({ url: `/v1/vacancies/${id}`, method: 'GET' }),
+            providesTags: ['Vacancies'],
+        }),
         addVacancy: builder.mutation<Vacancy, Omit<Vacancy, 'id' | 'createdAt'>>({
             query: (vacancy) => ({
                 url: '/v1/vacancies',
@@ -20,7 +24,28 @@ export const vacanciesApi = createApi({
             }),
             invalidatesTags: ['Vacancies'],
         }),
+        updateVacancy: builder.mutation<Vacancy, { id: string; data: Partial<Vacancy> }>({
+            query: ({ id, data }) => ({
+                url: `/v1/vacancies/${id}`,
+                method: 'PUT',
+                data,
+            }),
+            invalidatesTags: ['Vacancies'],
+        }),
+        deleteVacancy: builder.mutation<void, string>({
+            query: (id) => ({
+                url: `/v1/vacancies/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Vacancies'],
+        }),
     }),
 });
 
-export const { useGetVacanciesQuery, useAddVacancyMutation } = vacanciesApi;
+export const {
+    useGetVacanciesQuery,
+    useGetVacancyQuery,
+    useAddVacancyMutation,
+    useUpdateVacancyMutation,
+    useDeleteVacancyMutation,
+} = vacanciesApi;

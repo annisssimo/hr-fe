@@ -37,11 +37,11 @@ export const Footer = () => {
                         variant="paragraph"
                         className={contactsVisible ? styles.footerText : styles.contactsStyle}
                     >
-                        Contacts
+                        Контакты
                     </Typography>
                 </Link>
                 <Typography variant="paragraph" className={styles.footerText}>
-                    Social media
+                    Соц. сети
                 </Typography>
                 <SocialMediaIcon
                     svg={<LinkedInIcon />}

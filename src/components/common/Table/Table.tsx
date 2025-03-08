@@ -13,6 +13,7 @@ interface TableProps<T> {
     currentPage?: number;
     rowsPerPage?: number;
     isLoading: boolean;
+    onRowClick?: (row: T) => void;
 }
 
 export interface Column<T> {
@@ -31,6 +32,7 @@ export const Table = <T,>({
     rowsPerPage = 100,
     isLoading,
     additionalPaginationElement,
+    onRowClick,
 }: TableProps<T>) => {
     const paginationRender = () => {
         return count && onPageChange && currentPage ? (
@@ -98,7 +100,11 @@ export const Table = <T,>({
                 <tbody>
                     {rows.length > 0 ? (
                         rows.map((row, rowIndex) => (
-                            <tr key={rowIndex} className={styles.tableRow}>
+                            <tr
+                                key={rowIndex}
+                                className={styles.tableRow}
+                                onClick={() => onRowClick?.(row)}
+                            >
                                 {columns.map((col, colIndex) => (
                                     <td key={colIndex} className={styles.tableCell}>
                                         {col.render ? (

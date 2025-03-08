@@ -1,5 +1,8 @@
+import { useNavigate } from 'react-router';
+
 import { Vacancy } from '../../../types';
 import { Column, Table } from '../../common/Table/Table';
+import { ROUTES } from '../../../constants/routes';
 
 interface VacanciesTableProps {
     vacancies: Vacancy[];
@@ -7,13 +10,25 @@ interface VacanciesTableProps {
 }
 
 export const VacanciesTable: React.FC<VacanciesTableProps> = ({ vacancies, isLoading }) => {
+    const navigate = useNavigate();
+
+    const handleRowClick = (vacancy: Vacancy) => {
+        navigate(ROUTES.VACANCY_DESC.replace(':id', String(vacancy.id)));
+    };
+
     const columns: Column<Vacancy>[] = [
         { title: 'Название', dataIndex: 'title' },
-        { title: 'Описание', dataIndex: 'description' },
         { title: 'Навыки', dataIndex: 'skills' },
         { title: 'Локация', dataIndex: 'location' },
         { title: 'Доход', dataIndex: 'salary' },
     ];
 
-    return <Table columns={columns} rows={vacancies} isLoading={isLoading} />;
+    return (
+        <Table
+            columns={columns}
+            rows={vacancies}
+            isLoading={isLoading}
+            onRowClick={handleRowClick}
+        />
+    );
 };

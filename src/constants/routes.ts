@@ -13,4 +13,5 @@ export const ROUTES = {
     CONTACT: '/contact',
     COMPARE_RESUMES: '/compare-resumes',
     MANAGER_VACANCIES: '/manager-vacancies',
+    VACANCY_DESC: '/vacancies/:id',
 };

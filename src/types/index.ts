@@ -35,6 +35,6 @@ export interface VacancyFormData {
     title: string;
     description: string;
     skills: string;
-    location: string;
+    location?: string;
     salary?: number;
 }

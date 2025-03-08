@@ -43,23 +43,23 @@ export const Header = () => {
                             {user?.role === 'admin' && (
                                 <li key="requests">
                                     <Link to={ROUTES.REQUESTS} className={styles.navItem}>
-                                        Requests
+                                        Запросы
                                     </Link>
                                 </li>
                             )}
                             <li key="database">
                                 <Link to={ROUTES.DATABASE} className={styles.navItem}>
-                                    Base
+                                    База
                                 </Link>
                             </li>
                             <li key="compare">
                                 <Link to={ROUTES.COMPARE_RESUMES} className={styles.navItem}>
-                                    Compare
+                                    Сравнить
                                 </Link>
                             </li>
                             <li key="manager-vacancies">
                                 <Link to={ROUTES.MANAGER_VACANCIES} className={styles.navItem}>
-                                    Vacancies
+                                    Вакансии
                                 </Link>
                             </li>
                         </ul>

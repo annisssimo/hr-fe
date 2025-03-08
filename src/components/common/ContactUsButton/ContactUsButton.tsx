@@ -5,7 +5,7 @@ export const ContactUsButton: React.FC<{ contactsVisible?: boolean }> = ({
 }) => {
     return (
         <button className={contactsVisible ? styles.contactsButton : styles.contactsStyle}>
-            CONTACT US
+            СВЯЗАТЬСЯ
         </button>
     );
 };

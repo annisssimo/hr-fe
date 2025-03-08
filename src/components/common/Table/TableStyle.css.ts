@@ -27,6 +27,7 @@ export const tableHeader = style({
 
 export const tableRow = style({
     borderBottom: '1px solid #E0E0E0',
+    cursor: 'pointer',
     ':hover': {
         backgroundColor: '#E6E6E6',
         cursor: 'pointer',

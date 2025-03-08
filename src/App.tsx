@@ -21,6 +21,7 @@ import { MainPage } from './pages/mainPage/MainPage.tsx';
 import './App.css.ts';
 import { ResumeComparisonPage } from './pages/resumeComparisonPage/ResumeComparisonPage.tsx';
 import { VacanciesManagerViewPage } from './pages/VacanciesManagerViewPage/VacanciesManagerViewPage.tsx';
+import { VacancyPage } from './pages/VacancyPage/VacancyPage.tsx';
 
 export const App = () => {
     const dispatch = useDispatch();
@@ -96,6 +97,7 @@ export const App = () => {
                 </Route>
                 <Route element={<ProtectedRoutes allowedRoles={[USER_ROLE.MANAGER]} />}>
                     <Route path={ROUTES.MANAGER_VACANCIES} element={<VacanciesManagerViewPage />} />
+                    <Route path={ROUTES.VACANCY_DESC} element={<VacancyPage />} />
                     <Route path={ROUTES.COMPARE_RESUMES} element={<ResumeComparisonPage />} />
                 </Route>
             </Route>

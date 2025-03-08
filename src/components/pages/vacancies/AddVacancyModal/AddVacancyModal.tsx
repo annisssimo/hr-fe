@@ -5,18 +5,13 @@ import { Typography } from '../../../common/Typography/Typography';
 import { VacancyFormData } from '../../../../types';
 import { Dropdown } from '../../../common/Dropdown/Dropdown';
 import * as styles from './AddVacancyModal.css';
+import { positionOptions } from '../types';
 
 interface AddVacancyModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (data: VacancyFormData) => void;
 }
-
-const positionOptions = [
-    { label: 'Удаленная работа', value: 'remote' },
-    { label: 'Офис', value: 'office' },
-    { label: 'Гибрид', value: 'hybrid' },
-];
 
 export const AddVacancyModal: React.FC<AddVacancyModalProps> = ({ isOpen, onClose, onSubmit }) => {
     const { control, handleSubmit, reset } = useForm<VacancyFormData>();
