@@ -19,10 +19,10 @@ import { useGetUsersListMutation } from './services/users.api.ts';
 import { FullScreenLoader } from './components/common/FullScreenLoader/FullScreenLoader.tsx';
 import { MainPage } from './pages/mainPage/MainPage.tsx';
 import './App.css.ts';
-import { ResumeComparisonPage } from './pages/resumeComparisonPage/ResumeComparisonPage.tsx';
 import { VacancyPage } from './pages/VacancyPage/VacancyPage.tsx';
 import { VacanciesListPage } from './pages/VacanciesListPage/VacanciesListPage.tsx';
 import { ApplicationsListPage } from './pages/ApplicationsListPage/ApplicationsListPage.tsx';
+import { ResumesListPage } from './pages/ResumesListPage/ResumesListPage.tsx';
 
 export const App = () => {
     const dispatch = useDispatch();
@@ -93,21 +93,17 @@ export const App = () => {
                 <Route path={ROUTES.VACANCIES_LIST} element={<VacanciesListPage />} />
                 <Route path={ROUTES.VACANCY_DESC} element={<VacancyPage />} />
                 <Route path={ROUTES.APPLICATIONS} element={<ApplicationsListPage />} />
+                <Route path={ROUTES.RESUMES} element={<ResumesListPage />} />
                 <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
                 <Route element={<ProtectedRoutes allowedRoles={[USER_ROLE.ADMIN]} />}>
                     <Route path={ROUTES.REQUESTS} element={<ConfirmationPage />} />
-                    <Route path={ROUTES.DATABASE} element={<UserDataList />} />
                 </Route>
                 <Route
                     element={
                         <ProtectedRoutes allowedRoles={[USER_ROLE.MANAGER, USER_ROLE.ADMIN]} />
                     }
                 >
-                    <Route path={ROUTES.COMPARE_RESUMES} element={<ResumeComparisonPage />} />
-                </Route>
-                <Route element={<ProtectedRoutes allowedRoles={[USER_ROLE.MANAGER]} />}>
-                    <Route path={ROUTES.VACANCIES_LIST} element={<VacanciesListPage />} />
-                    <Route path={ROUTES.COMPARE_RESUMES} element={<ResumeComparisonPage />} />
+                    <Route path={ROUTES.DATABASE} element={<UserDataList />} />
                 </Route>
             </Route>
             <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />

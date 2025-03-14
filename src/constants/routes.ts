@@ -11,8 +11,8 @@ export const ROUTES = {
     PERSONAL_PROFILE: '/profile',
     MAIN_PAGE: '/main-page',
     CONTACT: '/contact',
-    COMPARE_RESUMES: '/compare-resumes',
     VACANCIES_LIST: '/vacancies',
     VACANCY_DESC: '/vacancies/:id',
-    APPLICATIONS: '/:userId/applications',
+    APPLICATIONS: '/applications',
+    RESUMES: '/resumes',
 };

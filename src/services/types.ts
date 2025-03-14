@@ -84,8 +84,33 @@ export type ExtendedApplication = Application & ApplicationDetails;
 export interface CreateApplicationDto {
     candidateId: string;
     vacancyId: string;
+    resumeId: string;
+    coverLetter?: string;
+    source?: string;
 }
 
 export interface UpdateApplicationStatusDto {
     status: string;
+}
+
+export interface Resume {
+    id: string;
+    candidateId: string;
+    title: string;
+    filePath: string | null;
+    skills: string;
+    experience: string;
+    education: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+interface Metadata {
+    limit: number;
+    offset: number;
+}
+
+export interface ResponseData {
+    data: Resume[];
+    metadata: Metadata;
 }

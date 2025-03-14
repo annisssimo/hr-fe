@@ -61,22 +61,22 @@ export const UserDataTable: React.FC<UserDataTableProps> = ({
             <div className={styles.tableHeader}>
                 <div className={styles.partContainer}>
                     <Typography variant="h1" className={styles.pageTitle}>
-                        Users data
+                        Пользователи
                     </Typography>
                     <div className={styles.buttonRow}>
                         <Button
                             type="secondary"
-                            buttonText="All"
+                            buttonText="Все"
                             onClick={() => onFilterClick(FILTER_VARIANTS.ALL)}
                         />
                         <Button
                             type="secondary"
-                            buttonText="Manager"
+                            buttonText="Менеджеры"
                             onClick={() => onFilterClick(FILTER_VARIANTS.MANAGER)}
                         />
                         <Button
                             type="secondary"
-                            buttonText="Employee"
+                            buttonText="Кандидаты"
                             onClick={() => onFilterClick(FILTER_VARIANTS.EMPLOYEE)}
                         />
                     </div>
@@ -105,7 +105,7 @@ export const UserDataTable: React.FC<UserDataTableProps> = ({
                 isLoading={isLoading}
                 additionalPaginationElement={
                     <div className={styles.dropdownAndText}>
-                        <Typography variant="text">Rows per page</Typography>
+                        <Typography variant="text">Количество строк</Typography>
                         <Dropdown
                             options={ROWS_PER_PAGE_OPTIONS}
                             selected={String(rowsPerPage)}

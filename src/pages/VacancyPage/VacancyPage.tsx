@@ -26,6 +26,8 @@ import {
     useGetApplicationsByCandidateQuery,
 } from '../../services/applications.api';
 import { showSuccessMessage } from '../../utils/UI/toastMessages';
+import { ApplyModal } from '../../components/pages/vacancies/ApplyModal/ApplyModal';
+import { useGetResumesByCandidateQuery } from '../../services/resumes.api';
 
 export const VacancyPage: React.FC = () => {
     const navigate = useNavigate();
@@ -37,12 +39,18 @@ export const VacancyPage: React.FC = () => {
     const { data: applications } = useGetApplicationsByCandidateQuery(user?.id ?? '', {
         skip: !user?.id,
     });
+    const { data } = useGetResumesByCandidateQuery(user?.id ?? '', {
+        skip: !user?.id,
+    });
+
+    const candidateResumes = data?.data || [];
 
     const [updateVacancy] = useUpdateVacancyMutation();
     const [deleteVacancy] = useDeleteVacancyMutation();
     const [applyToVacancy] = useCreateApplicationMutation();
 
     const [isEditing, setIsEditing] = useState(false);
+    const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
 
     const hasApplied = applications?.some((app) => app.vacancyId === id);
 
@@ -64,10 +72,16 @@ export const VacancyPage: React.FC = () => {
         }
     };
 
-    const handleApply = async () => {
+    const handleApply = async (resumeId: string, coverLetter?: string, source?: string) => {
         if (user && id) {
             try {
-                await applyToVacancy({ candidateId: user.id, vacancyId: id }).unwrap();
+                await applyToVacancy({
+                    candidateId: user.id,
+                    vacancyId: id,
+                    resumeId,
+                    coverLetter,
+                    source,
+                }).unwrap();
                 showSuccessMessage(SUCCESS_MESSAGES.APPLIED);
             } catch (error) {
                 console.error('Error applying:', error);
@@ -110,18 +124,31 @@ export const VacancyPage: React.FC = () => {
                                     buttonText={<MdDelete />}
                                     onClick={handleDelete}
                                 />
+                                <Button
+                                    type="preferred"
+                                    buttonText="Показать отклики"
+                                    onClick={handleShowApplications}
+                                />
                             </div>
                         </>
                     )}
 
                     {user?.role === USER_ROLE.EMPLOYEE && (
-                        <div className={styles.actions}>
-                            <Button
-                                type={hasApplied ? 'disabled' : 'preferred'}
-                                buttonText={hasApplied ? 'Вы откликнулись' : 'Откликнуться'}
-                                onClick={handleApply}
+                        <>
+                            <div className={styles.actions}>
+                                <Button
+                                    type={hasApplied ? 'disabled' : 'preferred'}
+                                    buttonText={hasApplied ? 'Вы откликнулись' : 'Откликнуться'}
+                                    onClick={() => setIsApplyModalOpen(true)}
+                                />
+                            </div>
+                            <ApplyModal
+                                isOpen={isApplyModalOpen}
+                                onClose={() => setIsApplyModalOpen(false)}
+                                onApply={handleApply}
+                                resumes={candidateResumes || []}
                             />
-                        </div>
+                        </>
                     )}
                 </div>
 

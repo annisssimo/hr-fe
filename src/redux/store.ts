@@ -3,7 +3,7 @@ import { userSessionReducer } from './userSlice/userSlice.ts';
 import resumeReducer from './resumeSlice/resumeSlice.ts';
 import { authApi } from '../services/auth.api.ts';
 import { usersApi } from '../services/users.api.ts';
-import { resumeApi } from '../services/resume.api.ts';
+import { resumesApi } from '../services/resumes.api.ts';
 import { vacanciesApi } from '../services/vacancies.api.ts';
 import { applicationsApi } from '../services/applications.api.ts';
 
@@ -13,7 +13,7 @@ const store = configureStore({
         resume: resumeReducer,
         [authApi.reducerPath]: authApi.reducer,
         [usersApi.reducerPath]: usersApi.reducer,
-        [resumeApi.reducerPath]: resumeApi.reducer,
+        [resumesApi.reducerPath]: resumesApi.reducer,
         [vacanciesApi.reducerPath]: vacanciesApi.reducer,
         [applicationsApi.reducerPath]: applicationsApi.reducer,
     },
@@ -23,7 +23,7 @@ const store = configureStore({
         }).concat([
             authApi.middleware,
             usersApi.middleware,
-            resumeApi.middleware,
+            resumesApi.middleware,
             vacanciesApi.middleware,
             applicationsApi.middleware,
         ]),

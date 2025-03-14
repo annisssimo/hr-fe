@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { FaUser, FaSignOutAlt } from 'react-icons/fa';
 import { FaArchive } from 'react-icons/fa';
+import { LuLetterText } from 'react-icons/lu';
 
 import * as styles from './Header.css';
 import { Logo } from '../Logo/Logo';
@@ -58,11 +59,6 @@ export const Header = () => {
                                 </>
                             )}
 
-                            <li key="compare">
-                                <Link to={ROUTES.COMPARE_RESUMES} className={styles.navItem}>
-                                    Сравнить
-                                </Link>
-                            </li>
                             <li key="vacancies-list">
                                 <Link to={ROUTES.VACANCIES_LIST} className={styles.navItem}>
                                     Вакансии
@@ -88,6 +84,12 @@ export const Header = () => {
                                     <Link to={ROUTES.APPLICATIONS} className={styles.menuItem}>
                                         <FaArchive />
                                         Мои заявки
+                                    </Link>
+                                )}
+                                {user?.role == USER_ROLE.EMPLOYEE && (
+                                    <Link to={ROUTES.RESUMES} className={styles.menuItem}>
+                                        <LuLetterText />
+                                        Мои резюме
                                     </Link>
                                 )}
                                 <button onClick={handleLogout} className={styles.menuItem}>

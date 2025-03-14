@@ -54,6 +54,13 @@ export const applicationsApi = createApi({
             }),
             invalidatesTags: ['Applications'],
         }),
+        getApplicationsByVacancy: builder.query<ExtendedApplication[], string>({
+            query: (vacancyId) => ({
+                url: `/v1/applications/vacancy/${vacancyId}`,
+                method: 'GET',
+            }),
+            providesTags: ['Applications'],
+        }),
     }),
 });
 

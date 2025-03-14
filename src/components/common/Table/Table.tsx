@@ -67,7 +67,7 @@ export const Table = <T,>({
         );
     };
 
-    const getNoDataMessage = () => (currentPage === 1 ? 'No data' : 'No more data');
+    const getNoDataMessage = () => (currentPage === 1 ? 'Нет данных' : 'Больше нет данных');
 
     const previousPageClick = () => {
         if (onPageChange && currentPage) {

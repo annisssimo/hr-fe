@@ -10,6 +10,8 @@ import { VacancyFormData } from '../../types';
 import { getUserSelector } from '../../redux/userSlice/userSlice';
 import { useSelector } from 'react-redux';
 import { USER_ROLE } from '../../constants';
+import * as styles from './VacanciesListPage.css';
+import { Typography } from '../../components/common/Typography/Typography';
 
 export const VacanciesListPage = () => {
     const { data: vacancies, isLoading } = useGetVacanciesQuery();
@@ -29,13 +31,10 @@ export const VacanciesListPage = () => {
     };
 
     return (
-        <div>
+        <div className={styles.pageWrapper}>
             <Header />
-            <div
-                style={{
-                    padding: '20px',
-                }}
-            >
+            <div className={styles.contentWrapper}>
+                <Typography variant="h1">Вакансии</Typography>
                 <div style={{ width: '160px' }}>
                     {user && (user.role === USER_ROLE.MANAGER || user.role === USER_ROLE.ADMIN) && (
                         <Button

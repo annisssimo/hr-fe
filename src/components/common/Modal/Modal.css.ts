@@ -2,7 +2,8 @@ import { style } from '@vanilla-extract/css';
 
 export const modal = style({
     position: 'relative',
-    maxWidth: '20rem',
+    maxWidth: '40rem',
+    width: '90%',
     borderRadius: '0.5rem',
     boxShadow: '0 0 0.5rem 0.25rem hsl(0 0% 0% / 10%)',
     border: 0,

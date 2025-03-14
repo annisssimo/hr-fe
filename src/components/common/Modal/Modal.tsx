@@ -14,6 +14,8 @@ export const Modal = ({
     confirmText = 'Confirm',
     cancelText = 'Cancel',
     isClosingOnButtonClick = true,
+    width = '40rem',
+    maxHeight = 'auto',
 }: ModalProps) => {
     const modalRef = useModal(isOpen);
     const handleCloseModal = () => {
@@ -48,6 +50,7 @@ export const Modal = ({
             onKeyDown={handleKeyDown}
             onClick={handleBackdropClick}
             className={styles.modal}
+            style={{ maxWidth: width, maxHeight }} // Применяем пропсы
         >
             <form className={styles.formInsideDialog} method="dialog">
                 {children}
@@ -81,4 +84,6 @@ interface ModalProps {
     confirmText?: string;
     cancelText?: string;
     isClosingOnButtonClick?: boolean;
+    width?: string;
+    maxHeight?: string;
 }
