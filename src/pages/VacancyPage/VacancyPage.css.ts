@@ -1,14 +1,5 @@
 import { style } from '@vanilla-extract/css';
 
-export const container = style({
-    padding: '20px',
-    maxWidth: '800px',
-    margin: '20px auto',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '12px',
-});
-
 export const vacancy = style({
     display: 'flex',
     gap: '24px',

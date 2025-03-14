@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router';
 import { FaRegEdit } from 'react-icons/fa';
 import { FcCancel } from 'react-icons/fc';
 import { MdDelete } from 'react-icons/md';
-
+import { Table } from '../../components/common/Table/Table';
 import {
     useGetVacancyQuery,
     useUpdateVacancyMutation,
@@ -24,14 +24,15 @@ import { useSelector } from 'react-redux';
 import {
     useCreateApplicationMutation,
     useGetApplicationsByCandidateQuery,
+    useGetApplicationsByVacancyQuery,
 } from '../../services/applications.api';
 import { showSuccessMessage } from '../../utils/UI/toastMessages';
 import { ApplyModal } from '../../components/pages/vacancies/ApplyModal/ApplyModal';
 import { useGetResumesByCandidateQuery } from '../../services/resumes.api';
+import { pageWrapper, contentWrapper } from '../VacanciesListPage/VacanciesListPage.css';
 
 export const VacancyPage: React.FC = () => {
     const navigate = useNavigate();
-
     const { id } = useParams<{ id: string }>();
     const user = useSelector(getUserSelector);
 
@@ -43,6 +44,11 @@ export const VacancyPage: React.FC = () => {
         skip: !user?.id,
     });
 
+    const { data: allApplications, isLoading: isApplicationsLoading } =
+        useGetApplicationsByVacancyQuery(id || '', {
+            skip: !id,
+        });
+
     const candidateResumes = data?.data || [];
 
     const [updateVacancy] = useUpdateVacancyMutation();
@@ -51,6 +57,7 @@ export const VacancyPage: React.FC = () => {
 
     const [isEditing, setIsEditing] = useState(false);
     const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+    const [isApplicationsTableVisible, setIsApplicationsTableVisible] = useState(false); // состояние для таблицы
 
     const hasApplied = applications?.some((app) => app.vacancyId === id);
 
@@ -89,16 +96,21 @@ export const VacancyPage: React.FC = () => {
         }
     };
 
+    const handleShowApplications = () => {
+        setIsApplicationsTableVisible(!isApplicationsTableVisible);
+    };
+
     if (isLoading) return <FullScreenLoader />;
     if (!vacancy) return <div>Вакансия не найдена</div>;
 
     return (
-        <div>
+        <div className={pageWrapper}>
             <Header />
-            <div className={styles.container}>
+            <div className={contentWrapper}>
                 <div className={styles.vacancy}>
                     <div className={styles.vacancyText}>
                         <Typography variant="h2">{vacancy.title}</Typography>
+                        <Typography variant="text">{`На эту вакансию откликнулось ${allApplications?.length || 0} человек`}</Typography>
                         <Typography variant="text">{vacancy.description}</Typography>
                         <Typography variant="text">
                             <strong>Навыки:</strong> {vacancy.skills}
@@ -126,7 +138,11 @@ export const VacancyPage: React.FC = () => {
                                 />
                                 <Button
                                     type="preferred"
-                                    buttonText="Показать отклики"
+                                    buttonText={
+                                        isApplicationsTableVisible
+                                            ? 'Скрыть отклики'
+                                            : 'Показать отклики'
+                                    }
                                     onClick={handleShowApplications}
                                 />
                             </div>
@@ -156,6 +172,23 @@ export const VacancyPage: React.FC = () => {
                     <div className={styles.editForm}>
                         <Typography variant="h3">Редактировать вакансию</Typography>
                         <EditVacancyForm vacancy={vacancy} onSubmit={handleUpdate} />
+                    </div>
+                )}
+
+                {isApplicationsTableVisible && allApplications && (
+                    <div style={{ marginTop: '40px' }}>
+                        <Table
+                            columns={[
+                                { title: 'Кандидат', dataIndex: 'candidateName' },
+                                { title: 'Резюме', dataIndex: 'resumeTitle' },
+                                { title: 'Сопроводительное письмо', dataIndex: 'coverLetter' },
+                                { title: 'Статус', dataIndex: 'status' },
+                                { title: 'Дата отклика', dataIndex: 'createdAt' },
+                                { title: 'Источник', dataIndex: 'source' },
+                            ]}
+                            rows={allApplications}
+                            isLoading={isApplicationsLoading}
+                        />
                     </div>
                 )}
             </div>

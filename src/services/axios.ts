@@ -4,7 +4,6 @@ import { ROUTES } from '../constants/routes';
 export const axiosBaseQuery =
     (baseUrl: string) =>
     async ({ url, method, data, params, headers }: AxiosRequestConfig) => {
-        console.log('Sending request with data:', data);
         try {
             const token = localStorage.getItem('token') || '';
             const result = await axios({

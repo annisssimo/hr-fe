@@ -71,4 +71,5 @@ export const {
     useCreateApplicationMutation,
     useUpdateApplicationStatusMutation,
     useDeleteApplicationMutation,
+    useGetApplicationsByVacancyQuery,
 } = applicationsApi;

@@ -73,13 +73,20 @@ export interface Application {
 }
 
 interface ApplicationDetails {
+    candidateName: string;
+    resumeTitle: string;
     vacancyTitle: string;
     skills: string;
     location: string;
     salary: number;
 }
 
-export type ExtendedApplication = Application & ApplicationDetails;
+type ResumeDetails = {
+    source?: string;
+    coverLetter?: string;
+};
+
+export type ExtendedApplication = Application & ApplicationDetails & ResumeDetails;
 
 export interface CreateApplicationDto {
     candidateId: string;
