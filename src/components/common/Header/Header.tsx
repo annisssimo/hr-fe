@@ -43,7 +43,7 @@ export const Header = () => {
                 <>
                     <nav className={styles.nav}>
                         <ul className={styles.navList}>
-                            {user?.role === 'admin' && (
+                            {user?.role === USER_ROLE.ADMIN && (
                                 <>
                                     <li key="requests">
                                         <Link to={ROUTES.REQUESTS} className={styles.navItem}>
@@ -54,6 +54,16 @@ export const Header = () => {
                                     <li key="database">
                                         <Link to={ROUTES.DATABASE} className={styles.navItem}>
                                             База
+                                        </Link>
+                                    </li>
+                                </>
+                            )}
+
+                            {user?.role === USER_ROLE.MANAGER && (
+                                <>
+                                    <li key="requests">
+                                        <Link to={ROUTES.ANALYTICS} className={styles.navItem}>
+                                            Аналитика
                                         </Link>
                                     </li>
                                 </>
@@ -83,7 +93,7 @@ export const Header = () => {
                                 {user?.role == USER_ROLE.EMPLOYEE && (
                                     <Link to={ROUTES.APPLICATIONS} className={styles.menuItem}>
                                         <FaArchive />
-                                        Мои заявки
+                                        Мои отклики
                                     </Link>
                                 )}
                                 {user?.role == USER_ROLE.EMPLOYEE && (

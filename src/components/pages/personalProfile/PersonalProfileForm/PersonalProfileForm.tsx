@@ -135,7 +135,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
 
     return (
         <div className={styles.profileMain}>
-            <Typography variant="h1">Personal Profile</Typography>
+            <Typography variant="h1">Профиль пользователя</Typography>
 
             <div className={styles.avatarContainer}>
                 <img
@@ -145,8 +145,8 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                 />
             </div>
             <div className={styles.buttonWrapper}>
-                <Button type={'preferred'} buttonText={'Change photo'} onClick={showChangePhoto} />
-                <Button type={'critical'} buttonText={'Delete photo'} onClick={handleDeletePhoto} />
+                <Button type={'preferred'} buttonText="Сменить аватар" onClick={showChangePhoto} />
+                <Button type={'critical'} buttonText="Удалить фото" onClick={handleDeletePhoto} />
             </div>
             {isPhotoModalOpen && (
                 <Photo isOpen={isPhotoModalOpen} onClose={() => setIsPhotoModalOpen(false)} />
@@ -157,7 +157,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                     name="firstName"
                     control={control}
                     defaultValue={user?.firstName}
-                    labelText="Name"
+                    labelText="Имя"
                     type="text"
                     variant={InputVariant.LabelLeftOutlined}
                     disabled
@@ -167,7 +167,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                     name="lastName"
                     control={control}
                     defaultValue={user?.lastName}
-                    labelText="Surname"
+                    labelText="Фамилия"
                     type="text"
                     variant={InputVariant.LabelLeftOutlined}
                     disabled
@@ -188,7 +188,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                     control={control}
                     render={({ field: { value, onChange } }) => (
                         <Dropdown
-                            label="Position"
+                            label="Позиция"
                             options={positionOptions}
                             selected={value}
                             onChange={onChange}
@@ -200,7 +200,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                 <ControlledInput
                     name="startDay"
                     control={control}
-                    labelText="Starting Day in the company"
+                    labelText="Первый день работы в компании"
                     type="date"
                     variant={InputVariant.LabelLeftOutlined}
                 />
@@ -208,7 +208,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                 <ControlledInput
                     name="endDate"
                     control={control}
-                    labelText="End Date"
+                    labelText="Последний день"
                     type="date"
                     variant={InputVariant.LabelLeftOutlined}
                     disabled={!canEditEndDate}
@@ -217,7 +217,7 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                 <ControlledInput
                     name="dateOfBirth"
                     control={control}
-                    labelText="Date of Birth"
+                    labelText="Дата рождения"
                     type="date"
                     variant={InputVariant.LabelLeftOutlined}
                 />
@@ -225,14 +225,14 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                 <PhoneInputWithMask
                     name="phoneNumber"
                     control={control}
-                    labelText="Phone number"
+                    labelText="Телефон"
                     error={errors.phoneNumber}
                 />
 
                 <ControlledInput
                     name="contactUsername"
                     control={control}
-                    labelText="Skype or Telegram Username"
+                    labelText="Skype или Telegram"
                     type="text"
                     variant={InputVariant.LabelLeftOutlined}
                 />
@@ -240,11 +240,15 @@ export const PersonalProfileForm = ({ user }: PersonalProfileFormProps) => {
                 <div className={styles.buttonsContainer}>
                     <Button
                         type="secondary"
-                        buttonText={'Change Password'}
+                        buttonText="Сменить пароль"
                         onClick={handleChangePassword}
                     />
 
-                    <Button type="preferred" buttonText={'Save'} onClick={handleSubmit(onSubmit)} />
+                    <Button
+                        type="preferred"
+                        buttonText="Сохранить"
+                        onClick={handleSubmit(onSubmit)}
+                    />
                 </div>
             </form>
             {isLoading && <Loader />}

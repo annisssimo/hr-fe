@@ -35,8 +35,7 @@ export const Dropdown = ({
         setIsOpen(false);
     };
 
-    const selectedLabel =
-        options.find((o) => o.value === internalSelected)?.label ?? 'Select an option';
+    const selectedLabel = options.find((o) => o.value === internalSelected)?.label ?? 'Выберите';
 
     const isLarge = variant === DropdownVariant.Large;
     const isSmall = variant === DropdownVariant.Small;

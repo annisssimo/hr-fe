@@ -13,7 +13,7 @@ export const applicationsApi = createApi({
     baseQuery: axiosBaseQuery(settings.API_URL),
     tagTypes: ['Applications'],
     endpoints: (builder) => ({
-        getApplications: builder.query<Application[], void>({
+        getApplications: builder.query<ExtendedApplication[], void>({
             query: () => ({ url: '/v1/applications', method: 'GET' }),
             providesTags: ['Applications'],
         }),

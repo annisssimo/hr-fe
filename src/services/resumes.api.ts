@@ -11,7 +11,7 @@ export const resumesApi = createApi({
             query: (candidateId) => ({
                 url: '/v1/resumes/list',
                 method: 'POST',
-                body: { filters: { candidateId } },
+                data: { filters: { candidateId } },
             }),
         }),
         createResume: builder.mutation<ResponseData, FormData>({

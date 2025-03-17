@@ -60,7 +60,7 @@ export const AddResumeModal = ({ isModalOpen, onClose }: AddResumeModalProps) =>
             isOpen={isModalOpen}
             onClose={onClose}
             onConfirm={handleSubmit(onSubmit)}
-            confirmText="Save"
+            confirmText="Сохранить"
             width="60rem"
             maxHeight="80vh"
         >
@@ -108,7 +108,9 @@ export const AddResumeModal = ({ isModalOpen, onClose }: AddResumeModalProps) =>
                                 onChange={handleFileChange}
                                 showUploadList={false}
                             >
-                                <AntButton icon={<UploadOutlined />}>Upload Resume (PDF)</AntButton>
+                                <AntButton icon={<UploadOutlined />}>
+                                    Загрузите резюме (PDF)
+                                </AntButton>
                                 {file && <p>Uploaded: {file.name}</p>}
                             </Upload>
                         )}

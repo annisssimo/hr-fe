@@ -78,7 +78,7 @@ interface ApplicationDetails {
     vacancyTitle: string;
     skills: string;
     location: string;
-    salary: number;
+    salary: string;
 }
 
 type ResumeDetails = {

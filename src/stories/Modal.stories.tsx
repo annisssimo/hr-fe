@@ -33,8 +33,8 @@ export const Default = () => {
                 onClose={handleClose}
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
-                confirmText="Confirm"
-                cancelText="Cancel"
+                confirmText="Подтвердить"
+                cancelText="Отмена"
             >
                 <Typography variant="paragraph">This is the modal content!</Typography>
             </Modal>

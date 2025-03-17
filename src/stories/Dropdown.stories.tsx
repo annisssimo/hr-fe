@@ -19,7 +19,7 @@ export default meta;
 
 export const SmallDropdown: StoryObj<typeof Dropdown> = {
     args: {
-        label: 'Select an option',
+        label: 'Выберите',
 
         options: [
             { label: 'Option 1', value: 'option1' },
@@ -31,7 +31,7 @@ export const SmallDropdown: StoryObj<typeof Dropdown> = {
 
 export const LargeDropdown: StoryObj<typeof Dropdown> = {
     args: {
-        label: 'Select an option',
+        label: 'Выберите',
 
         options: [
             { label: 'Option 1', value: 'option1' },

@@ -1,9 +1,9 @@
 import { useForm, Controller } from 'react-hook-form';
 import { Modal } from '../../../common/Modal/Modal';
 import { Typography } from '../../../common/Typography/Typography';
-import { ControlledInput } from '../../../common/ControlledInput/ControlledInput';
 import { Dropdown } from '../../../common/Dropdown/Dropdown';
 import { Input as AntInput } from 'antd';
+import { sources } from '../types';
 
 const { TextArea } = AntInput;
 
@@ -36,26 +36,46 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ isOpen, onClose, onApply
             onClose={onClose}
             onlyConfirm={false}
             confirmText="Отправить"
+            width="30rem"
         >
             <Typography variant="h2">Откликнуться на вакансию</Typography>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <Controller
-                    name="resumeId"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: 'Выберите резюме' }}
-                    render={({ field: { value, onChange } }) => (
-                        <Dropdown
-                            label="Выберите резюме"
-                            options={resumes.map((resume) => ({
-                                value: resume.id,
-                                label: resume.title,
-                            }))}
-                            selected={value}
-                            onChange={onChange}
-                        />
-                    )}
-                />
+                <div style={{ display: 'flex', gap: '16px' }}>
+                    <Controller
+                        name="resumeId"
+                        control={control}
+                        defaultValue=""
+                        rules={{ required: 'Выберите резюме' }}
+                        render={({ field: { value, onChange } }) => (
+                            <Dropdown
+                                label="Выберите резюме"
+                                options={resumes.map((resume) => ({
+                                    value: resume.id,
+                                    label: resume.title,
+                                }))}
+                                selected={value}
+                                onChange={onChange}
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="source"
+                        control={control}
+                        defaultValue=""
+                        rules={{ required: 'Откуда вы узнали о вакансии?' }}
+                        render={({ field: { value, onChange } }) => (
+                            <Dropdown
+                                label="Откуда вы узнали о вакансии?"
+                                options={sources.map((source) => ({
+                                    value: source.value,
+                                    label: source.label,
+                                }))}
+                                selected={value}
+                                onChange={onChange}
+                            />
+                        )}
+                    />
+                </div>
                 <div>
                     <Controller
                         name="coverLetter"
@@ -68,14 +88,6 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ isOpen, onClose, onApply
                                 placeholder="Напишите сопроводительное письмо..."
                             />
                         )}
-                    />
-                </div>
-                <div>
-                    <ControlledInput
-                        name="source"
-                        control={control}
-                        labelText="Откуда вы узнали о вакансии?"
-                        defaultValue=""
                     />
                 </div>
             </div>

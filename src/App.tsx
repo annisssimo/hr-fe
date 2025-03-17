@@ -23,6 +23,7 @@ import { VacancyPage } from './pages/VacancyPage/VacancyPage.tsx';
 import { VacanciesListPage } from './pages/VacanciesListPage/VacanciesListPage.tsx';
 import { ApplicationsListPage } from './pages/ApplicationsListPage/ApplicationsListPage.tsx';
 import { ResumesListPage } from './pages/ResumesListPage/ResumesListPage.tsx';
+import { AnalyticsPage } from './pages/AnalyticsPage/AnalyticsPage.tsx';
 
 export const App = () => {
     const dispatch = useDispatch();
@@ -104,6 +105,7 @@ export const App = () => {
                     }
                 >
                     <Route path={ROUTES.DATABASE} element={<UserDataList />} />
+                    <Route path={ROUTES.ANALYTICS} element={<AnalyticsPage />} />
                 </Route>
             </Route>
             <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />

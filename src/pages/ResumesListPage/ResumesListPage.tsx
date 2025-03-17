@@ -10,6 +10,7 @@ import { Button } from '../../components/common/ButtonComponent/ButtonComponent'
 import { useState } from 'react';
 import { AddResumeModal } from '../../components/pages/myResumes/AddResumeModal/AddResumeModal';
 import { Typography } from '../../components/common/Typography/Typography';
+import { pageWrapper, contentWrapper } from '../VacanciesListPage/VacanciesListPage.css';
 
 export const ResumesListPage = () => {
     const user = useSelector(getUserSelector);
@@ -18,9 +19,9 @@ export const ResumesListPage = () => {
 
     return (
         <>
-            <div>
+            <div className={pageWrapper}>
                 <Header />
-                <div style={{ padding: '20px' }}>
+                <div className={contentWrapper}>
                     <div style={{ paddingLeft: '20px', width: '200px' }}>
                         <Typography variant="h1">Мои резюме</Typography>
                         <Button

@@ -15,4 +15,5 @@ export const ROUTES = {
     VACANCY_DESC: '/vacancies/:id',
     APPLICATIONS: '/applications',
     RESUMES: '/resumes',
+    ANALYTICS: '/analytics',
 };

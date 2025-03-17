@@ -30,6 +30,7 @@ import { showSuccessMessage } from '../../utils/UI/toastMessages';
 import { ApplyModal } from '../../components/pages/vacancies/ApplyModal/ApplyModal';
 import { useGetResumesByCandidateQuery } from '../../services/resumes.api';
 import { pageWrapper, contentWrapper } from '../VacanciesListPage/VacanciesListPage.css';
+import { sources } from '../../components/pages/vacancies/types';
 
 export const VacancyPage: React.FC = () => {
     const navigate = useNavigate();
@@ -98,6 +99,11 @@ export const VacancyPage: React.FC = () => {
 
     const handleShowApplications = () => {
         setIsApplicationsTableVisible(!isApplicationsTableVisible);
+    };
+
+    const getSourceLabel = (sourceId: string) => {
+        const source = sources.find((source) => source.value === sourceId);
+        return source ? source.label : 'Неизвестно';
     };
 
     if (isLoading) return <FullScreenLoader />;
@@ -182,9 +188,12 @@ export const VacancyPage: React.FC = () => {
                                 { title: 'Кандидат', dataIndex: 'candidateName' },
                                 { title: 'Резюме', dataIndex: 'resumeTitle' },
                                 { title: 'Сопроводительное письмо', dataIndex: 'coverLetter' },
-                                { title: 'Статус', dataIndex: 'status' },
                                 { title: 'Дата отклика', dataIndex: 'createdAt' },
-                                { title: 'Источник', dataIndex: 'source' },
+                                {
+                                    title: 'Источник',
+                                    dataIndex: 'source',
+                                    render: (sourceId) => getSourceLabel(sourceId),
+                                },
                             ]}
                             rows={allApplications}
                             isLoading={isApplicationsLoading}
