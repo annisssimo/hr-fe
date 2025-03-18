@@ -86,7 +86,9 @@ type ResumeDetails = {
     coverLetter?: string;
 };
 
-export type ExtendedApplication = Application & ApplicationDetails & ResumeDetails;
+export type ExtendedApplication = Application &
+    ApplicationDetails &
+    ResumeDetails & { matchPercentage: number };
 
 export interface CreateApplicationDto {
     candidateId: string;

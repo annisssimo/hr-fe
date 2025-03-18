@@ -88,7 +88,7 @@ export const RegistrationForm: React.FC = () => {
                         <ControlledInput
                             name="firstName"
                             control={control}
-                            labelText="First Name"
+                            labelText="Имя"
                             error={errors.firstName}
                             onChange={() => handleInputChange('firstName')}
                         />
@@ -101,7 +101,7 @@ export const RegistrationForm: React.FC = () => {
                         <ControlledInput
                             name="lastName"
                             control={control}
-                            labelText="Last Name"
+                            labelText="Фамилия"
                             error={errors.lastName}
                             onChange={() => handleInputChange('lastName')}
                         />

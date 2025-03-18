@@ -210,19 +210,19 @@ export const ConfirmationPage = () => {
 
     const newColumns: Column<NewUser>[] = [
         {
-            title: 'First Name',
+            title: 'Имя',
             dataIndex: 'firstName',
         },
         {
-            title: 'Last Name',
+            title: 'Фамилия',
             dataIndex: 'lastName',
         },
         {
-            title: 'Email Address',
+            title: 'Email адрес',
             dataIndex: 'email',
         },
         {
-            title: 'Role',
+            title: 'Роль',
             dataIndex: 'role',
             render: (value, record) => (
                 <Dropdown
@@ -244,12 +244,12 @@ export const ConfirmationPage = () => {
                 <div className={styles.buttonsCell}>
                     <Button
                         type="preferred"
-                        buttonText="CONFIRM"
+                        buttonText="ПРИНЯТЬ"
                         onClick={() => confirmUsers(record.id)}
                     />
                     <Button
                         type="critical"
-                        buttonText="REJECT"
+                        buttonText="ОТКЛОНИТЬ"
                         onClick={() => rejectUsers(record.id)}
                     />
                 </div>
@@ -259,27 +259,27 @@ export const ConfirmationPage = () => {
 
     const allColumns: Column<AllUser>[] = [
         {
-            title: 'First Name',
+            title: 'Имя',
             dataIndex: 'firstName',
         },
         {
-            title: 'Last Name',
+            title: 'Фамилия',
             dataIndex: 'lastName',
         },
         {
-            title: 'Email Address',
+            title: 'Email адрес',
             dataIndex: 'email',
         },
         {
-            title: 'Role',
+            title: 'Роль',
             dataIndex: 'role',
         },
         {
-            title: 'Status',
+            title: 'Статус',
             dataIndex: 'status',
         },
         {
-            title: 'Date',
+            title: 'Дата',
             dataIndex: 'statusAssignmentDate',
         },
     ];
@@ -291,7 +291,7 @@ export const ConfirmationPage = () => {
             </div>
             <div className={styles.confirmationPageContent}>
                 <Typography variant={'h1'} className={styles.pageTitle}>
-                    Requests
+                    Запросы
                 </Typography>
                 <div className={styles.tableAndMenuContainer}>
                     <div className={styles.tableMenu}>
@@ -304,7 +304,7 @@ export const ConfirmationPage = () => {
                                         : styles.tableMenuItem
                                 }
                             >
-                                ALL REQUESTS
+                                ВСЕ ЗАПРОСЫ
                             </Typography>
                         </div>
                         <div onClick={selectNewRequests}>
@@ -316,7 +316,7 @@ export const ConfirmationPage = () => {
                                         : styles.tableMenuItem
                                 }
                             >
-                                NEW REQUESTS ({newRequestsCount})
+                                НОВЫЕ ЗАПРОСЫ ({newRequestsCount})
                             </Typography>
                         </div>
                     </div>

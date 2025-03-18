@@ -194,6 +194,7 @@ export const VacancyPage: React.FC = () => {
                                     dataIndex: 'source',
                                     render: (sourceId) => getSourceLabel(sourceId),
                                 },
+                                { title: '% соответствия вакансии', dataIndex: 'matchPercentage' },
                             ]}
                             rows={allApplications}
                             isLoading={isApplicationsLoading}
