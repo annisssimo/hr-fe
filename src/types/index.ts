@@ -23,7 +23,7 @@ export interface Vacancy {
     id: string;
     title: string;
     description: string;
-    skills: string;
+    skills: string[];
     location?: string;
     salary?: number;
     createdAt: string;
@@ -34,7 +34,7 @@ export interface Vacancy {
 export interface VacancyFormData {
     title: string;
     description: string;
-    skills: string;
+    skills: string[];
     location?: string;
     salary?: number;
 }
@@ -43,7 +43,7 @@ export interface Vacancy {
     id: string;
     title: string;
     description: string;
-    skills: string;
+    skills: string[];
     location?: string;
     salary?: number;
     createdAt: string;
@@ -54,7 +54,7 @@ export interface Vacancy {
 export interface VacancyFormData {
     title: string;
     description: string;
-    skills: string;
-    location: string;
+    skills: string[];
+    location?: string;
     salary?: number;
 }

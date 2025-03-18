@@ -35,7 +35,7 @@ export const EditVacancyForm: React.FC<{
                 name="skills"
                 control={control}
                 labelText="Навыки"
-                defaultValue={vacancy.skills}
+                defaultValue={vacancy.skills.join(', ')}
                 variant={InputVariant.LabelLeftOutlined}
             />
             <Controller

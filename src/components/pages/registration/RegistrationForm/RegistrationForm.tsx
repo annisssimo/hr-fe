@@ -149,10 +149,10 @@ export const RegistrationForm: React.FC = () => {
                 </div>
 
                 <div className={styles.buttonRow}>
-                    <Button type="secondary" onClick={onBackClick} buttonText="BACK" />
+                    <Button type="secondary" onClick={onBackClick} buttonText="НАЗАД" />
                     <Button
                         type={!isFormFilled ? 'disabled' : 'preferred'}
-                        buttonText="SUBMIT"
+                        buttonText="ЗАРЕГИСТРИРОВАТЬСЯ"
                         onClick={handleFormSubmit}
                     />
                 </div>

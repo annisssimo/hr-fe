@@ -75,10 +75,10 @@ export const EnterNewPasswordForm = ({ token }: EnterNewPasswordFormProps) => {
                     />
                 </div>
                 <div className={styles.buttonRow}>
-                    <Button type="secondary" onClick={onBackClick} buttonText="BACK" />
+                    <Button type="secondary" onClick={onBackClick} buttonText="НАЗАД" />
                     <Button
                         type={!isFormFilled ? 'disabled' : 'preferred'}
-                        buttonText="SUBMIT"
+                        buttonText="ОТПРАВИТЬ"
                         onClick={handleSubmit(onSubmit)}
                     />
                 </div>

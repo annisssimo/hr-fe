@@ -1,5 +1,5 @@
 import { useForm, Controller } from 'react-hook-form';
-import { Upload, Button as AntButton } from 'antd';
+import { Upload, Button as AntButton, Select } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { InputVariant } from '../../../../constants/inputVariant';
@@ -10,6 +10,9 @@ import { useCreateResumeMutation } from '../../../../services/resumes.api';
 import { Loader } from '../../../common/Loader/Loader';
 import { useSelector } from 'react-redux';
 import { getUserSelector } from '../../../../redux/userSlice/userSlice';
+import { IT_SKILLS } from '../../../../constants/skills';
+
+const { Option } = Select;
 
 export const AddResumeModal = ({ isModalOpen, onClose }: AddResumeModalProps) => {
     const user = useSelector(getUserSelector);
@@ -18,7 +21,7 @@ export const AddResumeModal = ({ isModalOpen, onClose }: AddResumeModalProps) =>
         defaultValues: {
             title: '',
             filePath: null,
-            skills: '',
+            skills: [],
             experience: '',
             education: '',
         },
@@ -31,16 +34,15 @@ export const AddResumeModal = ({ isModalOpen, onClose }: AddResumeModalProps) =>
             const formData = new FormData();
             formData.append('candidateId', userId);
             formData.append('title', data.title);
-            formData.append('skills', data.skills);
+
+            formData.append('skills', JSON.stringify(data.skills));
             formData.append('experience', data.experience);
             formData.append('education', data.education);
+
             if (data.filePath) {
                 formData.append('file', data.filePath, data.filePath.name);
             }
 
-            for (const [key, value] of formData.entries()) {
-                console.log(key, value);
-            }
             await createResume(formData).unwrap();
             onClose();
         } catch (error) {
@@ -75,11 +77,25 @@ export const AddResumeModal = ({ isModalOpen, onClose }: AddResumeModalProps) =>
                     />
                 </div>
                 <div className={gridItem}>
-                    <ControlledInput
+                    <Controller
                         name="skills"
                         control={control}
-                        labelText="Навыки"
-                        variant={InputVariant.LabelTop}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                mode="tags"
+                                style={{ width: '100%' }}
+                                placeholder="Введите навыки"
+                                tokenSeparators={[',']}
+                                getPopupContainer={(triggerNode) => triggerNode.parentElement}
+                            >
+                                {IT_SKILLS.map((skill) => (
+                                    <Option key={skill} value={skill}>
+                                        {skill}
+                                    </Option>
+                                ))}
+                            </Select>
+                        )}
                     />
                 </div>
                 <div className={gridItem}>
@@ -105,6 +121,8 @@ export const AddResumeModal = ({ isModalOpen, onClose }: AddResumeModalProps) =>
                         render={() => (
                             <Upload
                                 beforeUpload={() => false}
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                //@ts-expect-error
                                 onChange={handleFileChange}
                                 showUploadList={false}
                             >
@@ -130,7 +148,7 @@ interface AddResumeModalProps {
 interface ResumeFormData {
     title: string;
     filePath: File | null;
-    skills: string;
+    skills: string[];
     experience: string;
     education: string;
 }

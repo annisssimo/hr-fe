@@ -84,7 +84,7 @@ export const PasswordChangeForm = () => {
 
     return (
         <div className={styles.formWrapper}>
-            <Typography variant={'h1'}>Change password</Typography>
+            <Typography variant={'h1'}>СМЕНИТЬ ПАРОЛЬ</Typography>
             <form className={styles.formContainer}>
                 <div className={styles.twoPerRow}>
                     <div
@@ -95,7 +95,7 @@ export const PasswordChangeForm = () => {
                         <PasswordInput
                             name="oldPassword"
                             control={control}
-                            labelText="Old password"
+                            labelText="Старый пароль"
                             error={errors.oldPassword}
                             onChange={() => handleInputChange('oldPassword')}
                         />
@@ -108,17 +108,17 @@ export const PasswordChangeForm = () => {
                         <PasswordInput
                             name="newPassword"
                             control={control}
-                            labelText="New Password"
+                            labelText="Новый пароль"
                             error={errors.newPassword}
                             onChange={() => handleInputChange('newPassword')}
                         />
                     </div>
                 </div>
                 <div className={styles.buttonRow}>
-                    <Button type="secondary" onClick={onBackClick} buttonText="BACK" />
+                    <Button type="secondary" onClick={onBackClick} buttonText="НАЗАД" />
                     <Button
                         type={!isFormFilled ? 'disabled' : 'preferred'}
-                        buttonText="SUBMIT"
+                        buttonText="СМЕНИТЬ ПАРОЛЬ"
                         onClick={handleFormSubmit}
                     />
                 </div>

@@ -13,7 +13,7 @@ export const RegistrationPage: React.FC = () => {
             </div>
             <div className={styles.formWrapper}>
                 <Typography variant={'h1'} className={styles.registrationHeader}>
-                    REGISTRATION
+                    РЕГИСТРАЦИЯ
                 </Typography>
                 <RegistrationForm />
             </div>

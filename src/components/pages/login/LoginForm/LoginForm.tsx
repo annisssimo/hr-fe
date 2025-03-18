@@ -99,7 +99,7 @@ export const LoginForm = () => {
             <div className={styles.buttonRow}>
                 <Button
                     type={!isValid || isLoading ? 'disabled' : 'preferred'}
-                    buttonText={isLoading ? 'LOADING...' : 'SUBMIT'}
+                    buttonText={isLoading ? 'ЗАГРУЗКА...' : 'ВОЙТИ'}
                     onClick={handleSubmit(onSubmit)}
                 />
             </div>

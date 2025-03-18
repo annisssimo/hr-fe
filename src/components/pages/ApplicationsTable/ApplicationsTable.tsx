@@ -28,7 +28,7 @@ export const ApplicationsTable: React.FC<ApplicationsTableProps> = ({ candidateI
     return (
         <Table
             columns={columns}
-            rows={applications || []}
+            rows={applications?.map((app) => ({ ...app, skills: app.skills.join(', ') }))}
             isLoading={isLoading || isFetching}
             onRowClick={handleRowClick}
         />

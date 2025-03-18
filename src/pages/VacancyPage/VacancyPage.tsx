@@ -119,7 +119,7 @@ export const VacancyPage: React.FC = () => {
                         <Typography variant="text">{`На эту вакансию откликнулось ${allApplications?.length || 0} человек`}</Typography>
                         <Typography variant="text">{vacancy.description}</Typography>
                         <Typography variant="text">
-                            <strong>Навыки:</strong> {vacancy.skills}
+                            <strong>Навыки:</strong> {vacancy.skills.join(', ')}
                         </Typography>
                         <Typography variant="text">
                             <strong>Локация:</strong> {vacancy.location}

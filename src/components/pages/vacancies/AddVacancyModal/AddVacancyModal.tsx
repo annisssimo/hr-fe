@@ -1,11 +1,15 @@
 import { useForm, Controller } from 'react-hook-form';
-import { ControlledInput } from '../../../common/ControlledInput/ControlledInput';
 import { Modal } from '../../../common/Modal/Modal';
 import { Typography } from '../../../common/Typography/Typography';
 import { VacancyFormData } from '../../../../types';
-import { Dropdown } from '../../../common/Dropdown/Dropdown';
-import * as styles from './AddVacancyModal.css';
+import { Select, Input as AntInput } from 'antd';
 import { positionOptions } from '../types';
+import { IT_SKILLS } from '../../../../constants/skills';
+import { addVacancy, gridRow, input, textarea } from './AddVacancyModal.css';
+
+const { Option } = Select;
+
+const { TextArea } = AntInput;
 
 interface AddVacancyModalProps {
     isOpen: boolean;
@@ -31,71 +35,75 @@ export const AddVacancyModal: React.FC<AddVacancyModalProps> = ({ isOpen, onClos
             confirmText="Создать"
         >
             <Typography variant="h2">Добавление вакансии</Typography>
-            <div className={styles.addVacancy}>
+            <div className={addVacancy}>
                 <Controller
                     name="title"
                     control={control}
                     defaultValue=""
-                    render={() => (
-                        <ControlledInput
-                            name="title"
-                            control={control}
-                            labelText="Название"
-                            defaultValue=""
-                        />
+                    render={({ field }) => (
+                        <AntInput {...field} placeholder="Название" className={input} />
                     )}
                 />
+
                 <Controller
                     name="description"
                     control={control}
                     defaultValue=""
-                    render={() => (
-                        <ControlledInput
-                            name="description"
-                            control={control}
-                            labelText="Описание"
-                            defaultValue=""
-                        />
+                    render={({ field }) => (
+                        <TextArea {...field} placeholder="Описание" rows={4} className={textarea} />
                     )}
                 />
-                <Controller
-                    name="skills"
-                    control={control}
-                    defaultValue=""
-                    render={() => (
-                        <ControlledInput
-                            name="skills"
-                            control={control}
-                            labelText="Навыки"
-                            defaultValue=""
-                        />
-                    )}
-                />
-                <Controller
-                    name="location"
-                    control={control}
-                    defaultValue=""
-                    render={({ field: { value, onChange } }) => (
-                        <Dropdown
-                            label="Локация"
-                            options={positionOptions}
-                            selected={value}
-                            onChange={onChange}
-                        />
-                    )}
-                />
+
+                <div className={gridRow}>
+                    <Controller
+                        name="skills"
+                        control={control}
+                        defaultValue={undefined}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                mode="tags"
+                                style={{ width: '100%' }}
+                                placeholder="Введите навыки"
+                                tokenSeparators={[',']}
+                                getPopupContainer={(triggerNode) => triggerNode.parentElement}
+                            >
+                                {IT_SKILLS.map((skill) => (
+                                    <Option key={skill} value={skill}>
+                                        {skill}
+                                    </Option>
+                                ))}
+                            </Select>
+                        )}
+                    />
+
+                    <Controller
+                        name="location"
+                        control={control}
+                        defaultValue={undefined}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                style={{ width: '100%' }}
+                                placeholder="Выберите локацию"
+                                getPopupContainer={(triggerNode) => triggerNode.parentElement}
+                            >
+                                {positionOptions.map((option) => (
+                                    <Option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </Option>
+                                ))}
+                            </Select>
+                        )}
+                    />
+                </div>
+
                 <Controller
                     name="salary"
                     control={control}
                     defaultValue={undefined}
-                    render={() => (
-                        <ControlledInput
-                            name="salary"
-                            control={control}
-                            labelText="Доход"
-                            type="number"
-                            defaultValue={undefined}
-                        />
+                    render={({ field }) => (
+                        <AntInput {...field} placeholder="Доход" type="number" className={input} />
                     )}
                 />
             </div>

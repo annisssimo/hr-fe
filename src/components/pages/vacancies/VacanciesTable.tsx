@@ -26,7 +26,7 @@ export const VacanciesTable: React.FC<VacanciesTableProps> = ({ vacancies, isLoa
     return (
         <Table
             columns={columns}
-            rows={vacancies}
+            rows={vacancies?.map((app) => ({ ...app, skills: app.skills.join(', ') })) || []}
             isLoading={isLoading}
             onRowClick={handleRowClick}
         />

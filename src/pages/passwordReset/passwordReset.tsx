@@ -10,7 +10,7 @@ export const PasswordResetPage = () => {
             <Header />
             <div className={styles.resetPasswordPage}>
                 <Typography variant={'h1'} className={styles.resetPasswordHeading}>
-                    PASSWORD RESET
+                    СБРОС ПАРОЛЯ
                 </Typography>
                 <PasswordResetForm />
             </div>

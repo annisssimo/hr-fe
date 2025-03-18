@@ -69,7 +69,7 @@ export const PasswordResetForm = () => {
                             your account is linked. Follow the link from the email
                         </Typography>
                         <div className={styles.button}>
-                            <Button type="preferred" buttonText="BACK" onClick={handleBackClick} />
+                            <Button type="preferred" buttonText="НАЗАД" onClick={handleBackClick} />
                         </div>
                     </>
                 ) : (
@@ -87,12 +87,12 @@ export const PasswordResetForm = () => {
                         <div className={styles.buttonRow}>
                             <Button
                                 type={!isValid ? 'disabled' : 'preferred'}
-                                buttonText="RESET MY PASSWORD"
+                                buttonText="СБРОСИТЬ МОЙ ПАРОЛЬ"
                                 onClick={handleSubmit(onSubmit)}
                             />
                             <Button
                                 type="secondary"
-                                buttonText="BACK TO SIGN IN PAGE"
+                                buttonText="НАЗАД К РЕГИСТРАЦИИ"
                                 onClick={() => navigate(ROUTES.LOGIN)}
                             />
                         </div>

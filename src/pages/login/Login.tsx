@@ -13,18 +13,18 @@ export const LoginPage = () => {
             <Header />
             <div className={styles.loginPage}>
                 <Typography variant={'h1'} className={styles.loginHeading}>
-                    AUTHORIZATION
+                    ВОЙДИТЕ В СИСТЕМУ
                 </Typography>
                 <LoginForm />
                 <div className={styles.tips}>
                     <div>
-                        <span className={styles.grayText}>Need an account?</span>
+                        <span className={styles.grayText}>Нужен аккаунт?</span>
                         <Link to={ROUTES.REGISTER} className={styles.link}>
-                            Sign Up!
+                            Зарегистрироваться!
                         </Link>
                     </div>
                     <Link to={ROUTES.RESET_PASSWORD} className={styles.link}>
-                        Forgot Password?
+                        Забыли пароль?
                     </Link>
                 </div>
             </div>

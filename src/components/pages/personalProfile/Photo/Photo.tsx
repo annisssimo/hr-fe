@@ -120,29 +120,29 @@ export const Photo = ({ isOpen, onClose }: PhotoProps) => {
             modalContent = <Typography variant="paragraph">Choose an option</Typography>;
             onConfirm = handleChooseUpload;
             onCancel = handleChooseTakePhoto;
-            confirmText = 'UPLOAD PHOTO';
-            cancelText = 'TAKE PHOTO';
+            confirmText = 'ЗАГРУЗИТЬ ФОТО';
+            cancelText = 'СНЯТЬ ФОТО';
             break;
         case 'upload':
             modalContent = <FileInput onImageSelect={setSelectedImage} />;
             onConfirm = handleUploadDone;
             onCancel = () => setModalStep('choose');
-            confirmText = 'DONE';
-            cancelText = 'BACK';
+            confirmText = 'ГОТОВО';
+            cancelText = 'НАЗАД';
             break;
         case 'take':
             modalContent = <TakePhoto onPhotoTaken={handlePhotoTaken} />;
             onConfirm = confirmPhotoTaken;
             onCancel = cancelPhotoTaken;
-            confirmText = 'DONE';
-            cancelText = 'BACK';
+            confirmText = 'ГОТОВО';
+            cancelText = 'НАЗАД';
             break;
         case 'crop':
             modalContent = selectedImage && <CropPhoto ref={cropPhotoRef} image={selectedImage} />;
             onConfirm = handleCropComplete;
             onCancel = handleCropBack;
-            confirmText = 'CROP';
-            cancelText = 'BACK';
+            confirmText = 'ОБРЕЗАТЬ';
+            cancelText = 'НАЗАД';
             break;
     }
 

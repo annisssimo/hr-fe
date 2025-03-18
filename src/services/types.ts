@@ -76,7 +76,7 @@ interface ApplicationDetails {
     candidateName: string;
     resumeTitle: string;
     vacancyTitle: string;
-    skills: string;
+    skills: string[];
     location: string;
     salary: string;
 }
@@ -105,7 +105,7 @@ export interface Resume {
     candidateId: string;
     title: string;
     filePath: string | null;
-    skills: string;
+    skills: string[];
     experience: string;
     education: string;
     createdAt: string;
