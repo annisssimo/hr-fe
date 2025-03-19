@@ -14,8 +14,13 @@ import { pageWrapper, contentWrapper } from '../VacanciesListPage/VacanciesListP
 
 export const ResumesListPage = () => {
     const user = useSelector(getUserSelector);
-    const { isLoading: isResumesLoading } = useGetResumesByCandidateQuery(user?.id || '');
+    const { isLoading: isResumesLoading, refetch } = useGetResumesByCandidateQuery(user?.id || '');
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+        refetch();
+    };
 
     return (
         <>
@@ -39,9 +44,7 @@ export const ResumesListPage = () => {
                 <Footer />
                 {isResumesLoading && <FullScreenLoader />}
             </div>
-            {isModalOpen && (
-                <AddResumeModal isModalOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-            )}
+            {isModalOpen && <AddResumeModal isModalOpen={isModalOpen} onClose={handleModalClose} />}
         </>
     );
 };
